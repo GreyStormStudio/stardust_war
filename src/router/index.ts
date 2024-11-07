@@ -1,5 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../起始页/Home.vue'
+import AboutView from '../起始页/About.vue'
+import LoginView from '../起始页/Login.vue'
+import RegisterView from '../起始页/Register.vue'
+import GameMainView from '../游戏页/GameMain.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,16 +14,28 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    component: AboutView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component:LoginView
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component:RegisterView
+  },
+  {
+    path: '/game',
+    name: 'game',
+    component:GameMainView
+  },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes: routes
 })
 
 export default router
