@@ -3,9 +3,11 @@
         <!-- <h1>这是注册页</h1> -->
         用户名:<input id="username" type="text">
         账号:<input id="account" type="text">
+        <!-- 邮箱? -->
         密码:<input id="password" type="password">
         确认密码:<input id="check_password" type="password">
-        <button id="submit" @click="register">注册(没写)</button>
+        <!-- 验证码? -->
+        <button id="submit" @click="">注册(没写)</button>
 
     </div>
 </template>

@@ -54,25 +54,49 @@ class Fleet{
         this.坐标[1]+=Math.sin(Math.atan2(y-this.模型.y,x-this.模型.x))*this.移速
     }
     
-    命中(命中率:number,闪避率:number):0|1{
+    命中(命中率:number,闪避率:number,最低闪避值:number):0|1{
         Math.random()
-        return Math.random()>Math.max(命中率-闪避率,0.05) ? 0 :1
+        return Math.random()>Math.max(命中率-闪避率,最低闪避值) ? 0 :1
     }
 
     攻击(敌方fleet:Fleet){
         this.武器.forEach(wep=>{
             if(wep.冷却时间==0){
-                //#region 处理对护盾的伤害 破盾时将把溢出的伤害乘0.5直接附加到船体上 --护盾过载
-                if(敌方fleet.护盾值>0){
-                    敌方fleet.护盾值-=wep.能量伤害*wep.能量伤害基础乘数*this.命中(wep.命中率,敌方fleet.闪避率)
+                //处理对存在时护盾的伤害
+                if(敌方fleet.护盾值>=0){
+                    if(敌方fleet.护盾值>0){
+                        敌方fleet.护盾值-=wep.能量伤害*wep.能量伤害基础乘数*this.命中(wep.命中率,敌方fleet.闪避率,0.05)
+                    }
+                    if(敌方fleet.护盾值<0){
+                        敌方fleet.船体值+=敌方fleet.护盾值*0.5
+                        敌方fleet.护盾值=0
+                    }
                 }
-                if(敌方fleet.护盾值<0){
-                    敌方fleet.船体值+=敌方fleet.护盾值*0.5
-                    敌方fleet.护盾值=0
+                //处理对存在装甲时的伤害
+                else if(敌方fleet.装甲值>0){
+                    let 能量命中 = this.命中(wep.命中率,敌方fleet.闪避率,0.05)
+                    if(能量命中==1){
+                        敌方fleet.装甲值-=wep.能量伤害*wep.能量伤害基础乘数*0.25
+                        敌方fleet.船体值-=wep.能量伤害*wep.能量伤害基础乘数*0.25
+                    }
+                    敌方fleet.装甲值-=wep.动能伤害*wep.动能伤害基础乘数*1.25
+                    if(敌方fleet.装甲值<0){
+                        敌方fleet.装甲值=0
+                    }
                 }
-                //#endregion
-                if(敌方fleet.装甲值>0){
-                    
+                //处理裸奔伤害
+                else{
+                    if(敌方fleet.船体值>0){
+                        敌方fleet.船体值-=wep.能量伤害*wep.能量伤害基础乘数*this.命中(wep.命中率,敌方fleet.闪避率,0.1)
+                        敌方fleet.船体值-=wep.动能伤害*wep.动能伤害基础乘数*this.命中(wep.命中率,敌方fleet.闪避率,0.1)
+                    }
+                    else{
+                        /*摧毁敌方fleet(没写)
+                        将模型替换为残骸模型
+                        停留一段时间后从战场中清除
+                        将该数据记录到战斗报告中
+                        */
+                    }
                 }
             }
         })
