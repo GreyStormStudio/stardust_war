@@ -6,9 +6,7 @@
     </div>
 
 </template>
-<script lang="ts">
-export default{}
-</script>
+<script src='../store/Battle.ts'></script>
 <style>
 canvas{
     background-color: antiquewhite;
