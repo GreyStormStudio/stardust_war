@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import StartView from '../vue/起始页/Start.vue'
 import HomeView from '../vue/起始页/Home.vue'
 import AboutView from '../vue/起始页/About.vue'
 import LoginView from '../vue/起始页/Login.vue'
@@ -7,7 +8,12 @@ import GameMainView from '../vue/游戏页/GameMain.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path:'/',
+    name:'start',
+    component:StartView
+  },
+  {
+    path: '/home',
     name: 'home',
     component: HomeView
   },

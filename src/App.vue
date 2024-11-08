@@ -1,29 +1,19 @@
 <template>
-  <div class="router">
-    <span><router-link to="/">主页</router-link>|</span>
-    <span v-if="!isgame"><router-link to="/login">登录</router-link>|</span>
-    <span v-if="!isgame"><router-link to="/register">注册</router-link>|</span>
-    <span v-if="isgame"><router-link to="/game">游戏</router-link>|</span>
-    <span><router-link to="/about">关于</router-link></span>
-  </div>
-  <router-view/>
+<h1>Stardust War|星尘战争</h1>
+  <router-link to="/">标题页</router-link>
+  <router-view></router-view>
 </template>
 <style>
-.router{
-  a{
-    color: blueviolet;
-    text-decoration: none;
-  }
-  a:visited{
-    color: blueviolet;
-  }
+h1{
+  color: darkcyan;
+}
+a{
+  color: blueviolet;
+  text-decoration: none;
+}
+a:visited{
+  color: blueviolet;
 }
 </style>
 <script>
-import { mapState } from "vuex";
-export default {
-  computed:{
-    ...mapState(['isgame'])
-  }
-}
 </script>
