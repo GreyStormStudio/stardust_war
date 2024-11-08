@@ -1,5 +1,7 @@
 # stardust_war
 
+<p>原汁原味的readme,几乎没有任何更改(:</p>
+
 ## Project setup
 ```
 npm install
