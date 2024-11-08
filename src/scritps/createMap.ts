@@ -1,0 +1,3 @@
+
+
+var seed:number;
