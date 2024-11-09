@@ -1,4 +1,3 @@
-import { Color, MSAA_QUALITY } from 'pixi.js';
 import {random,MatrixStatistics} from './math'
 
 export function generatePerlinNoiseMap(size:number,seed: number): number[][] {
