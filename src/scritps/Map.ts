@@ -1,19 +1,16 @@
 import { Application,Graphics } from "pixi.js";
 import { generatePerlinNoiseMap,smoothPerlinNoiseMap,BlockDivision } from "./快捷函数/CreateMap";
 import { defineComponent } from "vue";
-
 const size = 128;
-
 const app = new Application();
+
 await app.init({
-    width:size*2,
-    height:size,
-    backgroundColor:'0xFFF0F0'
-});
-
+        width:size*2,
+        height:size,
+        backgroundColor:'0xFFF0F0'
+    });
+    document.body.appendChild(app.canvas)
 let obj1 = new Graphics();
-document.body.appendChild(app.canvas)
-
 function drawmap(size:number,seed:number){
     const map = generatePerlinNoiseMap(size,seed);
     const smoothedMap1 = smoothPerlinNoiseMap(map,2)
@@ -53,6 +50,7 @@ function drawmap(size:number,seed:number){
 }
 export default defineComponent({
     setup(){
-        drawmap(size,Math.random()*0x80000000)
+        
+        drawmap(size,0)
     }
 })
