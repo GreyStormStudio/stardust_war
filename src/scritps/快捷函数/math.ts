@@ -20,6 +20,16 @@ export function random(seed: number, count: number) {
     return result
 }
 
+//根据seed种子生成一个count长的伪随机数列
+export function randomlist(seed:number,count:number){
+    let randomlist:number[]=[]
+    const g = lcg(seed)
+    for (let n = 0; n < count; n++) {
+        randomlist.push(g())
+    }
+    return randomlist
+}
+
 //计算(x1,y1)与(x2,y2)的距离
 export function distance(pos1:[number,number],pos2:[number,number]){return (pos1[0]-pos2[0])**2+(pos1[1]-pos2[1])**2}
 
