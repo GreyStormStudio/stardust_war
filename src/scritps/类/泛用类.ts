@@ -6,11 +6,36 @@ export interface rescources{
 
 export class building{
     constructor(
-        public name:string,
-        public cost:rescources[],
-        public production:rescources
+        public name:string,//名称
+        public cost:rescources[],//建造消耗的资源
+        public consume:rescources,//产出目标资源所消耗的资源
+        public production:rescources//产出目标资源
     ){}
     
+}
+
+export class ConstellationBuildings{
+    constructor(
+        public Buildings能量:number,
+        public Buildings能量最大:number,
+        public rate能量:number,
+        public Buildings矿物:number,
+        public Buildings矿物最大:number,
+        public rate矿物:number,
+        //金属的限制貌似不在这里
+        // public Buildings金属:number,
+        // public Buildings金属最大:number,
+        // public rate金属:number
+    ){}
+}
+
+export class PlayerStorage{
+    constructor(
+        public energy:number,
+        public mineral:number,
+        public metal:number
+        //应该还有其他的资源,先放着
+    ){}
 }
 
 export class weapon{
@@ -35,7 +60,6 @@ export class ship{
         public ship类型:'护卫舰'|'驱逐舰'|'巡洋舰'|'战列舰'|'战争巨像',
         public ship武器:weapon[],
         public shipuuid:number,
-
         //经常变的值
         public ship护盾:number,
         public ship装甲:number,
@@ -46,8 +70,8 @@ export class ship{
         public ship闪避率:number,
         public ship移速:number,
         public ship失踪:number
-        
     ){}
+
     find最近敌舰(hostileship:ship[]){//找到最近的敌方舰船           输入应该是一个字典{shipuuid:ship},这个不急,晚点再改
         let min距离 = Infinity
         let closest敌舰uuid = null
