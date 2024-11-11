@@ -1,5 +1,5 @@
 import { Application,Graphics } from "pixi.js";
-import {GenerateMap} from './快捷函数/CreateMap-new'
+import {GenerateMap} from './快捷函数/CreateMap'
 import { defineComponent } from "vue";
 
 

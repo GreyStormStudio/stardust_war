@@ -3,7 +3,7 @@ import { randomlist } from "./math";
 export class PerlinNoise2D{
     width:number
     height:number
-    scale:number
+    scale:number//瓦片大小
     seed:number
     private rand_list:Float32Array
     constructor(

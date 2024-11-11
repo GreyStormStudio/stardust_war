@@ -7,7 +7,7 @@
 </template>
 <!-- 下面这句先不加,加了以后会在所有界面显示,怎么解决我再看看 -->
 <!-- <script src='../scritps/Battle.ts'></script> -->
-<script src="../../scritps/Map.ts"></script>
+<script src="../../scritps/Map-原型.ts"></script>
 <!-- <script src="../../scritps/快捷函数/noise-perlin.ts"></script> -->
 <style>
 </style>
