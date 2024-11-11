@@ -83,17 +83,45 @@ export class PerlinNoise2D{
         const g11 = this.grad(this.permute(p, this.permute(p, ix + 1) + this.permute(p, iy + 1)), gx - 1, gy - 1);
         return this.lerp(gx, this.lerp(gy, g00, g01), this.lerp(gy, g10, g11));
     }
-
-    GenerateGrayscaleMap(map:Float32Array){//将map转化为灰度图
-        const edge = map.length**0.5
-        let grayscalemap = new Float32Array(map.length)
-        for (let x = 0; x < edge; x++) {
-            for (let y = 0; y < edge; y++) {
-                let grey1 = Math.floor(map[x+y*edge]*256)
-                grayscalemap[x+y*edge]=grey1
+    createGaussianKernel(kernelsize:number,sigma:number) {
+        const kernel = new Float32Array(kernelsize * kernelsize);
+        const mean = Math.floor(kernelsize / 2);
+        let sum = 0;
+    
+        for (let x = 0; x < kernelsize; x++) {
+            for (let y = 0; y < kernelsize; y++) {
+                const xDist = x - mean;
+                const yDist = y - mean;
+                kernel[x * kernelsize + y] = Math.exp(-(xDist * xDist + yDist * yDist) / (2*sigma*sigma));
+                sum += kernel[x * kernelsize + y];
             }
         }
-        return grayscalemap
+        for (let i = 0; i < kernel.length; i++) {
+            kernel[i] /= sum;
+        }
+    
+        return kernel;
+    }
+    applyGaussianBlur(input:Float32Array,kernelsize:number,sigma:number) {
+        const output = new Float32Array(this.width * this.height);
+        const kernel = this.createGaussianKernel(kernelsize,sigma);
+        const halfKernelSize = Math.floor(kernelsize/2);
+    
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                let sum = 0;
+                for (let ky = -halfKernelSize; ky <= halfKernelSize; ky++) {
+                    for (let kx = -halfKernelSize; kx <= halfKernelSize; kx++) {
+                        const sampleX = Math.min(Math.max(x + kx, 0), this.width - 1);
+                        const sampleY = Math.min(Math.max(y + ky, 0), this.height - 1);
+                        sum += input[sampleY * this.width + sampleX] * kernel[(ky + halfKernelSize) * kernelsize + (kx + halfKernelSize)];
+                    }
+                }
+                output[y * this.width + x] = sum;
+            }
+        }
+    
+        return output;
     }
 }
 

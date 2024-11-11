@@ -3,12 +3,12 @@ import {GenerateMap} from './快捷函数/CreateMap-new'
 import { defineComponent } from "vue";
 
 
-const seed = 7
+const seed = 16
 const edge = 128
 
 const app = new Application();
 await app.init({
-    width:edge*2,
+    width:edge+10,
     height:edge,
     backgroundColor:'0xFFF0F0'
 });
@@ -22,8 +22,19 @@ function drawmap(){
     for (let x = 0; x < edge; x++) {
         for (let y = 0; y < edge; y++) {
             let gray = grayscalemap[x+y*edge]
-            const color2 = `0x${gray.toString(16).padStart(2,'0')}${gray.toString(16).padStart(2,'0')}${gray.toString(16).padStart(2,'0')}`;
-            let color = `rgb(${gray},${gray},${gray})`
+            let color:string
+            if(gray>100){
+                color='0xFFFFFF'
+            }
+            else if(gray>85){
+                color='0x00FF00'
+            }
+            else if(gray>65){
+                color='0x0000FF'
+            }
+            else{
+                color='0xFF0000'
+            }
             obj1.rect(x,y,1,1)
             obj1.fill({color:color})
             app.stage.addChild(obj1);
