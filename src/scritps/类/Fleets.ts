@@ -1,6 +1,6 @@
 import { Sprite } from "pixi.js"
 
-class Fleet{
+export class Fleet{
     模型:Sprite
     船体值:number
     护盾值:number
@@ -103,7 +103,7 @@ class Fleet{
     }
 }
 
-class Weapon{
+export class Weapon{
     //#region 勾石平衡
     /*在有护盾时
     能量伤害对护盾造成1.0倍基础伤害
@@ -150,4 +150,3 @@ class Weapon{
         this.命中率=命中率
     }
 }
-export default {}
