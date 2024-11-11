@@ -1,4 +1,4 @@
-# stardust_war
+# Stardust_War(暂时叫这个名字
 
 <p>原汁原味的readme,几乎没有任何更改(:</p>
 
