@@ -3,7 +3,10 @@ import {GenerateMap} from './快捷函数/CreateMap'
 import { defineComponent } from "vue";
 
 
-//const seed = 6
+//测试，直接输入种子和边长得了
+//实际拿星区的坐标x,y来生成种子
+
+const seed = 6
 const edge = 128
 
 const app = new Application();
@@ -16,7 +19,7 @@ document.body.appendChild(app.canvas)
 let obj1 = new Graphics();
 
 function drawmap(seed:number){
-    const generater = new GenerateMap(seed)
+    const generater = new GenerateMap(seed,edge)
     const map = generater.GenerateNoiseMap()
     const grayscalemap = generater.GenerateGrayscaleMap(map)
     let tj=[0,0,0,0]
@@ -51,9 +54,9 @@ function drawmap(seed:number){
 export default defineComponent({
     setup(){
         console.log(`单位产出: 低产地块:1矿石/时刻,中产地块:2矿石/时刻,高产地块:4矿石/时刻,空白地块:0.5能量/时刻`)
-        for (let seed = 0; seed < 8; seed++) {
+        /*for (let seed = 0; seed < 1; seed++) {
             drawmap(seed)
-        }
-        
+        }*/
+        drawmap(seed)
     }
 })

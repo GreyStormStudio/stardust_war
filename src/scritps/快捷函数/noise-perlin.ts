@@ -1,19 +1,18 @@
 import { randomlist } from "./math";
 
 export class PerlinNoise2D{
-    width:number
-    height:number
+    edge:number
     scale:number//瓦片大小
     seed:number
     private rand_list:Float32Array
     constructor(
-        seed:number
+        seed:number,
+        edge:number
     ){
-        this.width=128
-        this.height=128
+        this.edge=edge
         this.scale=8
         this.seed=seed
-        this.rand_list=randomlist(seed,16384)//256个0-1之间的伪随机数
+        this.rand_list=randomlist(seed,this.edge*this.edge)//256个0-1之间的伪随机数
     }
 
     fade(t: number): number {
@@ -52,10 +51,10 @@ export class PerlinNoise2D{
 
     perlinNoise2D(){
         const perm = this.generatePermutationVector();
-        const result= new Float32Array(this.width*this.height)
+        const result= new Float32Array(this.edge*this.edge)
 
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
+        for (let y = 0; y < this.edge; y++) {
+            for (let x = 0; x < this.edge; x++) {
                 const xi = Math.floor(x / this.scale);
                 const yi = Math.floor(y / this.scale);
                 const xf = (x / this.scale) - xi;
@@ -68,7 +67,7 @@ export class PerlinNoise2D{
                 const n11 = this.dotGridGradient(perm, xi + 1, yi + 1, xf - 1, yf - 1);
                 const x1 = this.lerp(u, n00, n10);
                 const x2 = this.lerp(u, n01, n11);
-                result[y * this.width + x] = Math.max(Math.floor((this.lerp(v, x1, x2)+1)*128),0);
+                result[y * this.edge + x] = Math.max(Math.floor((this.lerp(v, x1, x2)+1)*128),0);
             }
         }
         return result;
@@ -103,21 +102,21 @@ export class PerlinNoise2D{
         return kernel;
     }
     applyGaussianBlur(input:Float32Array,kernelsize:number,sigma:number) {
-        const output = new Float32Array(this.width * this.height);
+        const output = new Float32Array(this.edge * this.edge);
         const kernel = this.createGaussianKernel(kernelsize,sigma);
         const halfKernelSize = Math.floor(kernelsize/2);
     
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
+        for (let y = 0; y < this.edge; y++) {
+            for (let x = 0; x < this.edge; x++) {
                 let sum = 0;
                 for (let ky = -halfKernelSize; ky <= halfKernelSize; ky++) {
                     for (let kx = -halfKernelSize; kx <= halfKernelSize; kx++) {
-                        const sampleX = Math.min(Math.max(x + kx, 0), this.width - 1);
-                        const sampleY = Math.min(Math.max(y + ky, 0), this.height - 1);
-                        sum += input[sampleY * this.width + sampleX] * kernel[(ky + halfKernelSize) * kernelsize + (kx + halfKernelSize)];
+                        const sampleX = Math.min(Math.max(x + kx, 0), this.edge - 1);
+                        const sampleY = Math.min(Math.max(y + ky, 0), this.edge - 1);
+                        sum += input[sampleY * this.edge + sampleX] * kernel[(ky + halfKernelSize) * kernelsize + (kx + halfKernelSize)];
                     }
                 }
-                output[y * this.width + x] = sum;
+                output[y * this.edge + x] = sum;
             }
         }
     
