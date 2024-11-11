@@ -36,7 +36,7 @@ export class Noise2D extends Noise {
   }
   public getNoise(x: number, y: number,randomlist:number[]) {
     const r = randomlist[x+y*128]
-    return (r * 2 - 1) * this.loud
+    return r * this.loud
   }
   public getBuff(randomlist:number[],x: number, y: number) {
     const [p1, p2, p3, p4] = this.getAroundPosition(x, y)
@@ -52,4 +52,6 @@ export class Noise2D extends Noise {
 
     return v1 * qL * qT + v2 * qR * qT + v3 * qL * qB + v4 * qR * qB
   }
+
+  
 }

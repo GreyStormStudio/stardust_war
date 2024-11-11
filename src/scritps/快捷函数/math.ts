@@ -20,12 +20,22 @@ export function random(seed: number, count: number) {
     return result
 }
 
-//根据seed种子生成一个count长的伪随机数列
-export function randomlist(seed:number,count:number){
-    let randomlist:number[]=[]
+/*
+*如果isdegree为false:生成一个由seed生成的count个伪随机数列
+*如果isdegree为true:生成一个由seed生成的count个伪随机单位向量[2n,2n+1] [x,y]的上的向量为[x+y*edge][x+y*edge+1]
+*/
+export function randomlist(seed:number,count:number,isdegree=false){
+    let randomlist:Float32Array = new Float32Array(isdegree?count*2:count)
     const g = lcg(seed)
     for (let n = 0; n < count; n++) {
-        randomlist.push(g())
+        if(isdegree){
+            let theta = g()*Math.PI*2
+            randomlist[2*n]=Math.cos(theta)
+            randomlist[2*n+1]=Math.sin(theta)
+        }
+        else{
+            randomlist[n]=g()
+        }
     }
     return randomlist
 }

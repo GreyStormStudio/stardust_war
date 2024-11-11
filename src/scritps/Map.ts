@@ -17,24 +17,19 @@ let obj1 = new Graphics();
 
 function drawmap(){
     const generater = new GenerateMap(seed)
-    const map = generater.GenerateNoiseMap(edge)
-    const finalmap = generater.OptimizeMap(map)
-    const grayscalemap = generater.GenerateGrayscaleMap(finalmap)
-    console.log('灰度表')
-    console.log(grayscalemap)
+    const map = generater.GenerateNoiseMap()
+    const grayscalemap = generater.GenerateGrayscaleMap(map)
     for (let x = 0; x < edge; x++) {
         for (let y = 0; y < edge; y++) {
+            let gray = grayscalemap[x+y*edge]
+            const color2 = `0x${gray.toString(16).padStart(2,'0')}${gray.toString(16).padStart(2,'0')}${gray.toString(16).padStart(2,'0')}`;
+            let color = `rgb(${gray},${gray},${gray})`
             obj1.rect(x,y,1,1)
-            /*if(finalmap[x][y]>0.7){
-                obj1.fill({color:'0xffffff'})
-            }
-            else{
-                obj1.fill({color:grayscalemap[x][y]})
-            }*/
-            obj1.fill({color:grayscalemap[x][y]})
+            obj1.fill({color:color})
             app.stage.addChild(obj1);
         }
     }
+    //console.log(grayscalemap)
 }
 export default defineComponent({
     setup(){
