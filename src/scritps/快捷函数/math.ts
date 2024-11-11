@@ -41,7 +41,7 @@ export function randomlist(seed:number,count:number,isdegree=false){
 }
 
 //计算(x1,y1)与(x2,y2)的距离
-export function distance(pos1:[number,number],pos2:[number,number]){return (pos1[0]-pos2[0])**2+(pos1[1]-pos2[1])**2}
+export function distance(pos1:{x:number,y:number},pos2:{x:number,y:number}){return (pos1.x-pos2.x)**2+(pos1.y-pos2.y)**2}
 
 //二维数组内容统计
 export function MatrixStatistics(Matrix:number[][],min:number,max:number){

@@ -6,7 +6,7 @@ import { defineComponent } from "vue";
 //测试，直接输入种子和边长得了
 //实际拿星区的坐标x,y来生成种子
 
-const seed = 6
+const seed = 114514
 const edge = 128
 
 const app = new Application();
@@ -49,11 +49,11 @@ function drawmap(seed:number){
         }
     }
     //console.log(grayscalemap)
-    console.log(`星域种子:${seed}\n星域统计:空白地块:${tj[0]}块,低产地块:${tj[1]}块,中产地块:${tj[2]}块,高产地块:${tj[3]}块\n预计产出:${tj[1]+tj[2]*2+tj[3]*4}矿石/时刻,${tj[0]*0.5}能量/时刻`)
+    console.log(`星域种子:${seed}\n星域统计:空白地块:${tj[0]}块,低产地块:${tj[1]}块,中产地块:${tj[2]}块,高产地块:${tj[3]}块\n预计产出:${tj[1]+tj[2]*2+tj[3]*4}矿物/时刻,${tj[0]*0.5}能量/时刻`)
 }
 export default defineComponent({
     setup(){
-        console.log(`单位产出: 低产地块:1矿石/时刻,中产地块:2矿石/时刻,高产地块:4矿石/时刻,空白地块:0.5能量/时刻`)
+        console.log(`单位产出: 低产地块:1矿物/时刻,中产地块:2矿物/时刻,高产地块:4矿物/时刻,空白地块:0.5能量/时刻`)
         /*for (let seed = 0; seed < 1; seed++) {
             drawmap(seed)
         }*/
