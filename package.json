@@ -15,7 +15,6 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@types/noisejs": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -52,5 +51,8 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
+  ]
+}
+
   ]
 }
