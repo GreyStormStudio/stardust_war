@@ -14,18 +14,25 @@ export class building{
     
 }
 
-export class ConstellationBuildings{
+export class ConstellationBuildings{//星域建筑:自动采集器(矿物),光伏电池(能量)
     constructor(
         public Buildings能量:number,
         public Buildings能量最大:number,
-        public rate能量:number,
-        public Buildings矿物:number,
-        public Buildings矿物最大:number,
-        public rate矿物:number,
+        public rate能量:number=1,
+        public Buildings矿物:{low:number,mid:number,high:number},
+        public Buildings矿物最大:{low:number,mid:number,high:number},
+        public rate矿物:number=1,
+        public resource产出:rescources[]=[{type:'energy',number:this.Buildings能量*this.rate能量},{type:'mineral',number:this.Buildings矿物.low*this.rate矿物+this.Buildings矿物.mid*this.rate矿物+this.Buildings矿物.high*this.rate矿物}]
         //金属的限制貌似不在这里
         // public Buildings金属:number,
         // public Buildings金属最大:number,
         // public rate金属:number
+    ){}
+}
+
+export class ColonyBuildings{
+    constructor(
+        public maxBuilding:number
     ){}
 }
 

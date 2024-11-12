@@ -49,7 +49,10 @@ function drawmap(seed:number){
         }
     }
     //console.log(grayscalemap)
-    console.log(`星域种子:${seed}\n星域统计:空白地块:${tj[0]}块,低产地块:${tj[1]}块,中产地块:${tj[2]}块,高产地块:${tj[3]}块\n预计产出:${tj[1]+tj[2]*2+tj[3]*4}矿物/时刻,${tj[0]*0.5}能量/时刻`)
+    //for (let lv = 0; lv < 700; lv++) {
+    let lv = 0;
+        console.log(`星域种子:${seed}\n星域统计:空白地块:${tj[0]}块,低产地块:${tj[1]}块,中产地块:${tj[2]}块,高产地块:${tj[3]}块\n预计产出:${tj[1]*(1.05**lv)+tj[2]*2*(1.05**lv)+tj[3]*4*(1.05**lv)}矿物/时刻,${tj[0]*0.5*(1.05**lv)}能量/时刻`)        
+    //}
 }
 export default defineComponent({
     setup(){
