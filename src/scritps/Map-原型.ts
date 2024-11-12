@@ -1,4 +1,4 @@
-import { Application,Graphics } from "pixi.js";
+import { Application,Graphics,Text } from "pixi.js";
 import {GenerateMap} from './快捷函数/CreateMap'
 import { defineComponent } from "vue";
 
@@ -11,13 +11,21 @@ const edge = 128
 
 const app = new Application();
 await app.init({
-    width:edge+10,
+    width:edge*2,
     height:edge,
     backgroundColor:'0xFFF0F0'
 });
 document.body.appendChild(app.canvas)
 let obj1 = new Graphics();
-
+// app.ticker.maxFPS=120
+let text = new Text({text:'FPS:0',style:{fill:0x000000}})
+app.stage.addChild(text)
+text.x=128
+text.y=50
+app.ticker.add((time)=>{
+    // text.text = `FPS: ${Math.round(app.ticker.FPS)}`;
+    text.text = `time: ${time.deltaTime}`;
+})
 function drawmap(seed:number){
     const generater = new GenerateMap(seed,edge)
     const map = generater.GenerateNoiseMap()

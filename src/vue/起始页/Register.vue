@@ -1,5 +1,5 @@
 <template>
-    <div class="register">
+    <div class="register2">
         <!-- <h1>这是注册页</h1> -->
         用户名:<input id="username" type="text">
         账号:<input id="account" type="text">
@@ -12,7 +12,14 @@
     </div>
 </template>
 <style>
-.register{
+
+.register2{
+    margin: auto;
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap:10px;

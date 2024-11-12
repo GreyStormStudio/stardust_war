@@ -8,7 +8,7 @@ export class building{
     constructor(
         public name:string,//名称
         public cost:rescources[],//建造消耗的资源
-        public consume:rescources,//产出目标资源所消耗的资源
+        public consume:rescources[],//产出目标资源所消耗的资源
         public production:rescources//产出目标资源
     ){}
     
@@ -22,7 +22,7 @@ export class ConstellationBuildings{//星域建筑:自动采集器(矿物),光�
         public Buildings矿物:{low:number,mid:number,high:number},
         public Buildings矿物最大:{low:number,mid:number,high:number},
         public rate矿物:number=1,
-        public resource产出:rescources[]=[{type:'energy',number:this.Buildings能量*this.rate能量},{type:'mineral',number:this.Buildings矿物.low*this.rate矿物+this.Buildings矿物.mid*this.rate矿物+this.Buildings矿物.high*this.rate矿物}]
+        //public resource产出:rescources[]=[{type:'energy',number:this.Buildings能量*this.rate能量},{type:'mineral',number:this.Buildings矿物.low*this.rate矿物+this.Buildings矿物.mid*this.rate矿物+this.Buildings矿物.high*this.rate矿物}]
         //金属的限制貌似不在这里
         // public Buildings金属:number,
         // public Buildings金属最大:number,
