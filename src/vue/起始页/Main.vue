@@ -12,15 +12,14 @@
                 <div class="form-group">
                     <button type='button' class="btn" style="width:100px;">登录</button>
                     <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br/>
-                    <router-link to="/forget"><span class="forget">忘记密码?</span></router-link><router-link to="/game">进入游戏</router-link>
+                    <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
+                    <router-link to="/game">进入游戏</router-link>
                 </div>
             </form>
         </div>
     </div>
 </template>
 <script>
-import {router} from '@/router';
-
 export default {
     methods:{
         go_register(){
