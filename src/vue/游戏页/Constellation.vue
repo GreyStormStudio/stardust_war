@@ -1,6 +1,6 @@
 <template>
 </template>
-<script src="../../scritps/ShowMap.ts"></script>
+<script src="../../scritps/ShowConstellationMap.js"></script>
 <style>
 .content{
     overflow: hidden;
