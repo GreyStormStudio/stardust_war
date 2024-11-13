@@ -1,3 +1,8 @@
 <template>
-    <p>你看你马呢</p>
 </template>
+<script src="../../scritps/ShowMap.ts"></script>
+<style>
+.content{
+    overflow: hidden;
+}
+</style>

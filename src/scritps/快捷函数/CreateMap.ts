@@ -30,24 +30,24 @@ export class GenerateMap{
         return grayscalemap
     }
 
-    GenerateResourceMap(map:Float32Array){//将上面的灰度图转为资源地图0空1低2中3高
+    GenerateResourceMap(map:Float32Array,iscolor:boolean){//将上面的灰度图转为资源地图0空1低2中3高
         let resourcemap = new Float32Array(this.edge*this.edge)
         const type={empty:100,low:85,mid:65,high:256}
         for (let n = 0; n < this.edge*this.edge; n++) {
             if(map[n]>type.empty){
-                resourcemap[n]=0
+                resourcemap[n]= iscolor?0xFFFFFF:0
             }
             else if(map[n]>type.low){
-                resourcemap[n]=1
+                resourcemap[n]= iscolor?0x00FF00:1
             }
             else if(map[n]>type.mid){
-                resourcemap[n]=2
+                resourcemap[n]= iscolor?0x0000FF:2
             }
             else{
-                resourcemap[n]=3
+                resourcemap[n]= iscolor?0xFF0000:3
             }
         }
         return resourcemap
     }
-    
+
 }
