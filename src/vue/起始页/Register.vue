@@ -16,6 +16,9 @@
                     <input type="email" name="email" placeholder="电子邮件" class="form-control">
                 </div>
                 <div class="form-group">
+                    <input type="text" name="emailCode" placeholder="验证码" class="form-control">
+                </div>
+                <div class="form-group">
                     <button type='button' class="btn" style="width:100px;">注册</button><br/>
                     <router-link to="/"><span class="forget">已有账号? 登录</span></router-link>
                     <router-link to="/game">进入游戏</router-link>
@@ -24,15 +27,6 @@
         </div>
     </div>
 </template>
-
-export default {
-    methods:{
-        go_register(){
-            this.$router.push('/register')
-        }
-    }
-}
-
 <style scoped>
 body, html {
     margin: 0;

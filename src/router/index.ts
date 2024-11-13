@@ -1,23 +1,31 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import MainView from '../vue/起始页/Main.vue'
+import Empty from '../App.vue'
+
+import LoginView from '../vue/起始页/Login.vue'
 import RegisterView from '../vue/起始页/Register.vue'
-import GameMainView from '../vue/游戏页/GameMain.vue'
+
+import GameView from '../vue/游戏页/GameBase.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path:'/',
-    name:'start',
-    component:MainView
+    name:'',
+    component:Empty
+  },
+  {
+    path:'/login',
+    name:'Login',
+    component:LoginView
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component:RegisterView
   },
   {
     path: '/game',
-    name: 'game',
-    component:GameMainView
+    name: 'Game',
+    component:GameView
   },
 ]
 
