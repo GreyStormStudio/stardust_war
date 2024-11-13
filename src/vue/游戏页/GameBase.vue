@@ -3,7 +3,10 @@
         <div class="navbar">
             <div class="nav-item" @click="navigateTo('Universe')" :class="{ active: currentSection === 'Universe' }">宇宙</div>
             <div class="nav-item" @click="navigateTo('Constellation')" :class="{ active: currentSection === 'Constellation' }">星域</div>
+            <div class="nav-item" @click="navigateTo('Technology')" :class="{ active: currentSection === 'Technology' }">科技</div>
+            <div class="nav-item" @click="navigateTo('Bonus')" :class="{ active: currentSection === 'Bonus' }">加成</div>
             <div class="nav-item" @click="navigateTo('Rank')" :class="{ active: currentSection === 'Rank' }">排行</div>
+            <div class="nav-item player-id" @click="navigateToPlayerInfo">{{ playerId }}</div>
         </div>
         <div class="content">
            <router-view/>
@@ -16,13 +19,33 @@ export default {
     name: 'Game',
     data() {
         return {
-            currentSection: '' // 用于存储当前激活的导航项
+            currentSection: '', // 用于存储当前激活的导航项
+            playerId: 'Admin' // 示例玩家ID
         };
     },
     methods: {
         navigateTo(section) {
             this.currentSection = section;
             console.log(`Navigating to ${section}`);
+            if(section=='Universe'){
+                this.$router.push('/universe')
+            }
+            if(section=='Constellation'){
+                this.$router.push('/constellation')
+            }
+            if(section=='Technology'){
+                this.$router.push('/technology')
+            }
+            if(section=='Bonus'){
+                this.$router.push('/bonus')
+            }
+            if(section=='Rank'){
+                this.$router.push('/rank')
+            }
+        },
+        navigateToPlayerInfo() {
+            console.log(`Navigating to Player Info for ${this.playerId}`);
+            // 这里可以添加实际的玩家信息跳转逻辑
         }
     }
 };
@@ -32,8 +55,8 @@ export default {
 .Game {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 100vw;
+    height: 96vh;
+    width: 98vw;
     border: 5px solid #0ca1e1; /* 设置边框颜色 */
 }
 
@@ -63,5 +86,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.player-id {
+    margin-left: auto; /* 将玩家ID移到最右边 */
 }
 </style>
