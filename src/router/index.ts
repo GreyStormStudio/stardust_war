@@ -3,9 +3,11 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Empty from '../App.vue'
 //登录注册界面
 import LoginView from '../vue/起始页/Login.vue'
+import ForgetView from '@/vue/起始页/Forget.vue'
 import RegisterView from '../vue/起始页/Register.vue'
 //游戏内容界面
 import GameView from '../vue/游戏页/GameBase.vue'
+import UserInfo from '@/vue/游戏页/UserInfo.vue'
 import GameUniverseView from '../vue/游戏页/Universe.vue'
 import GameConstellationView from '../vue/游戏页/Constellation.vue'
 import GameRankView from '../vue/游戏页/Rank.vue'
@@ -29,9 +31,15 @@ const routes: Array<RouteRecordRaw> = [
     component:RegisterView
   },
   {
+    path: '/forget',
+    name: 'forget',
+    component:ForgetView
+  },
+  {
     path: '/game',
     component:GameView,
     children:[
+      {path:'/userinfo',name:'userinfo',component:UserInfo},
       {path:'/universe',name:'universe',component:GameUniverseView},
       {path:'/constellation',name:'constellation',component:GameConstellationView},
       {path:'/technology',name:'technology',component:GameTechnologyView},

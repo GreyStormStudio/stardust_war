@@ -44,6 +44,7 @@ export default {
             }
         },
         navigateToPlayerInfo() {
+            this.$router.push('/userinfo')
             console.log(`Navigating to Player Info for ${this.playerId}`);
             // 这里可以添加实际的玩家信息跳转逻辑
         }
