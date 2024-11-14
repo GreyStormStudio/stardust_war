@@ -38,7 +38,11 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, #0ca1e1, #d785ee);
+    /*background: linear-gradient(to bottom, #0ca1e1, #d785ee);*/
+    background-image: url('/public/背景/bg4.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,6 +55,7 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 h3, .form-group, .register {
     text-align: center;

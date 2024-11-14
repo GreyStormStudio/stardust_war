@@ -35,7 +35,7 @@ export class GenerateMap{
         const type={empty:100,low:85,mid:65,high:256}
         for (let n = 0; n < this.edge*this.edge; n++) {
             if(map[n]>type.empty){
-                resourcemap[n]= iscolor?0xFFFFFF:0
+                resourcemap[n]= iscolor?0xFFFFAF:0
             }
             else if(map[n]>type.low){
                 resourcemap[n]= iscolor?0x00FF00:1
