@@ -85,6 +85,7 @@ function showContextMenu(app:Application,event: MouseEvent) {
 function buildStarFortress(app:Application,event: MouseEvent,x:number,y:number) {
     console.log('建造星域堡垒');
     const sprite = Sprite.from('./战斗单位/text1.png');
+    sprite.pivot=0.5
     sprite.scale = 0.5
     /*sprite.x = event.clientX - sprite.width / 2;
     sprite.y = event.clientY - sprite.height / 2;*/

@@ -9,7 +9,7 @@ export class building{
         public name:string,//名称
         public cost:rescources[],//建造消耗的资源
         public consume:rescources[],//产出目标资源所消耗的资源
-        public production:rescources//产出目标资源
+        public production:rescources[]//产出目标资源
     ){}
     
 }
@@ -64,7 +64,8 @@ export class ship{
     
     constructor(
         //固定值
-        public ship类型:'护卫舰'|'驱逐舰'|'巡洋舰'|'战列舰'|'战争巨像',
+        public ship类型:'护卫舰'|'驱逐舰'|'巡洋舰'|'战列舰'|'星域堡垒',
+        public ship舰容:1|2|4|8|16,
         public ship武器:weapon[],
         public shipuuid:number,
         //经常变的值
