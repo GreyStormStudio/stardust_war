@@ -18,7 +18,6 @@ function createMap(app: Application, seed: number, scale: number) {
 
 async function initApp() {
     const app = new Application();
-    
     const container = document.querySelector('.map') as HTMLElement;
     await app.init({
         width: container.clientWidth,

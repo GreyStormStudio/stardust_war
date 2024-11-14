@@ -3,13 +3,18 @@ export interface rescources{
     type:'energy'|'mineral'|'metal'
     number:number
 }
-
+/**
+ * @param name:string 建筑名称
+ * @param const:resources[] 建造消耗的资源
+ * @param consume:rescources[] 产出目标资源所消耗的原料
+ * @param production:rescources[] 产出的目标资源
+ */
 export class building{
     constructor(
-        public name:string,//名称
-        public cost:rescources[],//建造消耗的资源
-        public consume:rescources[],//产出目标资源所消耗的资源
-        public production:rescources[]//产出目标资源
+        public name:string,
+        public cost:rescources[],
+        public consume:rescources[],
+        public production:rescources[]
     ){}
     
 }
