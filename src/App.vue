@@ -5,9 +5,6 @@
 </style>
 <script>
 export default {
-  setup(){
-    document.title='StardustWar'
-  },
   created() {
     // 检测账号是否已经登录,如果没有登录则跳转到/login,反之跳转到/game
     if (this.$route.path === '/') {
