@@ -2,16 +2,18 @@ import { Application,Assets,Graphics,Sprite,Texture } from "pixi.js";//图形处
 import { cacheManager } from "./CacheManager";
 import { DefineComponent } from "vue";//vue类
 import { mapState, mapActions } from 'vuex';//数据存取
+import {AbstractLevel} from 'abstract-level'
+import db from'./db/db'
 import { GenerateMap } from "./快捷函数/CreateMap";//地图生成
 
-const app=new Application()
-
+const app = new Application()
 async function init(seed:number,edge:number=128) {
     const map = new GenerateMap(seed,edge)
     const map1=map.GenerateNoiseMap()
     const map2=map.GenerateGrayscaleMap(map1)
     const map3 = map.GenerateResourceMap(map2,true)
     const container = document.querySelector('.map') as HTMLElement;//获取父容器对象
+    console.log(db.get('田所浩二'))
     await app.init({
         width:container.clientWidth,
         height:container.clientHeight,

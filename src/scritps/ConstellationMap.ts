@@ -1,6 +1,7 @@
 import { Application, Sprite, Assets, Graphics } from "pixi.js";
 import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent } from "vue";
+import db from'./db/db'
 
 function createMap(app: Application, seed: number, scale: number) {
     let gcs = new Graphics();
@@ -137,6 +138,8 @@ async function showMap() {
 
 export default defineComponent({
     mounted() {
+        //db.put('key','114514')
+        db.get('田所浩二').then((value)=>console.log(value))
         showMap();
     },
     beforeUnmount() {
