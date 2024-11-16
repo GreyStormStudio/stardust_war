@@ -2,15 +2,15 @@
     <div class="background">
         <div class="window">
             <h3>Stardust War|星尘战争</h3>
-            <form action="">
+            <form @submit.prevent="LoginUser">
                 <div class="form-group">
-                    <input type="text" name="username" placeholder="用户名" class="form-control">
+                    <input type="text" name="username" placeholder="用户名" class="form-control" v-model="username">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" placeholder="密码" class="form-control">
+                    <input type="password" name="password" placeholder="密码" class="form-control" v-model="password">
                 </div>
                 <div class="form-group">
-                    <button type='button' class="btn" style="width:100px;">登录</button>
+                    <button type='submit' class="btn" style="width:100px;">登录</button>
                     <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br/>
                     <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
                     <router-link to="/game">进入游戏</router-link>
@@ -20,8 +20,25 @@
     </div>
 </template>
 <script>
+import { getData } from '@/scritps/db/db';
+
 export default {
+    data() {
+        return {
+            username: '',
+            password: ''
+        };
+    },
     methods:{
+        async LoginUser(){
+            const value = await getData(this.username)
+            if(value.password==this.password){
+                this.$router.push('/game')
+            }
+            else{
+                alert('用户名或密码错误!')
+            }
+        },
         go_register(){
             this.$router.push('/register')
         }

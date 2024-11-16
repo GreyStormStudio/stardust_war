@@ -5,10 +5,25 @@
 </style>
 <script>
 export default {
+  setup(){
+    document.title='StardustWar'
+  },
   created() {
-    //跳过了账号登录状态检测,直接跳转到登录页
-    if (this.$route.path == '/') {
-      this.$router.push('/login');
+    // 检测账号是否已经登录,如果没有登录则跳转到/login,反之跳转到/game
+    if (this.$route.path === '/') {
+      const isLoggedIn = this.checkLoginStatus(); // 假设有一个方法来检查登录状态
+      console.log(isLoggedIn)
+      if (!isLoggedIn) {
+        this.$router.push('/login');
+      } else {
+        this.$router.push('/game');
+      }
+    }
+  },
+  methods: {
+    checkLoginStatus() {
+      const isLoggedIn=true//测试
+      return isLoggedIn;
     }
   }
 }

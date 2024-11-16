@@ -138,8 +138,9 @@ async function showMap() {
 
 export default defineComponent({
     mounted() {
-        //db.put('key','114514')
-        db.get('田所浩二').then((value)=>console.log(value))
+        try{db.get('李田所').then((value)=>console.log(value))}
+        catch(e){console.log(e)}
+        finally{}
         showMap();
     },
     beforeUnmount() {
