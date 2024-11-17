@@ -1,3 +1,4 @@
+import { Sprite } from "pixi.js"
 import { distance } from "../快捷函数/math"
 export interface rescources{
     type:'energy'|'mineral'|'metal'
@@ -71,8 +72,9 @@ export class ship{
         //固定值
         public ship类型:'护卫舰'|'驱逐舰'|'巡洋舰'|'战列舰'|'星域堡垒',
         public ship舰容:1|2|4|8|16,
-        public ship武器:weapon[],
+        public ship武器:weapon|null,
         public shipuuid:number,
+        public shipsprite:Sprite,
         //经常变的值
         public ship护盾:number,
         public ship装甲:number,
@@ -107,15 +109,20 @@ export class ship{
     
     attack敌舰(hostileship:ship){//攻击敌方逻辑(先移动到最大射程内)
         if(distance(hostileship.ship坐标,this.ship坐标)>this.ship最大射程){
-            this.move位置(hostileship.ship坐标)
-            return -1
+            if(this.ship移速>0){
+                this.move位置(hostileship.ship坐标)
+            }
+            return
         }
         let damages:{h1:number,h2:number,h3:number}={h1:hostileship.ship护盾,h2:hostileship.ship装甲,h3:hostileship.ship生命}
         this.CausingDamage(hostileship)
         damages.h1-=hostileship.ship护盾
         damages.h2-=hostileship.ship装甲
         damages.h3-=hostileship.ship生命
-        console.log(`你的舰船对敌方舰船的护盾造成了:${damages.h1}点伤害,对装甲造成了:${damages.h2},对船体造成:${damages.h3}`)
+        //console.log(`你的舰船对敌方舰船的护盾造成了:${damages.h1}点伤害,对装甲造成了:${damages.h2},对船体造成:${damages.h3}`)
+        if(hostileship.ship生命<=0){
+            console.log('击毁敌舰')
+        }
 
     }
 
@@ -138,15 +145,14 @@ export class ship{
     }
 
     private CausingDamage(hostileship:ship){//对敌方舰船造成伤害
-        this.ship武器.forEach(wp=>{
-            if(wp.weapon冷却==0){
-                let 命中 = this.命中(wp.weapon命中率,hostileship.ship闪避率)
+            if(this.ship武器&&this.ship武器.weapon冷却==0){
+                let 命中 = this.命中(this.ship武器.weapon命中率,hostileship.ship闪避率)
                 //处理对存在时护盾的伤害
                 if(hostileship.ship护盾>0){
-                    if(wp.weapon类型=='动能武器'){//如果是动能武器打护盾则直接跳过，反正不造成伤害
+                    if(this.ship武器.weapon类型=='动能武器'){//如果是动能武器打护盾则直接跳过，反正不造成伤害
                         return
                     }
-                    hostileship.ship护盾-=wp.weapon伤害*wp.weapon伤害倍率*命中
+                    hostileship.ship护盾-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中
                     if(hostileship.ship护盾<0){//护盾的溢出伤害的50%直接施加到船体上
                         hostileship.ship生命+=hostileship.ship护盾*0.5
                         hostileship.ship护盾=0
@@ -155,20 +161,19 @@ export class ship{
                 //处理只存在装甲的伤害
                 else if(hostileship.ship装甲>0){
                     
-                    if(wp.weapon类型=='能量武器'){
-                        hostileship.ship装甲-=wp.weapon伤害*wp.weapon伤害倍率*命中*0.25
-                        hostileship.ship生命-=wp.weapon伤害*wp.weapon伤害倍率*命中*0.25
+                    if(this.ship武器.weapon类型=='能量武器'){
+                        hostileship.ship装甲-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中*0.25
+                        hostileship.ship生命-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中*0.25
                     }
                     else{
-                        hostileship.ship装甲-=wp.weapon伤害*wp.weapon伤害倍率*命中*1.25
+                        hostileship.ship装甲-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中*1.25
                     }
                 }
                 //处理没有防护的伤害
                 else{
-                    hostileship.ship生命-=wp.weapon伤害*wp.weapon伤害倍率*this.命中(wp.weapon命中率,hostileship.ship闪避率,0.1)
+                    hostileship.ship生命-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*this.命中(this.ship武器.weapon命中率,hostileship.ship闪避率,0.1)
                 }
             }
-        })
     }
 
 }

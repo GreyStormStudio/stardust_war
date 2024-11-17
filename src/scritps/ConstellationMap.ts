@@ -9,8 +9,8 @@ function createMap(app: Application, seed: number, scale: number) {
     const map2 = map.GenerateGrayscaleMap(map1);
     const map3 = map.GenerateResourceMap(map2, true);
     for (let n = 0; n < map3.length; n++) { // x+edge*y=n n%edge
-        gcs.fill(map3[n]);
         gcs.rect(n % 128 * scale, Math.floor(n / 128) * scale, scale, scale);
+        gcs.fill(map3[n]);
     }
     app.stage.addChild(gcs);
     return gcs;
@@ -95,7 +95,7 @@ function buildStarFortress(app:Application,event: MouseEvent,x:number,y:number) 
 
 async function showMap() {
     const app = await initApp();
-    const gcs = createMap(app, 1145141919810, 16);
+    const gcs = createMap(app, 1145141919810, 4);
 
     let isDragging = false;
     let dragStartX = 0;
