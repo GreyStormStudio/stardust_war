@@ -50,43 +50,10 @@ function buildStarFortress(app:Application,event: MouseEvent,x:number,y:number) 
 
 async function showMap() {
     const app = await initApp();
-    const gcs = createMap(app, 1145141919810, 16);
+    const h = (document.querySelector('.map') as HTMLElement).clientHeight;
+    const scale = h/31
 
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let lastMouseX = 0;
-    let lastMouseY = 0;
-
-    app.canvas.addEventListener('mousedown', (event) => {
-        if (event.button === 0) {
-            isDragging = true;
-            dragStartX = event.clientX - gcs.x;
-            dragStartY = event.clientY - gcs.y;
-        }
-    });
-
-    app.canvas.addEventListener('mousemove', (event) => {
-        if (isDragging) {
-            const dx = event.clientX - dragStartX;
-            const dy = event.clientY - dragStartY;
-            gcs.x = Math.min(Math.max(dx, app.screen.width - gcs.width), 0);
-            gcs.y = Math.min(Math.max(dy, app.screen.height - gcs.height), 0);
-        } else {
-            lastMouseX = event.clientX;
-            lastMouseY = event.clientY;
-        }
-    });
-
-    app.canvas.addEventListener('mouseup', (event) => {
-        if (event.button === 0) { // Left mouse button
-            isDragging = false;
-        }
-    });
-
-    app.canvas.addEventListener('contextmenu',(event)=>{
-        event.preventDefault();
-    })
+    const gcs = createMap(app, 1145141919810, scale);
 }
 
 export default defineComponent({
