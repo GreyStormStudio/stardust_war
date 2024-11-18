@@ -58,10 +58,8 @@ export class weapon{
         public weapon名称:string,
         public weapon伤害:number,
         public weapon伤害倍率:number=1,
-        public weapon射程:number,
-        public weapon射速:number,
+        public weapon射击间隔:number=5,
         public weapon命中率:number,
-        public weapon冷却:number=1,
         public CD:number=0//武器内置冷却标志
     ) {}
 
@@ -72,7 +70,7 @@ export class ship{
     constructor(
         //固定值
         public ship类型:'护卫舰'|'驱逐舰'|'巡洋舰'|'战列舰'|'星域堡垒',
-        public ship舰容:1|2|4|8|16,
+        public ship舰容:1|2|4|8,//特殊值 代表宽度和伤害直接乘数
         public ship武器:weapon|null,
         public shipuuid:number,
         public shipsprite:Sprite,
@@ -81,9 +79,8 @@ export class ship{
         public ship装甲:number,
         public ship生命:number,
         //偶尔变的值
-        public ship射程乘数:number = 1,
+        public ship射程:2|3|4|5,//护卫舰射程2，驱逐舰射程3，巡洋舰射程4，战列舰射程5，星域堡垒单独战斗,全覆盖射程需求为3
         public ship闪避率:number,
-        public ship移速:number,
     ){}
 
     private 命中(命中率:number,闪避率:number,最低闪避系数=0.05){//随机数生成武器是否命中敌方舰船
@@ -91,7 +88,8 @@ export class ship{
     }
 
     private CausingDamage(hostileship:ship){//对敌方舰船造成伤害
-            if(this.ship武器&&this.ship武器.weapon冷却==0){
+            if(this.ship武器&&this.ship武器.CD==0){
+                this.ship武器.CD=this.ship武器.weapon射击间隔;//先设置冷却
                 let 命中 = this.命中(this.ship武器.weapon命中率,hostileship.ship闪避率)
                 //处理对存在时护盾的伤害
                 if(hostileship.ship护盾>0){
@@ -106,7 +104,6 @@ export class ship{
                 }
                 //处理只存在装甲的伤害
                 else if(hostileship.ship装甲>0){
-                    
                     if(this.ship武器.weapon类型=='能量武器'){
                         hostileship.ship装甲-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中*0.25
                         hostileship.ship生命-=this.ship武器.weapon伤害*this.ship武器.weapon伤害倍率*命中*0.25

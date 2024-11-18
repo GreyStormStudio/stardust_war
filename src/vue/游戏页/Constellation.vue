@@ -7,7 +7,7 @@
         <p>建筑产出</p>
     </div>
 </template>
-<script src="../../scritps/ConstellationMap-new.ts"></script>
+<script src="../../scritps/ConstellationMap.ts"></script>
 <style>
 body{
     user-select:none;
