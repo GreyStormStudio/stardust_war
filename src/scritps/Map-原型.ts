@@ -7,7 +7,7 @@ import { defineComponent } from "vue";
 //实际拿星区的坐标x,y来生成种子
 
 const seed = 114514
-const edge = 128
+const edge = 31
 
 const app = new Application();
 await app.init({

@@ -12,10 +12,6 @@
 body{
     user-select:none;
 }
-ul{
-    margin: auto;
-    list-style: none;
-}
 .content {
     display: flex;
 }
@@ -29,5 +25,5 @@ ul{
     aspect-ratio: 1 / 1; /* 宽度等于父容器的高度（正方形） */
     background-color: lightblue; /* 背景颜色，可以根据需要调整 */
     overflow: hidden;
-}
+    }
 </style>

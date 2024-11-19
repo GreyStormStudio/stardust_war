@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     checkLoginStatus() {
-      const isLoggedIn=true//测试
+      const isLoggedIn=false//测试
       return isLoggedIn;
     }
   }

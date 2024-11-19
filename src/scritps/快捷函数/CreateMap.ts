@@ -33,21 +33,28 @@ export class GenerateMap{
     GenerateResourceMap(map:Float32Array,iscolor:boolean){//将上面的灰度图转为资源地图0空1低2中3高
         let resourcemap = new Float32Array(this.edge*this.edge)
         const type={empty:100,low:85,mid:65,high:256}
+        let resources:number[] = [0,0,0,0]
         for (let n = 0; n < this.edge*this.edge; n++) {
             if(map[n]>type.empty){
                 resourcemap[n]= iscolor?0xFFFFAF:0
+                resources[0]++
             }
             else if(map[n]>type.low){
                 resourcemap[n]= iscolor?0x00FF00:1
+                resources[1]++
             }
             else if(map[n]>type.mid){
                 resourcemap[n]= iscolor?0x0000FF:2
+                resources[2]++
             }
             else{
                 resourcemap[n]= iscolor?0xFF0000:3
+                resources[3]++
             }
         }
-        return resourcemap
+        const nums = [2,4,8,16] //2能量/空白地块,4、8、16矿物/资源地块
+        console.log(`产出能量${resources[0]*nums[0]},产出矿物${resources[1]*nums[1]+resources[2]*nums[2]+resources[3]*nums[3]}`)
+        return {map:resourcemap,res:resources}
     }
 
 }
