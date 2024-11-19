@@ -1,5 +1,4 @@
 import { Level } from "level";
-import { PlayerData } from "./model/models";
 
 const db = new Level('db');
 /*const keys = db.get('Fredrick_LX',(err,value)=>{
@@ -27,18 +26,24 @@ function deserialize<T>(data: string): T {
 }
 
 // 插入数据
-async function putData(key: string, data:any): Promise<void> {
-    const serializedData = serialize(data);
-    await db.put(key, serializedData);
+async function putData(key: string, data:any): Promise<any> {
+    try{
+        const serializedData = serialize(data);
+        await db.put(key, serializedData);
+        return true
+    } catch(err) {
+        console.error("Error", err)
+        return false
+    }
 }
 
 // 获取数据
-async function getData(key: string): Promise<any | null> {
+async function getData(key: string): Promise<any> {
     try {
         const data = await db.get(key);
         return deserialize<any>(data);
     } catch (err) {
-        console.error("Error retrieving data:", err);
+        console.error("Error", err);
         return null;
     }
 }

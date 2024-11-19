@@ -2,7 +2,7 @@ import { Application, Sprite, Assets, Graphics,Text,Texture } from "pixi.js";
 import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent } from "vue";
 import { getData,putData } from "./db/db";
-
+import store from "@/store";
 const edge = 31
 
 function createMap(app: Application, seed: number, scale: number) {

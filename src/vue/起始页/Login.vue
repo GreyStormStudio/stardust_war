@@ -21,7 +21,7 @@
 </template>
 <script>
 import { getData } from '@/scritps/db/db';
-
+import store from '@/store';
 export default {
     data() {
         return {
@@ -32,7 +32,8 @@ export default {
     methods:{
         async LoginUser(){
             const value = await getData(this.username)
-            if(value.password==this.password){
+            if(value.password==this.password||value==null){
+                this.$store.dispatch('updatePlayerName', this.username);
                 this.$router.push('/game')
             }
             else{

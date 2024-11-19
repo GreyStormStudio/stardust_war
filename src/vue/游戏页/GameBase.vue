@@ -6,7 +6,7 @@
             <div class="nav-item" @click="navigateTo('Technology')" :class="{ active: currentSection === 'Technology' }">科技</div>
             <div class="nav-item" @click="navigateTo('Bonus')" :class="{ active: currentSection === 'Bonus' }">加成</div>
             <div class="nav-item" @click="navigateTo('Rank')" :class="{ active: currentSection === 'Rank' }">排行</div>
-            <div class="nav-item player-id" @click="navigateToPlayerInfo">{{ playerId }}</div>
+            <div class="nav-item player-id" @click="navigateToPlayerInfo">{{ playerName }}</div>
         </div>
         <div class="content">
            <router-view/>
@@ -15,13 +15,19 @@
 </template>
 
 <script>
+import store from "@/store"
 export default {
+    
     name: 'Game',
     data() {
         return {
             currentSection: '', // 用于存储当前激活的导航项
-            playerId: 'Admin' // 示例玩家ID
         };
+    },
+    computed:{
+        playerName(){
+            return this.$store.getters.playerName
+        }
     },
     methods: {
         navigateTo(section) {
