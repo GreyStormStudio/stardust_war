@@ -59,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+body, html {
+    margin: 0;
+    height: 100%;
+}
 .Game {
     display: flex;
     flex-direction: column;

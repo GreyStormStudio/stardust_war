@@ -1,10 +1,9 @@
 <template>
-    <div id="app">
-      <h1>排名界面</h1>
+    <div class="app-background">
       <table>
         <thead>
           <tr>
-            <th>名字</th>
+            <th>玩家</th>
             <th>科技</th>
             <th>舰队</th>
             <th>领地</th>
@@ -20,7 +19,7 @@
         </tbody>
       </table>
     </div>
-  </template>
+</template>
   
   <script lang="ts">
   import { defineComponent, ref } from 'vue';
@@ -48,15 +47,29 @@
   });
   </script>
   
-  <style scoped>
+<style scoped>
+.app-background {
+  top:0;left: 0;  
+  background-image: url('/public/背景/bg5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  }
   table {
-    width: 100%;
+    background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));
+    width: 800px;
+    margin: auto;
+    height: auto;
     border-collapse: collapse;
   }
   th, td {
     border: 1px solid #ccc;
     padding: 8px;
-    text-align: left;
+    text-align: center;
   }
   th {
     cursor: pointer;

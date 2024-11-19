@@ -48,7 +48,7 @@ body, html {
     align-items: center;
 }
 .window {
-    width: 90%;
+    /*width: 90%;*/
     max-width: 400px; /* 限制最大宽度 */
     height: auto;
     background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));

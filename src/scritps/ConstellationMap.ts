@@ -3,6 +3,7 @@ import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent } from "vue";
 import { getData,putData } from "./db/db";
 import store from "@/store";
+import { loadAssets } from "./类/实例化类";
 const edge = 31
 
 function createMap(app: Application, seed: number, scale: number) {
@@ -21,7 +22,6 @@ function createMap(app: Application, seed: number, scale: number) {
 
 async function initApp() {
     const app = new Application();
-    
     const container = document.querySelector('.map') as HTMLElement;
     await app.init({
         width: container.clientWidth,
