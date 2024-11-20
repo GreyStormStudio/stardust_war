@@ -1,6 +1,7 @@
 import { Level } from "level";
 
 const db = new Level('db');
+//db.clear()
 /*const keys = db.get('Fredrick_LX',(err,value)=>{
     if (err) {
         console.error('Error retrieving value:', err);
@@ -43,10 +44,33 @@ async function getData(key: string): Promise<any> {
         const data = await db.get(key);
         return deserialize<any>(data);
     } catch (err) {
-        console.error("Error", err);
+        //console.error("Error", err);
         return null;
     }
 }
 
+//更新数据
+async function updateData(key: string, partialData: any, mergeFunction?: (oldData: any, newData: any) => any): Promise<any> {
+    try {
+        // 获取当前数据
+        const currentData = await getData(key);
+        if (currentData === null) {
+            // 如果当前数据不存在，则无法更新，可以抛出错误或返回false
+            throw new Error(`No data found for key: ${key}`);
+        }
+
+        // 使用提供的合并函数或默认合并逻辑来合并数据
+        const mergedData = mergeFunction ? mergeFunction(currentData, partialData) : { ...currentData, ...partialData };
+
+        // 序列化合并后的数据并存储
+        const serializedData = serialize(mergedData);
+        await db.put(key, serializedData);
+        return true;
+    } catch (err) {
+        console.error("Error updating data:", err);
+        return false;
+    }
+}
+
 export default db;
-export { putData, getData };
+export { putData, getData,updateData };

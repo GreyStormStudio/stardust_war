@@ -21,7 +21,7 @@
     </div>
 </template>
   
-  <script lang="ts">
+  <!-- <script lang="ts">
   import { defineComponent, ref } from 'vue';
   
   interface RankingItem {
@@ -45,7 +45,36 @@
       };
     },
   });
-  </script>
+  </script> -->
+
+  <script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue';
+import { getData } from '@/scritps/db/db';// 假设这是你从数据库获取数据的函数
+
+interface RankingItem {
+  id: number;
+  name: string;
+  tech: number;
+  fleet: number;
+  territory: number;
+}
+
+export default defineComponent({
+  name: 'Ranking',
+  setup() {
+    const sortedList = ref<RankingItem[]>([]);
+
+    // 在组件挂载后获取数据
+    onMounted(() => {
+      
+    });
+
+    return {
+      sortedList
+    };
+  },
+});
+</script>
   
 <style scoped>
 .app-background {

@@ -21,6 +21,7 @@
 </template>
 <script>
 import { getData } from '@/scritps/db/db';
+import { ReadData } from '@/scritps/快捷函数/InitorReadData';
 import store from '@/store';
 export default {
     data() {
@@ -32,13 +33,15 @@ export default {
     methods:{
         async LoginUser(){
             const value = await getData(this.username)
-            if(value.password==this.password||value==null){
-                this.$store.dispatch('updatePlayerName', this.username);
+            if(value!=null&&value.password==this.password){
+                this.$store.dispatch('setPlayerName', this.username);
+                await ReadData(this.username)
                 this.$router.push('/game')
             }
             else{
                 alert('用户名或密码错误!')
             }
+            
         },
         go_register(){
             this.$router.push('/register')

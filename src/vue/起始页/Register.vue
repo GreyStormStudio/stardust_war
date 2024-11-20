@@ -81,6 +81,7 @@ h3, .form-group, .register {
 <script>
 import db from '@/scritps/db/db'
 import { putData } from '@/scritps/db/db';
+import { InitData } from '@/scritps/快捷函数/InitorReadData';
 import store from '@/store';
 
 export default {
@@ -133,17 +134,18 @@ export default {
                     return;
                 }
 
-                // 如果上述都符合，则往level数据库db中添加玩家 明文储存测试
-                if(putData(this.username,{password:this.password,email:this.email})){
-                    putData(this.username,{seed:-1,storage:{energy:500,mineral:500},buildings:{energy:1,mineral:{low:1}}})//设置玩家初始数据,种子先不设置,得判断是否已被占用
-                    //把玩家名称添加到vuex储存中,后面要用
-                    this.$store.dispatch('updatePlayerName', this.username);
+                
+                    
+                try{
+                    
+                    this.$store.dispatch('setPlayerName', this.username);//把玩家名称添加到vuex储存中,后面要用
+                    InitData(this.username,this.password,this.email)// 如果上述都符合，则往level数据库db中添加玩家 明文储存测试
                     alert('注册成功,跳转至登录页!');
                     this.$router.push('/Login')
-                }
-                else{
+                }catch(e){
                     alert('发生错误,注册失败!')
                 }
+                    
 
             });
         }

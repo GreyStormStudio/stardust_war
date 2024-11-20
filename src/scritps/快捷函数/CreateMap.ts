@@ -53,8 +53,8 @@ export class GenerateMap{
             }
         }
         const nums = [2,4,8,16] //2能量/空白地块,4、8、16矿物/资源地块
-        console.log(`产出能量${resources[0]*nums[0]},产出矿物${resources[1]*nums[1]+resources[2]*nums[2]+resources[3]*nums[3]}`)
-        return {map:resourcemap,res:resources}
+        //console.log(`产出能量${resources[0]*nums[0]},产出矿物${resources[1]*nums[1]+resources[2]*nums[2]+resources[3]*nums[3]}`)
+        return {map:resourcemap,res:{energy:resources[0],mineral:resources[1]*nums[1]+resources[2]*nums[2]+resources[3]*nums[3]}}
     }
 
 }

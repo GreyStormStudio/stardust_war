@@ -1,11 +1,10 @@
 import { Application, Sprite, Assets, Graphics,Text,Texture } from "pixi.js";
 import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent } from "vue";
-import { getData,putData } from "./db/db";
+import { updateData } from "./db/db";
 import store from "@/store";
-import { loadAssets } from "./类/实例化类";
 const edge = 31
-
+const user = store.getters.playerName
 function createMap(app: Application, seed: number, scale: number) {
     let gcs = new Graphics();
     const map = new GenerateMap(seed, edge);
@@ -51,7 +50,7 @@ async function showMap(seed:number) {
     }*/
     let scaleWindows:number = (document.querySelector('.map') as HTMLElement).clientHeight;
     const scale = scaleWindows/31
-    let rs = [0,0]
+    let rs = {energystore:store.getters.playerEnergyStore,mineralstore:store.getters.playerMineralStore,metalstore:store.getters.playerMetalStore}
     const res = createMap(app, seed, scale);
     const canvas = app.renderer.extract.canvas(app.stage);
     const texture = Texture.from(canvas);
@@ -74,18 +73,22 @@ async function showMap(seed:number) {
         const currentTime = performance.now();
         if (currentTime - lt >= dt) {
             lt = currentTime;
-            rs[0]+=res[0],rs[1]+=res[1]
-            text2.text = `能量储存:${rs[0]}\n矿物储存:${rs[1]}`
+            rs.energystore+=res.energy
+            rs.mineralstore+=res.mineral
+            rs.metalstore=0
+            store.dispatch('updataPlayerStore',rs)
+            updateData(user,{energystore:rs.energystore,mineralstore:rs.mineralstore})
+            text2.text = `能量储存:${rs.energystore}+${res.energy}\n矿物储存:${rs.mineralstore}+${res.mineral}`
         }
     })
 }
 
 export default defineComponent({
     mounted() {
-        const seed = 114514
-        showMap(seed);
+        showMap(store.getters.playerSeed);
     },
     beforeUnmount() {
         (document.querySelector('.map') as HTMLElement).style.display = 'none';
+        
     }
 });
