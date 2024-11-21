@@ -25,14 +25,14 @@ body{
 }*/
 .left, .right {
     height: 100%;
-    flex: 1; /* 占据剩余空间 */
-    background-color: lightgray; /* 背景颜色，可以根据需要调整 */
+    flex: 1;
+    background-color: lightgray;
 }
 .map {
-    flex: 0 0 auto; /* 不占据额外空间，只根据内容大小 */
-    height: 100%; /* 高度等于父容器的高度 */
-    aspect-ratio: 1 / 1; /* 宽度等于父容器的高度（正方形） */
-    background-color: lightblue; /* 背景颜色，可以根据需要调整 */
+    flex: 0 0 auto;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: lightblue;
     overflow: hidden;
     }
 </style>

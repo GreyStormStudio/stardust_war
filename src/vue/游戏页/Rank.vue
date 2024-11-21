@@ -49,7 +49,7 @@
 
   <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
-import { getData } from '@/scritps/db/db';// 假设这是你从数据库获取数据的函数
+import { getData } from '@/scritps/db/db';
 
 interface RankingItem {
   id: number;

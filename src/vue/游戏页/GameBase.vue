@@ -32,7 +32,7 @@ export default {
     methods: {
         navigateTo(section) {
             this.currentSection = section;
-            console.log(`Navigating to ${section}`);
+            //console.log(`Navigating to ${section}`);
             if(section=='Universe'){
                 this.$router.push('/universe')
             }
@@ -51,8 +51,7 @@ export default {
         },
         navigateToPlayerInfo() {
             this.$router.push('/userinfo')
-            console.log(`Navigating to Player Info for ${this.playerId}`);
-            // 这里可以添加实际的玩家信息跳转逻辑
+            //console.log(`Navigating to Player Info for ${this.playerId}`);
         }
     }
 };
