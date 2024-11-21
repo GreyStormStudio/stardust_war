@@ -22,7 +22,7 @@ async function InitData(username:string,password:string,email:string){//注册�
                 mineralbuilding:{low:1,mid:0,high:0},
                 metalbuilding:0}
             }
-    while(1){//修改整个循环,使程序能正常运行,目前报错Entry Not Found
+    while(1){//循环找空星给新用户
         const seed=Math.floor(Math.random()*0x80000000).toString()
         if(await getData(seed)==null&&Number(seed)%64!=0){//找一个没人的星
             datas.seed = Number(seed)
