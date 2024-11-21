@@ -2,7 +2,6 @@ import { Application, Graphics, Text } from "pixi.js";
 import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent, ref, onMounted, onBeforeUnmount } from "vue";
 import { updateData } from "./db/db";
-import db from './db/db'
 import store from "@/store";
 
 const edge = 31;
@@ -41,26 +40,23 @@ export default defineComponent({
         const mineralproduce = ref(0);
         const metalproduce = ref(0);
 
-        const updataResources = () => {
+        const updateResources = () => {
             energystore.value += energyproduce.value;
             mineralstore.value += mineralproduce.value;
             metalstore.value += metalproduce.value;
-            store.dispatch('updataPlayerStore', {
+            store.dispatch('updatePlayerStore', {
                 energystore: energystore.value,
                 mineralstore: mineralstore.value,
                 metalstore: metalstore.value
             });
-        };
-        const uploaddata = () => {
             updateData(user, {
                 energystore: energystore.value,
                 mineralstore: mineralstore.value
             });
-        }
+        };
 
         onMounted(async () => {
             const app = await initApp();
-            
             const scale = app.canvas.height / edge;
             const res = createMap(app, store.getters.playerSeed, scale);
             energyproduce.value = res.energy
@@ -71,23 +67,15 @@ export default defineComponent({
             app.stage.addChild(text1);
             app.stage.addChild(text2);
 
-            let lastUpdateTime = 0;
-            const updateInterval = 1000; // 每秒更新一次资源
-            let lastUploadTime = 0;
-            const uploadInterval = 10000; // 每10秒上传一次数据
-            //app.ticker.maxFPS = 60;
+            let lastTime = 0;
+            const deltaTime = 1000;
+
             app.ticker.add((time) => {
                 text1.text = `FPS: ${app.ticker.FPS.toFixed(0)}`;
                 const currentTime = performance.now();
-
-                if (currentTime - lastUpdateTime >= updateInterval) {
-                    lastUpdateTime = currentTime;
-                    updataResources();
-                }
-
-                if (currentTime - lastUploadTime >= uploadInterval) {
-                    lastUploadTime = currentTime;
-                    uploaddata();
+                if (currentTime - lastTime >= deltaTime) {
+                    lastTime = currentTime;
+                    updateResources();
                 }
             });
         });
@@ -107,7 +95,5 @@ export default defineComponent({
             mineralproduce,
             metalproduce
         };
-    },
-    methods:{
     }
 });

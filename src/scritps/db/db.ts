@@ -2,20 +2,6 @@ import { Level } from "level";
 
 const db = new Level('db');
 //db.clear()
-/*const keys = db.get('Fredrick_LX',(err,value)=>{
-    if (err) {
-        console.error('Error retrieving value:', err);
-    } else if (value === undefined) {
-        console.log('Key does not exist');
-    } else {
-        console.log(value)
-        for (let i = 0; i < value.length; i++) {
-            console.log(value[i])
-        }
-    }
-})
-console.log(keys)*/
-//db.put('李田所','1145141919810')
 // 序列化函数
 function serialize<T>(data: T): string {
     return JSON.stringify(data);

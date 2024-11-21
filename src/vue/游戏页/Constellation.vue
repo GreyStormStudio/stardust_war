@@ -1,10 +1,18 @@
 <template>
     <div class="left">
-        <p>建筑列表</p>
+            <!-- 建筑数量和建造 -->
+        <div class="building-controls">
+            
+        </div>
     </div>
     <div class="map"></div>
     <div class="right">
-        <p>建筑产出</p>
+        <!-- 建筑产出 -->
+        <div class="building-output">
+            <p>能量:{{ energystore }} +{{ energyproduce }}</p>
+            <p>矿物:{{ mineralstore }} +{{ mineralproduce }}</p>
+            <p>金属:{{ metalstore }} +{{ metalproduce }}</p>
+        </div>
     </div>
 </template>
 <script src="../../scritps/ConstellationMap.ts"></script>
@@ -12,10 +20,11 @@
 body{
     user-select:none;
 }
-.content {
+/*.content {
     display: flex;
-}
+}*/
 .left, .right {
+    height: 100%;
     flex: 1; /* 占据剩余空间 */
     background-color: lightgray; /* 背景颜色，可以根据需要调整 */
 }
