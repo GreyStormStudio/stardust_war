@@ -25,7 +25,7 @@ async function initApp() {
     await app.init({
         width: container.clientWidth,
         height: container.clientHeight,
-        
+
     });
     container.appendChild(app.canvas);
     return app;
@@ -61,8 +61,8 @@ export default defineComponent({
             const res = createMap(app, store.getters.playerSeed, scale);
             energyproduce.value = res.energy
             mineralproduce.value = res.mineral
-            const text1 = new Text({text:'FPS:0',style:{fill:0x000000,fontSize: 18}})
-            const text2 = new Text({text:`地图种子:${store.getters.playerSeed}`,style:{fill:0x000000,fontSize: 18}})
+            const text1 = new Text({ text: 'FPS:0', style: { fill: 0x000000, fontSize: 18 } })
+            const text2 = new Text({ text: `地图种子:${store.getters.playerSeed}`, style: { fill: 0x000000, fontSize: 18 } })
             text2.x = text1.width + 60;
             app.stage.addChild(text1);
             app.stage.addChild(text2);

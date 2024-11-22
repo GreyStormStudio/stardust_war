@@ -16,35 +16,35 @@ import GameBonusView from '../vue/游戏页/Bonus.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path:'/',
-    name:'',
-    component:Empty
+    path: '/',
+    name: '',
+    component: Empty
   },
   {
-    path:'/login',
-    name:'Login',
-    component:LoginView
+    path: '/login',
+    name: 'Login',
+    component: LoginView
   },
   {
     path: '/register',
     name: 'Register',
-    component:RegisterView
+    component: RegisterView
   },
   {
     path: '/forget',
     name: 'forget',
-    component:ForgetView
+    component: ForgetView
   },
   {
     path: '/game',
-    component:GameView,
-    children:[
-      {path:'/userinfo',name:'userinfo',component:UserInfo},
-      {path:'/universe',name:'universe',component:GameUniverseView},
-      {path:'/constellation',name:'constellation',component:GameConstellationView},
-      {path:'/technology',name:'technology',component:GameTechnologyView},
-      {path:'/bonus',name:'bonus',component:GameBonusView},
-      {path:'/rank',name:'rank',component:GameRankView},]
+    component: GameView,
+    children: [
+      { path: '/userinfo', name: 'userinfo', component: UserInfo },
+      { path: '/universe', name: 'universe', component: GameUniverseView },
+      { path: '/constellation', name: 'constellation', component: GameConstellationView },
+      { path: '/technology', name: 'technology', component: GameTechnologyView },
+      { path: '/bonus', name: 'bonus', component: GameBonusView },
+      { path: '/rank', name: 'rank', component: GameRankView },]
   },
 ]
 

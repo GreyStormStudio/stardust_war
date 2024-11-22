@@ -10,7 +10,8 @@
                     <input type="password" name="password" placeholder="密码" class="form-control" v-model="password">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="confirmPassword" placeholder="确认密码" class="form-control" v-model="confirmPassword">
+                    <input type="password" name="confirmPassword" placeholder="确认密码" class="form-control"
+                        v-model="confirmPassword">
                 </div>
                 <div class="form-group">
                     <input type="email" name="email" placeholder="电子邮件" class="form-control" v-model="email">
@@ -19,7 +20,7 @@
                     <input type="text" name="emailCode" placeholder="验证码" class="form-control" v-model="emailCode">
                 </div>
                 <div class="form-group">
-                    <button type='submit' class="btn" style="width:100px;">注册</button><br/>
+                    <button type='submit' class="btn" style="width:100px;">注册</button><br />
                     <router-link to="/"><span class="forget">已有账号? 登录</span></router-link>
                     <router-link to="/game">进入游戏</router-link>
                 </div>
@@ -28,10 +29,12 @@
     </div>
 </template>
 <style scoped>
-body, html {
+body,
+html {
     margin: 0;
     height: 100%;
 }
+
 .background {
     position: absolute;
     top: 0;
@@ -47,9 +50,11 @@ body, html {
     justify-content: center;
     align-items: center;
 }
+
 .window {
     /*width: 90%;*/
-    max-width: 400px; /* 限制最大宽度 */
+    max-width: 400px;
+    /* 限制最大宽度 */
     height: auto;
     background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -57,21 +62,27 @@ body, html {
     box-sizing: border-box;
     border-radius: 5px;
 }
-h3, .form-group, .register {
+
+h3,
+.form-group,
+.register {
     text-align: center;
 }
+
 .form-control {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
+
 .btn {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
+
 @media (min-width: 600px) {
     .window {
         width: 50%;
@@ -104,7 +115,7 @@ export default {
                 }
 
                 //防止有人不输名字
-                if(this.username.length===0){
+                if (this.username.length === 0) {
                     alert('请输入用户名!');
                     return;
                 }
@@ -134,18 +145,18 @@ export default {
                     return;
                 }
 
-                
-                    
-                try{
-                    
+
+
+                try {
+
                     this.$store.dispatch('setPlayerName', this.username);//把玩家名称添加到vuex储存中,后面要用
-                    InitData(this.username,this.password,this.email)// 如果上述都符合，则往level数据库db中添加玩家 明文储存测试
+                    InitData(this.username, this.password, this.email)// 如果上述都符合，则往level数据库db中添加玩家 明文储存测试
                     alert('注册成功,跳转至登录页!');
                     this.$router.push('/Login')
-                }catch(e){
+                } catch (e) {
                     alert('发生错误,注册失败!')
                 }
-                    
+
 
             });
         }

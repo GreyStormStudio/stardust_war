@@ -3,7 +3,7 @@
 </template>
 
 <style>
-.content{
+.content {
     overflow: hidden;
 }
 </style>

@@ -1,4 +1,4 @@
 <template>
-    <img src="forget.jpg"/>
+    <img src="forget.jpg" />
     <h1>谁允许你忘记密码的!</h1>
 </template>

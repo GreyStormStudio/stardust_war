@@ -13,12 +13,12 @@ function deserialize<T>(data: string): T {
 }
 
 // 插入数据
-async function putData(key: string, data:any): Promise<any> {
-    try{
+async function putData(key: string, data: any): Promise<any> {
+    try {
         const serializedData = serialize(data);
         await db.put(key, serializedData);
         return true
-    } catch(err) {
+    } catch (err) {
         console.error("Error", err)
         return false
     }
@@ -59,4 +59,4 @@ async function updateData(key: string, partialData: any, mergeFunction?: (oldDat
 }
 
 export default db;
-export { putData, getData,updateData };
+export { putData, getData, updateData };

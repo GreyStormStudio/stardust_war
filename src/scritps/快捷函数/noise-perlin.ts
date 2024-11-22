@@ -1,18 +1,18 @@
 import { randomlist } from "./math";
 
-export class PerlinNoise2D{
-    edge:number
-    scale:number//瓦片大小
-    seed:number
-    private rand_list:Float32Array
+export class PerlinNoise2D {
+    edge: number
+    scale: number//瓦片大小
+    seed: number
+    private rand_list: Float32Array
     constructor(
-        seed:number,
-        edge:number
-    ){
-        this.edge=edge
-        this.scale=8
-        this.seed=seed
-        this.rand_list=randomlist(seed,this.edge*this.edge)//256个0-1之间的伪随机数
+        seed: number,
+        edge: number
+    ) {
+        this.edge = edge
+        this.scale = 8
+        this.seed = seed
+        this.rand_list = randomlist(seed, this.edge * this.edge)//256个0-1之间的伪随机数
     }
 
     fade(t: number): number {
@@ -37,21 +37,21 @@ export class PerlinNoise2D{
     generatePermutationVector(): Float32Array {
         const p = new Float32Array(256);
         for (let i = 0; i < 256; i++) {
-            p[i]=i
+            p[i] = i
         }
         for (let i = 0; i < 256; i++) {
             //const j = Math.floor(Math.random() * (i + 1));
-            
+
             const rd = this.rand_list[i];
-            const j = Math.floor(rd*(i+1));
+            const j = Math.floor(rd * (i + 1));
             [p[i], p[j]] = [p[j], p[i]];
         }
         return p;
     }
 
-    perlinNoise2D(){
+    perlinNoise2D() {
         const perm = this.generatePermutationVector();
-        const result= new Float32Array(this.edge*this.edge)
+        const result = new Float32Array(this.edge * this.edge)
 
         for (let y = 0; y < this.edge; y++) {
             for (let x = 0; x < this.edge; x++) {
@@ -67,12 +67,12 @@ export class PerlinNoise2D{
                 const n11 = this.dotGridGradient(perm, xi + 1, yi + 1, xf - 1, yf - 1);
                 const x1 = this.lerp(u, n00, n10);
                 const x2 = this.lerp(u, n01, n11);
-                result[y * this.edge + x] = Math.max(Math.floor((this.lerp(v, x1, x2)+1)*128),0);
+                result[y * this.edge + x] = Math.max(Math.floor((this.lerp(v, x1, x2) + 1) * 128), 0);
             }
         }
         return result;
     }
-    
+
     dotGridGradient(p: Float32Array, ix: number, iy: number, x: number, y: number): number {
         const gx = x - Math.floor(x);
         const gy = y - Math.floor(y);
@@ -82,30 +82,30 @@ export class PerlinNoise2D{
         const g11 = this.grad(this.permute(p, this.permute(p, ix + 1) + this.permute(p, iy + 1)), gx - 1, gy - 1);
         return this.lerp(gx, this.lerp(gy, g00, g01), this.lerp(gy, g10, g11));
     }
-    createGaussianKernel(kernelsize:number,sigma:number) {
+    createGaussianKernel(kernelsize: number, sigma: number) {
         const kernel = new Float32Array(kernelsize * kernelsize);
         const mean = Math.floor(kernelsize / 2);
         let sum = 0;
-    
+
         for (let x = 0; x < kernelsize; x++) {
             for (let y = 0; y < kernelsize; y++) {
                 const xDist = x - mean;
                 const yDist = y - mean;
-                kernel[x * kernelsize + y] = Math.exp(-(xDist * xDist + yDist * yDist) / (2*sigma*sigma));
+                kernel[x * kernelsize + y] = Math.exp(-(xDist * xDist + yDist * yDist) / (2 * sigma * sigma));
                 sum += kernel[x * kernelsize + y];
             }
         }
         for (let i = 0; i < kernel.length; i++) {
             kernel[i] /= sum;
         }
-    
+
         return kernel;
     }
-    applyGaussianBlur(input:Float32Array,kernelsize:number,sigma:number) {
+    applyGaussianBlur(input: Float32Array, kernelsize: number, sigma: number) {
         const output = new Float32Array(this.edge * this.edge);
-        const kernel = this.createGaussianKernel(kernelsize,sigma);
-        const halfKernelSize = Math.floor(kernelsize/2);
-    
+        const kernel = this.createGaussianKernel(kernelsize, sigma);
+        const halfKernelSize = Math.floor(kernelsize / 2);
+
         for (let y = 0; y < this.edge; y++) {
             for (let x = 0; x < this.edge; x++) {
                 let sum = 0;
@@ -119,7 +119,7 @@ export class PerlinNoise2D{
                 output[y * this.edge + x] = sum;
             }
         }
-    
+
         return output;
     }
 }

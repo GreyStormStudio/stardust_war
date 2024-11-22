@@ -11,7 +11,7 @@
                 </div>
                 <div class="form-group">
                     <button type='submit' class="btn" style="width:100px;">登录</button>
-                    <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br/>
+                    <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br />
                     <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
                     <router-link to="/game">进入游戏</router-link>
                 </div>
@@ -30,20 +30,20 @@ export default {
             password: ''
         };
     },
-    methods:{
-        async LoginUser(){
+    methods: {
+        async LoginUser() {
             const value = await getData(this.username)
-            if(value!=null&&value.password==this.password){
+            if (value != null && value.password == this.password) {
                 this.$store.dispatch('setPlayerName', this.username);
                 await ReadData(this.username)
                 this.$router.push('/game')
             }
-            else{
+            else {
                 alert('用户名或密码错误!')
             }
-            
+
         },
-        go_register(){
+        go_register() {
             this.$router.push('/register')
         }
     }
@@ -51,10 +51,12 @@ export default {
 </script>
 
 <style scoped>
-body, html {
+body,
+html {
     margin: 0;
     height: 100%;
 }
+
 .background {
     position: absolute;
     top: 0;
@@ -70,9 +72,11 @@ body, html {
     justify-content: center;
     align-items: center;
 }
+
 .window {
     width: 90%;
-    max-width: 400px; /* 限制最大宽度 */
+    max-width: 400px;
+    /* 限制最大宽度 */
     height: auto;
     background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -80,21 +84,27 @@ body, html {
     box-sizing: border-box;
     border-radius: 5px;
 }
-h3, .form-group, .register {
+
+h3,
+.form-group,
+.register {
     text-align: center;
 }
+
 .form-control {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
+
 .btn {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
+
 @media (min-width: 600px) {
     .window {
         width: 50%;

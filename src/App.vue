@@ -1,8 +1,7 @@
 <template>
   <router-view></router-view>
 </template>
-<style>
-</style>
+<style></style>
 <script>
 export default {
   created() {
@@ -19,7 +18,7 @@ export default {
   },
   methods: {
     checkLoginStatus() {
-      const isLoggedIn=false//测试
+      const isLoggedIn = false//测试
       return isLoggedIn;
     }
   }

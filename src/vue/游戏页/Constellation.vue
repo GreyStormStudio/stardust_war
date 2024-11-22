@@ -1,8 +1,8 @@
 <template>
     <div class="left">
-            <!-- 建筑数量和建造 -->
+        <!-- 建筑数量和建造 -->
         <div class="building-controls">
-            
+
         </div>
     </div>
     <div class="map"></div>
@@ -17,22 +17,25 @@
 </template>
 <script src="../../scritps/ConstellationMap.ts"></script>
 <style>
-body{
-    user-select:none;
+body {
+    user-select: none;
 }
+
 /*.content {
     display: flex;
 }*/
-.left, .right {
+.left,
+.right {
     height: 100%;
     flex: 1;
     background-color: lightgray;
 }
+
 .map {
     flex: 0 0 auto;
     height: 100%;
     aspect-ratio: 1 / 1;
     background-color: lightblue;
     overflow: hidden;
-    }
+}
 </style>

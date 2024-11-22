@@ -1,27 +1,27 @@
 <template>
-    <div class="app-background">
-      <table>
-        <thead>
-          <tr>
-            <th>玩家</th>
-            <th>科技</th>
-            <th>舰队</th>
-            <th>领地</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in sortedList" :key="item.id">
-            <td>{{ item.name }}</td>
-            <td>{{ item.tech }}</td>
-            <td>{{ item.fleet }}</td>
-            <td>{{ item.territory }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="app-background">
+    <table>
+      <thead>
+        <tr>
+          <th>玩家</th>
+          <th>科技</th>
+          <th>舰队</th>
+          <th>领地</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in sortedList" :key="item.id">
+          <td>{{ item.name }}</td>
+          <td>{{ item.tech }}</td>
+          <td>{{ item.fleet }}</td>
+          <td>{{ item.territory }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
-  
-  <!-- <script lang="ts">
+
+<!-- <script lang="ts">
   import { defineComponent, ref } from 'vue';
   
   interface RankingItem {
@@ -47,7 +47,7 @@
   });
   </script> -->
 
-  <script lang="ts">
+<script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { getData } from '@/scritps/db/db';
 
@@ -66,7 +66,7 @@ export default defineComponent({
 
     // 在组件挂载后获取数据
     onMounted(() => {
-      
+
     });
 
     return {
@@ -75,10 +75,11 @@ export default defineComponent({
   },
 });
 </script>
-  
+
 <style scoped>
 .app-background {
-  top:0;left: 0;  
+  top: 0;
+  left: 0;
   background-image: url('/public/背景/bg5.jpg');
   background-size: cover;
   background-position: center;
@@ -87,21 +88,24 @@ export default defineComponent({
   height: 100vh;
   display: flex;
   align-items: center;
-  }
-  table {
-    background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));
-    width: 800px;
-    margin: auto;
-    height: auto;
-    border-collapse: collapse;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-  }
-  th {
-    cursor: pointer;
-  }
-  </style>
-  
+}
+
+table {
+  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(255, 255, 255, 0.5));
+  width: 800px;
+  margin: auto;
+  height: auto;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  cursor: pointer;
+}
+</style>

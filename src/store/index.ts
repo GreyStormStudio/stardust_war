@@ -25,22 +25,22 @@ export default createStore({
             state.metalstore = data.metalstore;
             state.buildings = data.buildings;
         },
-        updataPlayerStore(state,data){
+        updataPlayerStore(state, data) {
             state.energystore = data.energystore;
             state.mineralstore = data.mineralstore;
             state.metalstore = data.metalstore
         },
-        
+
     },
     actions: {
         setPlayerName({ commit }, name) {
             commit('setPlayerName', name);
         },
-        setPlayerData({ commit },datas) {
-            commit('setPlayerData',datas)
+        setPlayerData({ commit }, datas) {
+            commit('setPlayerData', datas)
         },
-        updataPlayerStore({ commit },data){
-            commit('updataPlayerStore',data)
+        updataPlayerStore({ commit }, data) {
+            commit('updataPlayerStore', data)
         },
     },
     getters: {

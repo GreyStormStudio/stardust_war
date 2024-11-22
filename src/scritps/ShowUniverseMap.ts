@@ -1,4 +1,4 @@
-import {Application,Graphics} from 'pixi.js'
+import { Application, Graphics } from 'pixi.js'
 import { GenerateMap } from './快捷函数/CreateMap'
 import { defineComponent, ref, onMounted, onBeforeUnmount } from "vue";
 
