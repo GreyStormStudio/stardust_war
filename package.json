@@ -1,5 +1,5 @@
 {
-  "name": "stardust_war",
+  "name": "stardustwar",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,15 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@types/level": "^6.0.3",
-    "abstract-level": "^2.0.1",
-    "browser-level": "^1.0.1",
     "core-js": "^3.8.3",
-    "cross-env": "^7.0.3",
-    "module-error": "^1.0.2",
-    "mongodb": "^6.10.0",
-    "napi-macros": "^2.2.2",
-    "node-gyp-build": "^4.8.3",
+    "level": "^8.0.1",
     "pixi.js": "^8.5.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
@@ -24,7 +17,6 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",

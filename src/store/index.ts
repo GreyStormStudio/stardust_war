@@ -1,5 +1,4 @@
 import { createStore } from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
     state: {
@@ -50,6 +49,5 @@ export default createStore({
         playerMineralStore: (state) => state.mineralstore,
         playerMetalStore: (state) => state.metalstore,
         playerBuildings: (state) => state.buildings
-    },
-    plugins: [createPersistedState()] // 添加这一行来启用持久化
+    }
 });
