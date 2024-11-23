@@ -15,7 +15,7 @@
         </div>
     </div>
 </template>
-<script src="../../scritps/ConstellationMap.ts"></script>
+<script src="../../scritps/Game/Constellation.ts"></script>
 <style>
 body {
     user-select: none;

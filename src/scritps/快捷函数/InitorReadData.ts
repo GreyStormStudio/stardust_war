@@ -13,11 +13,11 @@ async function InitData(username: string, password: string, email: string) {//�
             email: email,
             password: PasswordMd5(password)
         },
-        storedResources: [
-            { type: '能量', amount: 100 },
-            { type: '矿物', amount: 50 },
-            { type: '金属', amount: 0 }
-        ],
+        storedResources: {
+            energy:100,
+            mineral:50,
+            metal:0
+        },
         occupiedConstellations: []
     };
     const Cinit: ConstellationSeed = {

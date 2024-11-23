@@ -29,6 +29,9 @@ importers:
       vuex:
         specifier: ^4.0.0
         version: 4.1.0(vue@3.5.13(typescript@4.5.5))
+      vuex-persistedstate:
+        specifier: ^4.1.0
+        version: 4.1.0(vuex@4.1.0(vue@3.5.13(typescript@4.5.5)))
     devDependencies:
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.4.0
@@ -3608,6 +3611,10 @@ packages:
   shell-quote@1.8.1:
     resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
 
+  shvl@2.0.3:
+    resolution: {integrity: sha512-V7C6S9Hlol6SzOJPnQ7qzOVEWUQImt3BNmmzh40wObhla3XOYMe4gGiYzLrJd5TFa+cI2f9LKIRJTTKZSTbWgw==}
+    deprecated: older versions vulnerable to prototype pollution
+
   side-channel@1.0.6:
     resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
     engines: {node: '>= 0.4'}
@@ -3987,6 +3994,12 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuex-persistedstate@4.1.0:
+    resolution: {integrity: sha512-3SkEj4NqwM69ikJdFVw6gObeB0NHyspRYMYkR/EbhR0hbvAKyR5gksVhtAfY1UYuWUOCCA0QNGwv9pOwdj+XUQ==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    peerDependencies:
+      vuex: ^3.0 || ^4.0.0-rc
 
   vuex@4.1.0:
     resolution: {integrity: sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ==}
@@ -8076,6 +8089,8 @@ snapshots:
 
   shell-quote@1.8.1: {}
 
+  shvl@2.0.3: {}
+
   side-channel@1.0.6:
     dependencies:
       call-bind: 1.0.7
@@ -8485,6 +8500,12 @@ snapshots:
       '@vue/shared': 3.5.13
     optionalDependencies:
       typescript: 4.5.5
+
+  vuex-persistedstate@4.1.0(vuex@4.1.0(vue@3.5.13(typescript@4.5.5))):
+    dependencies:
+      deepmerge: 4.3.1
+      shvl: 2.0.3
+      vuex: 4.1.0(vue@3.5.13(typescript@4.5.5))
 
   vuex@4.1.0(vue@3.5.13(typescript@4.5.5)):
     dependencies:

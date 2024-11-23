@@ -3,8 +3,9 @@ type ResourceType = '能量' | '矿物' | '金属';
 
 // 定义资源结构
 interface Resource {
-    type: ResourceType;
-    amount: number;
+    energy: number,
+    mineral: number,
+    metal: number
 }
 
 // 定义建筑类型结构
@@ -22,7 +23,7 @@ interface Building {
 
 // 定义星域种子结构
 interface ConstellationSeed {
-    occupiedByPlayer: string|null;
+    occupiedByPlayer: string | null;
     constructedBuildings: Building[];
 }
 
@@ -35,7 +36,7 @@ interface AccountInfo {
 // 定义玩家储存结构
 interface PlayerStorage {
     accountInfo: AccountInfo;
-    storedResources: Resource[];
+    storedResources: Resource;
     occupiedConstellations: number[];
 }
 
@@ -46,7 +47,8 @@ type Player = Record<string, PlayerStorage>;
 type Constellation = Record<number, ConstellationSeed>;
 
 // 导出建筑类型,用户数据,星域数据,以便外部定义具体的建筑
-export { 
-    BuildingType, 
-    PlayerStorage, 
-    ConstellationSeed };
+export {
+    BuildingType,
+    PlayerStorage,
+    ConstellationSeed
+};

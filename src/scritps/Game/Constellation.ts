@@ -1,13 +1,24 @@
 import { Application, Graphics, Text } from "pixi.js";
-import { GenerateMap } from "./快捷函数/CreateMap";
+import { GenerateMap } from "../快捷函数/CreateMap";
 import { defineComponent, ref, onMounted, onBeforeUnmount } from "vue";
-import { updateData } from "./db/db";
+import { ReadData } from "../快捷函数/InitorReadData";
+import { updateData } from "../db/db";
 import store from "@/store";
-
-const edge = 31;
-const user = store.getters.playerName;
-
-function createMap(app: Application, seed: number, scale: number) {
+const username = store.getters.playerName
+//如果没有Appliaction对象就创建一个该对象,否则读取该对象
+let appInstance: Application;
+async function initApp(): Promise<Application> {
+    appInstance = new Application();
+    const container = document.querySelector('.map') as HTMLElement;
+    await appInstance.init({
+        width: container.clientWidth,
+        height: container.clientHeight,
+    });
+    container.appendChild(appInstance.canvas);
+    return appInstance;
+}
+const edge = 31
+function createMap(app: Application, seed: number, scale: number) {//显示地图
     const map = new GenerateMap(seed, edge);
     const map3 = map.GenerateResourceMap(map.GenerateGrayscaleMap(map.GenerateNoiseMap()), true);
     const gcs = new Graphics();
@@ -19,53 +30,44 @@ function createMap(app: Application, seed: number, scale: number) {
     return map3.res;
 }
 
-async function initApp() {
-    const app = new Application();
-    const container = document.querySelector('.map') as HTMLElement;
-    await app.init({
-        width: container.clientWidth,
-        height: container.clientHeight,
-
-    });
-    container.appendChild(app.canvas);
-    return app;
-}
-
 export default defineComponent({
     setup() {
-        const energystore = ref(store.getters.playerEnergyStore);
-        const mineralstore = ref(store.getters.playerMineralStore);
-        const metalstore = ref(store.getters.playerMetalStore);
-        const energyproduce = ref(0);
-        const mineralproduce = ref(0);
-        const metalproduce = ref(0);
 
-        const updataResources = () => {
-            energystore.value += energyproduce.value;
-            mineralstore.value += mineralproduce.value;
-            metalstore.value += metalproduce.value;
+        const energystore = ref(store.getters.playerStoredResources.energy)
+        const mineralstore = ref(store.getters.playerStoredResources.mineral)
+        const metalstore = ref(store.getters.playerStoredResources.metal)
+        const energyproduce = ref(10)
+        const mineralproduce = ref(5)
+        const metalproduce = ref(0)
+
+        const updateResources = () => {
+            energystore.value += energyproduce.value
+            mineralstore.value += mineralproduce.value
+            metalstore.value += metalproduce.value
             store.dispatch('updataPlayerStore', {
-                energystore: energystore.value,
-                mineralstore: mineralstore.value,
-                metalstore: metalstore.value
-            });
-        };
-        const uploaddata = () => {
-            updateData(user, {
-                energystore: energystore.value,
-                mineralstore: mineralstore.value
+                energy: energystore.value,
+                mineral: mineralstore.value,
+                metal: metalstore.value
             });
         }
 
+        const uploaddata = () => {
+            updateData("Users:" + store.getters.playerName, {
+                storedResources: {
+                    energy: energystore.value,
+                    mineral: mineralstore.value,
+                    metal: metalstore.value
+                }
+            });
+        }
         onMounted(async () => {
             const app = await initApp();
-
             const scale = app.canvas.height / edge;
-            const res = createMap(app, store.getters.playerSeed, scale);
+            const res = createMap(app, store.getters.playerOccupiedConstellations[0], scale);
             energyproduce.value = res.energy
             mineralproduce.value = res.mineral
             const text1 = new Text({ text: 'FPS:0', style: { fill: 0x000000, fontSize: 18 } })
-            const text2 = new Text({ text: `地图种子:${store.getters.playerSeed}`, style: { fill: 0x000000, fontSize: 18 } })
+            const text2 = new Text({ text: `地图种子:${store.getters.playerOccupiedConstellations[0]}`, style: { fill: 0x000000, fontSize: 18 } })
             text2.x = text1.width + 60;
             app.stage.addChild(text1);
             app.stage.addChild(text2);
@@ -81,7 +83,8 @@ export default defineComponent({
 
                 if (currentTime - lastUpdateTime >= updateInterval) {
                     lastUpdateTime = currentTime;
-                    updataResources();
+                    updateResources();
+                    console.log(store.getters.playerStoredResources)
                 }
 
                 if (currentTime - lastUploadTime >= uploadInterval) {
@@ -89,15 +92,11 @@ export default defineComponent({
                     uploaddata();
                 }
             });
-        });
 
+        });
         onBeforeUnmount(() => {
-            const container = document.querySelector('.map') as HTMLElement;
-            if (container) {
-                container.style.display = 'none';
-            }
+            appInstance.ticker.destroy()
         });
-
         return {
             energystore,
             mineralstore,
@@ -105,8 +104,6 @@ export default defineComponent({
             energyproduce,
             mineralproduce,
             metalproduce
-        };
-    },
-    methods: {
+        }
     }
-});
+})

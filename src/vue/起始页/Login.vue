@@ -13,7 +13,8 @@
                     <button type='submit' class="btn" style="width:100px;">登录</button>
                     <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br />
                     <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
-                    <router-link to="/game">进入游戏</router-link><button type="button" class="btn" style="width: 100px;" @click="resetdata">重置数据库</button>
+                    <router-link to="/game">进入游戏</router-link><button type="button" class="btn" style="width: 100px;"
+                        @click="resetdata">重置数据库</button>
                 </div>
             </form>
         </div>
@@ -22,7 +23,8 @@
 <script>
 import { getData } from '@/scritps/db/db';
 import { ReadData } from '@/scritps/快捷函数/InitorReadData';
-import db from '@/scripts/db/db';
+import { PasswordMd5 } from '@/scritps/快捷函数/PED';
+import db from '@/scritps/db/db';
 import store from '@/store';
 export default {
     data() {
@@ -33,8 +35,8 @@ export default {
     },
     methods: {
         async LoginUser() {
-            const value = await getData(this.username)
-            if (value != null && value.password == this.password) {
+            const value = await getData('Users:' + this.username)
+            if (value != null && value.accountInfo.password == PasswordMd5(this.password)) {
                 this.$store.dispatch('setPlayerName', this.username);
                 await ReadData(this.username)
                 this.$router.push('/game')
@@ -47,7 +49,7 @@ export default {
         go_register() {
             this.$router.push('/register')
         },
-        resetdata(){
+        resetdata() {
             db.clear()
             console.log('清除数据库')
         }

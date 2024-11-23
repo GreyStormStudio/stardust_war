@@ -91,7 +91,6 @@ h3,
 </style>
 <script>
 import db from '@/scritps/db/db'
-import { putData } from '@/scritps/db/db';
 import { InitData } from '@/scritps/快捷函数/InitorReadData';
 import store from '@/store';
 
@@ -108,7 +107,7 @@ export default {
     methods: {
         registerUser() {
             // 检测用户名是否重复
-            db.get(`users:${this.username}`, (err, value) => {
+            db.get(`Users:${this.username}`, (err, value) => {
                 if (!err) {
                     alert('用户名已存在，请选择其他用户名!');
                     return;
