@@ -21,8 +21,8 @@ interface Building {
 }
 
 // 定义星域种子结构
-interface StarDomainSeed {
-    occupiedByPlayer: string;
+interface ConstellationSeed {
+    occupiedByPlayer: string|null;
     constructedBuildings: Building[];
 }
 
@@ -36,14 +36,17 @@ interface AccountInfo {
 interface PlayerStorage {
     accountInfo: AccountInfo;
     storedResources: Resource[];
-    occupiedStarDomains: number[];
+    occupiedConstellations: number[];
 }
 
 // 定义玩家名称到玩家储存的映射
-type Players = Record<string, PlayerStorage>;
+type Player = Record<string, PlayerStorage>;
 
 // 定义星域种子种子到星域的映射
-type Constellations = Record<number, StarDomainSeed>;
+type Constellation = Record<number, ConstellationSeed>;
 
 // 导出建筑类型,用户数据,星域数据,以便外部定义具体的建筑
-export { BuildingType, Players, Constellations };
+export { 
+    BuildingType, 
+    PlayerStorage, 
+    ConstellationSeed };

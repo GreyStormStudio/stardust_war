@@ -2,7 +2,6 @@ import { Application, Graphics, Text } from "pixi.js";
 import { GenerateMap } from "./快捷函数/CreateMap";
 import { defineComponent, ref, onMounted, onBeforeUnmount } from "vue";
 import { updateData } from "./db/db";
-import db from './db/db'
 import store from "@/store";
 
 const edge = 31;

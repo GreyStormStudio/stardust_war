@@ -13,7 +13,7 @@
                     <button type='submit' class="btn" style="width:100px;">登录</button>
                     <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br />
                     <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
-                    <router-link to="/game">进入游戏</router-link>
+                    <router-link to="/game">进入游戏</router-link><button type="button" class="btn" style="width: 100px;" @click="resetdata">重置数据库</button>
                 </div>
             </form>
         </div>
@@ -22,6 +22,7 @@
 <script>
 import { getData } from '@/scritps/db/db';
 import { ReadData } from '@/scritps/快捷函数/InitorReadData';
+import db from '@/scripts/db/db';
 import store from '@/store';
 export default {
     data() {
@@ -45,6 +46,10 @@ export default {
         },
         go_register() {
             this.$router.push('/register')
+        },
+        resetdata(){
+            db.clear()
+            console.log('清除数据库')
         }
     }
 }
