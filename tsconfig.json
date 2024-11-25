@@ -18,6 +18,12 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@game/*": [
+        "game/*"
+      ],
+      "@backend/*": [
+        "backend/*"
       ]
     },
     "lib": [

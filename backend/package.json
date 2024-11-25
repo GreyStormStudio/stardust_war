@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.3",
+    "@types/socket.io": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "level": "^8.0.1",
+    "level-party": "^5.1.1",
+    "nodemailer": "^6.9.16",
+    "pixi.js": "^8.5.2",
+    "simplex-noise": "^4.0.3",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5",
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
+  }
+}
