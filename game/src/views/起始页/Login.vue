@@ -20,7 +20,9 @@
     </div>
 </template>
 <script>
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client'
+import { ref } from 'vue'
+const socket = ref < Socket | null > (null)
 export default {
     data() {
         return {
@@ -28,12 +30,17 @@ export default {
             password: '',
         };
     },
-    created() {
-        const socket = io({autoConnect:false});
-        console.log(socket.connect())
-    },
-    mounted(){
-        
+    mounted() {
+        socket.value = io('', {
+            query: {
+                token: localStorage.getItem('token'),
+            },
+            path: '/ws',
+        })
+
+        socket.value.on('connect', () => {
+            console.log('connect')
+        })
     },
     methods: {
         go_register() {
