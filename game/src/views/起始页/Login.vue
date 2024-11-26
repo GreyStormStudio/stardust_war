@@ -2,7 +2,7 @@
     <div class="background">
         <div class="window">
             <h3>Stardust War|星尘战争</h3>
-            <form @submit.prevent="LoginUser">
+            <form @submit.prevent="">
                 <div class="form-group">
                     <input type="text" name="username" placeholder="用户名" class="form-control" v-model="username">
                 </div>
@@ -13,49 +13,35 @@
                     <button type='submit' class="btn" style="width:100px;">登录</button>
                     <button type='button' class="btn" style="width:100px;" @click="go_register">注册</button><br />
                     <router-link to="/forget"><span class="forget">忘记密码?</span></router-link>
-                    <router-link to="/game">进入游戏</router-link><button type="button" class="btn" style="width: 100px;"
-                        @click="resetdata">重置数据库</button>
+                    <router-link to="/game">进入游戏</router-link>
                 </div>
             </form>
         </div>
     </div>
 </template>
-<!-- <script>
-import { getData } from '@/scritps/db/db';
-import { ReadData } from '@/scritps/快捷函数/InitorReadData';
-import { PasswordMd5 } from '@/scritps/快捷函数/PED';
-import db from '@/scritps/db/db';
-import store from '@/store';
+<script>
+import { io } from 'socket.io-client';
 export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
         };
     },
+    created() {
+        const socket = io({autoConnect:false});
+        console.log(socket.connect())
+    },
+    mounted(){
+        
+    },
     methods: {
-        async LoginUser() {
-            const value = await getData('Users:' + this.username)
-            if (value != null && value.accountInfo.password == PasswordMd5(this.password)) {
-                this.$store.dispatch('setPlayerName', this.username);
-                await ReadData(this.username)
-                this.$router.push('/game')
-            }
-            else {
-                alert('用户名或密码错误!')
-            }
-
-        },
         go_register() {
             this.$router.push('/register')
         },
-        resetdata() {
-            db.clear()
-            console.log('清除数据库')
-        }
     }
 }
-</script> -->
+</script>
 
 <style scoped>
 body,
