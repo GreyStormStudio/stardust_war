@@ -8,6 +8,7 @@ import { defineComponent } from 'vue';
 const socket = io('',{path: '/ws'});
 
 socket.on("connect", () => {
-  console.log('Connected:', socket);
 });
+//添加事件模拟发送登录
+socket.emit('Login','user','pwd')
 </script>

@@ -2,23 +2,17 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import dotenv from 'dotenv'
-dotenv.config({ path: resolve(__dirname, '../config/env') })
+dotenv.config({ path: resolve(__dirname, '../config/.env') })
+const port = process.env.GAME_PORT
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue()],
-    envDir: '../config/env',
+    envDir: '../config',
     server: {
-        host: 'localhost',
-        port: 7777,
-        cors: true,
+        port:1145,
         proxy: {
-            '/api': {
-                target: 'http://localhost:7777',
-                changeOrigin: true,
-                rewrite: path => path.replace(/^\/api/, '')
-            },
             '/ws':{
-                target:'ws://localhost:7777',
+                target:`ws://localhost:${port}`,
                 changeOrigin:true,
                 ws: true,
             }
