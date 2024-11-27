@@ -5,7 +5,7 @@ const server = createServer();
 const io = new Server(server, {
     cors: {
         origin: '*',
-    },
+    }
 });
 console.log('________________________________')
 server.listen(7777, () => {
