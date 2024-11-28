@@ -18,17 +18,17 @@
 </template>
 
 <script>
+import { useUserInfoStore } from '../../store';
 export default {
-
     name: 'Game',
     data() {
         return {
-            currentSection: '', // 用于存储当前激活的导航项
+            currentSection: 'Constellation', // 用于存储当前激活的导航项
         };
     },
     computed: {
         playerName() {
-            return 'Fredrick'
+            return useUserInfoStore().getUsername
         }
     },
     methods: {

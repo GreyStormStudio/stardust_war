@@ -2,7 +2,7 @@
     <div class="background">
         <div class="window">
             <h3>Stardust War|星尘战争</h3>
-            <form @submit.prevent="">
+            <form @submit.prevent="register">
                 <div class="form-group">
                     <input type="text" name="username" placeholder="用户名" class="form-control" v-model="username">
                 </div>
@@ -132,9 +132,7 @@ a,
 
 
 <script>
-import { io } from 'socket.io-client';
 import * as c from '../../../../share/CONSTANT'
-const socket = io('', { path: '/ws' });
 export default {
     data() {
         return {
@@ -146,7 +144,7 @@ export default {
         };
     },
     methods: {
-        __check() {
+        check() {
             if (this.username.length === 0) {
                 alert('请输入用户名!');
                 return false;
@@ -164,8 +162,11 @@ export default {
                 alert('请输入有效的电子邮件地址!');
                 return false;
             }// 检测邮箱是否符合规则（简单的正则表达式验证）
-            socket.emit('CheckRegister', this.email, this.username)
-            socket.on('CheckRegisterResult', (result) => {
+            return true
+        },
+        sendCode() {
+            this.$socket.emit('CheckRegister', this.email, this.username)
+            this.$socket.on('CheckRegisterResult', (result) => {
                 switch (result) {
                     case c.USERNAME_EXISTS:
                         alert('用户名已存在!')
@@ -177,20 +178,19 @@ export default {
                         return true;
                 }
             })
-        },
-        sendCode() {
-            if (this.__check()) {
+            if (this.check()) {
                 this.code = '123456'//发送并获取验证码
             }
         },
         register() {
+            if(!this.check()){return;}
             // 检测验证码是否正确（这里假设验证码是 '123456'）
-            if (this.emailCode !== this.code) {
+            if (this.emailCode !== '123456') {
                 alert('验证码错误!');
             }
             else {
-                socket.emit('Register', this.email, this.username, this.password)
-                socket.on('RegisterResult', (result) => {
+                this.$socket.emit('Register', this.email, this.username, this.password)
+                this.$socket.on('RegisterResult', (result) => {
                     result == c.ERROR_UNDEFINED ? alert('注册失败,发生未知错误!') : this.$router.push('/login')
                 })
             }

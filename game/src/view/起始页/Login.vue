@@ -22,10 +22,8 @@
     </div>
 </template>
 <script>
-import { io } from 'socket.io-client';
 import { useUserInfoStore } from '../../store';
 import * as c from '../../../../share/CONSTANT'
-const socket = io('', { path: '/ws' });
 export default {
     data() {
         return {
@@ -35,8 +33,8 @@ export default {
     },
     methods: {
         login() {
-            socket.emit('Login', this.username, this.password)
-            socket.once('LoginResult', (result) => {
+            this.$socket.emit('Login', this.username, this.password)
+            this.$socket.once('LoginResult', (result) => {
                 switch (result.rep) {
                     case c.USERNAME_NOT_FOUND:
                         alert('用户名不存在!')
@@ -46,7 +44,7 @@ export default {
                         break;
                     case c.OK:
                         //alert('登录成功!')
-                        useUserInfoStore.setUserInfo({
+                        useUserInfoStore().setUserInfo({
                             username: this.username
                         });
                         this.$router.push('/constellation')
@@ -138,7 +136,7 @@ h3 {
     margin: 0 20px;
 }
 
-a,.forget{
+.enter-game,.forget{
     display: block;
     margin-top: 10px;
     color: #888;

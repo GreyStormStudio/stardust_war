@@ -13,7 +13,6 @@ import * as c from '../../../share/CONSTANT'
  * @returns rep 用户名不存在|密码错误|登录成功, val null|游戏数据
  */
 async function CheckLogin(username: string, password: string) {
-    console.log(`check username:${username},password:${password}`)
     const info = await getData(c.USER_KEY + username)
     if (info == null) {//用户名不存在
         return { rep: c.USERNAME_NOT_FOUND, val: null }
@@ -52,15 +51,12 @@ async function CheckRegister(email: string, username: string) {
 async function Register(email: string, username: string, password: string) {
     try {
         let constellationseed = -1;
-        while (1) {
-            const seed = Math.floor(Math.random() * 16834)//先开放16384个星域
-            if (seed % 64 == 0) { continue; }//64倍数的星域编号留空给NPC住
-            getData(c.CONSTELLATION_KEY + seed.toString()).then(result=>{
-                if (result.owner == null) {
-                    constellationseed = seed;
-                }
-            })
-            
+        while (1) {//循环找空星给新用户
+            const seed = Math.floor(Math.random() * 0x80000000).toString()
+            if (await getData(seed) == null && Number(seed) % 64 != 0) {//找一个没人的星
+                constellationseed = Number(seed)
+                break
+            }
         }
         putData(c.USER_KEY + username, {
             userinfo: { email: email, password: Md5.hashStr(password) },
