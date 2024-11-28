@@ -12,25 +12,36 @@ class SocketEventsHandler {
 
             // 监听登录事件
             socket.on('Login', (username, password) => {
-                const result = fn.CheckLogin(username, password)
-                console.log(`User ${username} is trying to log in with password:${password}`);
+                fn.CheckLogin(username, password).then(result => {
+                    socket.emit('LoginResult', result)
+                })
             });
+            
             // 监听注册事件
             socket.on('Register', (email, username, password) => {
-                const result = fn.CheckRegister(email, username, password)
-                console.log(`User ${username} is trying to register with email:${email} and password: ${password}`);
+                fn.Register(email, username, password).then(result => {
+                    socket.emit('RegisterResult', result)
+                })
             });
+            //监听注册检测事件
+            socket.on('CheckRegister', (email, username) => {
+                fn.CheckRegister(email, username).then(result => {
+                    socket.emit('CheckRegisterResult', result);
+                })
+            })
 
             //监听数据请求事件
             socket.on('ReadData', (username, isgameInfo) => {
-                const result = fn.ReadData(username, isgameInfo)
-                console.log(`User ${username} is trying to read ${isgameInfo ? 'Game' : 'User'} information`)
+                fn.ReadData(username, isgameInfo).then(result => {
+                    socket.emit('ReadData', result)
+                })
             })
-            
+
             //监听数据更改事件
-            socket.on('UpdateData',(username,data)=>{
-                const result = fn.UpdateData(username,data)
-                console.log(`User ${username} is trying to update data as ${data}`)
+            socket.on('UpdateData', (username, data) => {
+                fn.UpdateData(username, data).then(result => {
+                    socket.emit('UpdateData', result)
+                })
             })
 
             // 监听用户断开连接事件

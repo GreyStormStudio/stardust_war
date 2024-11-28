@@ -8,3 +8,4 @@ export const ERROR_UNDEFINED = -99; //未定义错误
 
 export const USER_KEY = 'User:';
 export const EMAIL_KEY = 'Email:';
+export const CONSTELLATION_KEY = 'Constellation:'

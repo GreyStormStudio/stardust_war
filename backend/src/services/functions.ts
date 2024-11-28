@@ -1,36 +1,36 @@
 import { getData, putData, updateData } from '../db/db'
 import { Md5 } from 'ts-md5'
-import * as c from '../CONSTANT'
+import * as c from '../../../share/CONSTANT'
 
-//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{未定义}}
+//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},constellations:[]}}
 //Email:{username:string,password:string}
+//Constellation:{owner:string,builds:{}}
 
 /**
  * 
  * @param username 用户名
  * @param password 密码
- * @returns 用户名不存在|密码错误|登录成功
+ * @returns rep 用户名不存在|密码错误|登录成功, val null|游戏数据
  */
 async function CheckLogin(username: string, password: string) {
+    console.log(`check username:${username},password:${password}`)
     const info = await getData(c.USER_KEY + username)
     if (info == null) {//用户名不存在
-        return c.USERNAME_NOT_FOUND
+        return { rep: c.USERNAME_NOT_FOUND, val: null }
     }
     if (info.userinfo.password != Md5.hashStr(password)) {//密码错误
-        return c.PASSWORD_INCORRECT
+        return { rep: c.PASSWORD_INCORRECT, val: null }
     }
-    return c.OK
-    //只检测是否正确,数据读取什么的再说
+    return { rep: c.OK, val: info.gameinfo }
 }
 
 /**
  * 
  * @param email 邮箱
  * @param username 用户名
- * @param password 密码
- * @returns 用户名已存在|邮箱已注册|写入错误|注册成功
+ * @returns 用户名已存在|邮箱已注册|允许注册
  */
-async function CheckRegister(email: string, username: string, password: string) {
+async function CheckRegister(email: string, username: string) {
     const ckusername = await getData(c.USER_KEY + username)
     if (ckusername != null) {
         return c.USERNAME_EXISTS//用户名已经存在
@@ -39,17 +39,41 @@ async function CheckRegister(email: string, username: string, password: string) 
     if (ckemail != null) {
         return c.EMAIL_EXISTS//邮箱已经注册
     }
+    return c.OK
+}
+
+/**
+ * 
+ * @param email 邮箱
+ * @param username 用户名
+ * @param password 密码
+ * @returns 注册成功|发生错误
+ */
+async function Register(email: string, username: string, password: string) {
     try {
-        //将用户名和邮箱分别作为key存入数据库中
-        putData(c.USER_KEY + username, { userinfo: { email: email, password: Md5.hashStr(password) }, gameinfo: {} })
-        putData(c.EMAIL_KEY + email, { username: username, password: Md5.hashStr(password) })
+        let constellationseed = -1;
+        while (1) {
+            const seed = Math.floor(Math.random() * 16834)//先开放16384个星域
+            if (seed % 64 == 0) { continue; }//64倍数的星域编号留空给NPC住
+            getData(c.CONSTELLATION_KEY + seed.toString()).then(result=>{
+                if (result.owner == null) {
+                    constellationseed = seed;
+                }
+            })
+            
+        }
+        putData(c.USER_KEY + username, {
+            userinfo: { email: email, password: Md5.hashStr(password) },
+            gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, constellations: [constellationseed] }
+        })//占用用户名
+        putData(c.EMAIL_KEY + email, { username: username, password: Md5.hashStr(password) })//占用邮箱
+        putData(c.CONSTELLATION_KEY + constellationseed.toString(), { owner: username, builds: {} })//占用星域种子
+        return c.OK
     }
     catch (e) {
-        //万一发生写入错误(不知道为什么,总之兜个底)
-        console.log('ERROR! Data Writing Error!', e)
+        console.log('ERROR! Writing Data Error!')
         return c.ERROR_UNDEFINED
     }
-    return c.OK
 }
 
 /**
@@ -87,6 +111,7 @@ async function UpdateData(username: string, data: any) {
 export {
     CheckLogin,
     CheckRegister,
+    Register,
     ReadData,
     UpdateData
 }
