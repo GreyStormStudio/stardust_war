@@ -1,8 +1,8 @@
 import { SHIP, blocktype } from '../../../share/CONSTANT'
 
-export function addBlocktoShip(ship: SHIP, newblock: { type: blocktype, block: any, x: number, y: number }) {
+export function addBlocktoShip(ship: SHIP, newblock: { type: blocktype, level: number, block: any, x: number, y: number }) {
     ship.Ship_Blocks.blocks.push(
-        { type: newblock.type, block: newblock.block, x: newblock.x, y: newblock.y }
+        { type: newblock.type, level: newblock.level, block: newblock.block, x: newblock.x, y: newblock.y }
     )
 }
 

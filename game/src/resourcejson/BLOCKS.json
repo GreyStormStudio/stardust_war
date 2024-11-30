@@ -1,0 +1,140 @@
+{
+    "bundles": [
+        {
+            "name": "CORE",
+            "assets": [
+                {
+                    "alias": "CORE1",
+                    "src": "/src/public/BLOCKS/BLOCK_CORE1.png"
+                },
+                {
+                    "alias": "CORE2",
+                    "src": "/src/public/BLOCKS/BLOCK_CORE2.png"
+                },
+                {
+                    "alias": "CORE3",
+                    "src": "/src/public/BLOCKS/BLOCK_CORE3.png"
+                }
+            ]
+        },
+        {
+            "name": "BODY",
+            "assets": [
+                {
+                    "alias": "BODY1",
+                    "src": "/src/public/BLOCKS/BLOCK_BODY1.png"
+                },
+                {
+                    "alias": "BODY2",
+                    "src": "/src/public/BLOCKS/BLOCK_BODY2.png"
+                },
+                {
+                    "alias": "BODY3",
+                    "src": "/src/public/BLOCKS/BLOCK_BODY3.png"
+                }
+            ]
+        },
+        {
+            "name": "POWER",
+            "assets": [
+                {
+                    "alias": "POWER1",
+                    "src": "/src/public/BLOCKS/BLOCK_POWER1.png"
+                },
+                {
+                    "alias": "POWER2",
+                    "src": "/src/public/BLOCKS/BLOCK_POWER2.png"
+                },
+                {
+                    "alias": "POWER3",
+                    "src": "/src/public/BLOCKS/BLOCK_POWER3.png"
+                }
+            ]
+        },
+        {
+            "name": "ARMOR",
+            "assets": [
+                {
+                    "alias": "ARMOR1",
+                    "src": "/src/public/BLOCKS/BLOCK_ARMOR1.png"
+                },
+                {
+                    "alias": "ARMOR2",
+                    "src": "/src/public/BLOCKS/BLOCK_ARMOR2.png"
+                },
+                {
+                    "alias": "ARMOR3",
+                    "src": "/src/public/BLOCKS/BLOCK_ARMOR3.png"
+                }
+            ]
+        },
+        {
+            "name": "SHIELD",
+            "assets": [
+                {
+                    "alias": "SHIELD1",
+                    "src": "/src/public/BLOCKS/BLOCK_SHIELD1.png"
+                },
+                {
+                    "alias": "SHIELD2",
+                    "src": "/src/public/BLOCKS/BLOCK_SHIELD2.png"
+                },
+                {
+                    "alias": "SHIELD3",
+                    "src": "/src/public/BLOCKS/BLOCK_SHIELD3.png"
+                }
+            ]
+        },
+        {
+            "name": "ENGINE_SUBSPACE",
+            "assets": [
+                {
+                    "alias": "ENGINE_SUB1",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_SUBSPACE1.png"
+                },
+                {
+                    "alias": "ENGINE_SUB2",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_SUBSPACE2.png"
+                },
+                {
+                    "alias": "ENGINE_SUB3",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_SUBSPACE3.png"
+                }
+            ]
+        },
+        {
+            "name": "ENGINE_HYPERSPACE",
+            "assets": [
+                {
+                    "alias": "ENGINE_HYPER1",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_HYPERSPACE1.png"
+                },
+                {
+                    "alias": "ENGINE_HYPER2",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_HYPERSPACE2.png"
+                },
+                {
+                    "alias": "ENGINE_HYPER3",
+                    "src": "/src/public/BLOCKS/BLOCK_ENGINE_HYPERSPACE3.png"
+                }
+            ]
+        },
+        {
+            "name": "WEAPON",
+            "assets": [
+                {
+                    "alias": "WEAPON1",
+                    "src": "/src/public/BLOCKS/BLOCK_WEAPON1.png"
+                },
+                {
+                    "alias": "WEAPON2",
+                    "src": "/src/public/BLOCKS/BLOCK_WEAPON2.png"
+                },
+                {
+                    "alias": "WEAPON3",
+                    "src": "/src/public/BLOCKS/BLOCK_WEAPON3.png"
+                }
+            ]
+        }
+    ]
+}
