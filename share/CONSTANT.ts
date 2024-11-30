@@ -10,6 +10,8 @@ export const USER_KEY = 'User:';
 export const EMAIL_KEY = 'Email:';
 export const CONSTELLATION_KEY = 'Constellation:'
 
+export const MapEdge = 512;
+
 //舰船方块定义包含:花费,能量产出,护盾值,生命值,伤害,亚空间航速,超空间航速
 export const BLOCKS = {
     CORE: {
@@ -56,56 +58,32 @@ export const BLOCKS = {
     }
 }
 
+export type blocktype = 'CORE' | 'BODY' | 'POWER' | 'ARMOR' | 'SHIELD' | 'ENGINE' | 'WEAPON'
 
-/**初始送给玩家的船
- * 结构为:
- * 甲盾甲
- * 武核武
- * 身擎身
- */
-export const SHIP_ZERO = {
+interface block {
+    type: blocktype,
+    block: any,
+    x: number,
+    y: number
+}
+export interface SHIP {
+    Ship_Blocks: {
+        blocks: block[]
+    }
+}
+
+export const SHIP_ZERO: SHIP = {
     Ship_Blocks: {
         blocks: [
-            { type: 'ARMOR', block: BLOCKS.ARMOR.ARMOR1, id: 'ARMOR1_1', x: 0, y: 0 },
-            { type: 'SHIELD', block: BLOCKS.SHIELD.SHIELD1, id: 'SHIELD1_1', x: 1, y: 0 },
-            { type: 'ARMOR', block: BLOCKS.ARMOR.ARMOR1, id: 'ARMOR1_2', x: 2, y: 0 },
-            { type: 'WEAPON', block: BLOCKS.WEAPON.WEAPON1, id: 'WEAPON1_1', x: 0, y: 1 },
-            { type: 'CORE', block: BLOCKS.CORE.CORE1, id: 'CORE1_1', x: 1, y: 1 },
-            { type: 'WEAPON', block: BLOCKS.WEAPON.WEAPON1, id: 'WEAPON1_2', x: 2, y: 1 },
-            { type: 'BODY', block: BLOCKS.BODY.BODY1, id: 'BODY1_1', x: 0, y: 2 },
-            { type: 'ENGINE', block: BLOCKS.ENGINE.SUBSPACE.ENGINE_SUB1, id: 'ENGINE_SUB1_1', x: 1, y: 2 },
-            { type: 'BODY', block: BLOCKS.BODY.BODY1, id: 'BODY1_2', x: 2, y: 2 }
-        ],
-        connectlist: [
-            { id1: 'ARMOR1_1', id2: 'SHIELD1_1' },
-            { id1: 'SHIELD1_1', id2: 'ARMOR1_2' },
-            { id1: 'ARMOR1_1', id2: 'WEAPON1_1' },
-            { id1: 'SHIELD1_1', id2: 'CORE1_1' },
-            { id1: 'ARMOR1_2', id2: 'WEAPON1_2' },
-            { id1: 'WEAPON1_1', id2: 'CORE1_1' },
-            { id1: 'WEAPON1_1', id2: 'BODY1_1' },
-            { id1: 'WEAPON1_2', id2: 'CORE1_1' },
-            { id1: 'WEAPON1_2', id2: 'BODY1_2' },
-            { id1: 'CORE1_1', id2: 'ENGINE_SUB1_1' },
-            { id1: 'BODY1_1', id2: 'ENGINE_SUB1_1' },
-            { id1: 'BODY1_2', id2: 'ENGINE_SUB1_1' }
+            { type: 'CORE', block: BLOCKS.CORE.CORE1, x: 0, y: 0 },//核心限制一个,位置(0,0),其他方块记录相对于核心的位置左上--,右下++
+            { type: 'ARMOR', block: BLOCKS.ARMOR.ARMOR1, x: -1, y: -1 },
+            { type: 'SHIELD', block: BLOCKS.SHIELD.SHIELD1, x: 0, y: -1 },
+            { type: 'ARMOR', block: BLOCKS.ARMOR.ARMOR1, x: 1, y: -1 },
+            { type: 'WEAPON', block: BLOCKS.WEAPON.WEAPON1, x: -1, y: 0 },
+            { type: 'WEAPON', block: BLOCKS.WEAPON.WEAPON1, x: 1, y: 0 },
+            { type: 'BODY', block: BLOCKS.BODY.BODY1, x: -1, y: 1 },
+            { type: 'ENGINE', block: BLOCKS.ENGINE.SUBSPACE.ENGINE_SUB1, x: 0, y: 1 },
+            { type: 'BODY', block: BLOCKS.BODY.BODY1, x: 1, y: 1 }
         ]
     }
-};
-
-export interface SHIP{
-    Ship_Blocks: {
-        blocks:block[],
-        connectlist:connect[]
-    }
-}
-interface block{
-    type:'CORE'|'BODY'|'POWER'|'ARMOR'|'SHIELD'|'ENGINE'|'WEAPON',
-    block:any,
-    id:string,
-    x:number,
-    y:number
-}
-interface connect{
-    id1:string,id2:string
 }

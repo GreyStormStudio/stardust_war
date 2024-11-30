@@ -14,6 +14,7 @@
     "@types/node": "^22.9.3",
     "@types/socket.io": "^3.0.2",
     "@types/socket.io-client": "^3.0.0",
+    "alea": "^1.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
