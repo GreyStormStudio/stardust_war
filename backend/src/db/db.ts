@@ -58,5 +58,20 @@ async function updateData(key: string, partialData: any, mergeFunction?: (oldDat
     }
 }
 
+async function getKey(perfix: string) {
+    try {
+        const keys: string[] = [];
+        const stream = db.keys({ gte: perfix, lt: perfix + '\uffff' })
+        for await (const key of stream) {
+            keys.push(key);
+        }
+        return keys;
+    }
+    catch (e) {
+        console.log(e)
+        return null
+    }
+}
+
 export default db;
-export { putData, getData, updateData };
+export { putData, getData, updateData, getKey };

@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import { updataResource } from './core';
 import * as fn from './functions'
 class SocketEventsHandler {
     private io: Server
@@ -7,16 +8,20 @@ class SocketEventsHandler {
     }
 
     initializeEvents() {
+        const detaltime = 1 * 1000
+        setInterval(() => {
+            updataResource()
+        }, detaltime)
         this.io.on('connection', (socket) => {
-            console.log('a user connected');
-
+            //console.log('a user connected');
+            
             // 监听登录事件
             socket.on('Login', (username, password) => {
                 fn.CheckLogin(username, password).then(result => {
                     socket.emit('LoginResult', result)
                 })
             });
-            
+
             // 监听注册事件
             socket.on('Register', (email, username, password) => {
                 fn.Register(email, username, password).then(result => {
@@ -31,16 +36,16 @@ class SocketEventsHandler {
             })
 
             //监听数据请求事件
-            socket.on('ReadData', (username, isgameInfo) => {
-                fn.ReadData(username, isgameInfo).then(result => {
-                    socket.emit('ReadData', result)
+            socket.on('ReadData', (username) => {
+                fn.ReadData(username).then(result => {
+                    socket.emit('ReadDataResult', result)
                 })
             })
 
             //监听数据更改事件
             socket.on('UpdateData', (username, data) => {
                 fn.UpdateData(username, data).then(result => {
-                    socket.emit('UpdateData', result)
+                    socket.emit('UpdateDataResult', result)
                 })
             })
 
@@ -51,5 +56,4 @@ class SocketEventsHandler {
         });
     }
 }
-
 export default SocketEventsHandler;

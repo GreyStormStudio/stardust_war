@@ -9,14 +9,13 @@
     <div class="right">
         <!-- 建筑产出 -->
         <div class="building-output">
-            <p>能量:{{ energystore }} +{{ energyproduce }}</p>
-            <p>矿物:{{ mineralstore }} +{{ mineralproduce }}</p>
-            <p>金属:{{ metalstore }} +{{ metalproduce }}</p>
+            <p>能量:{{ store.energy }} +{{ 100 }}</p>
+            <p>矿物:{{ store.mineral }} +{{ 50 }}</p>
+            <p>金属:{{ store.metal }} +{{ 1 }}</p>
         </div>
     </div>
 </template>
-<script>
-</script>
+<script src="../../scripts/constellation.ts"></script>
 <style>
 body {
     user-select: none;

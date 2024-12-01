@@ -78,9 +78,9 @@ async function Register(email: string, username: string, password: string) {
  * @param isgameInfo (默认false)是否读取游戏数据
  * @returns 用户账户信息|用户游戏信息
  */
-async function ReadData(username: string, isgameInfo: false) {
+async function ReadData(username: string) {
     const info = await getData(c.USER_KEY + username)
-    return isgameInfo ? info.gameinfo : info.userinfo
+    return info
 }
 
 /**
