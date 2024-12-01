@@ -1,6 +1,19 @@
-import { Application, Graphics, Text } from "pixi.js";
+import { Application, Graphics } from "pixi.js";
 import { useGameInfoStore, useUserInfoStore } from "../store";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
+let app: Application | null
+async function initApp() {
+    if (!app) {//没有Application就实例化一个
+        app = new Application()
+    }
+    const mapContainer = document.querySelector('.map') as HTMLElement;
+    await app.init({
+        width: mapContainer.clientWidth,
+        height: mapContainer.clientHeight,
+    });
+    mapContainer.appendChild(app.canvas);
+    return
+}
 
 function useSocket() {
     const instance = getCurrentInstance();
@@ -23,8 +36,14 @@ export default defineComponent({
         const store = ref(useGameInfoStore().getStorage);
         const intervalId = ref();
         const socket = useSocket();
-        onMounted(() => {
-            intervalId.value = setInterval(() => fetchData(socket, store), 1000 / 60);
+        onMounted(async () => {
+            intervalId.value = setInterval(() => {
+                fetchData(socket, store), 1000 / 60;
+                if (store.value.energy > 5000) {//测试,资源太多直接归零
+                    socket.emit('clearStorage', useUserInfoStore().getUsername)
+                }
+            });
+            await initApp()
         });
         onBeforeUnmount(() => {
             if (intervalId.value) {
@@ -32,8 +51,8 @@ export default defineComponent({
             }
         });
         return {
-            store
+            store,
         }
-    },
+    }
 
 })

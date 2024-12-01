@@ -2,9 +2,8 @@ import { getData, putData, updateData } from '../db/db'
 import { Md5 } from 'ts-md5'
 import * as c from '../../../share/CONSTANT'
 
-//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},constellations:[]}}
+//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},ship:{Ship结构,Ship位置:{x,y,constellation},Ship生命值}}}
 //Email:{username:string,password:string}
-//Constellation:{owner:string,builds:{}}
 
 /**
  * 
@@ -50,20 +49,12 @@ async function CheckRegister(email: string, username: string) {
  */
 async function Register(email: string, username: string, password: string) {
     try {
-        let constellationseed = -1;
-        while (1) {//循环找空星给新用户
-            const seed = Math.floor(Math.random() * 0x80000000).toString()
-            if (await getData(seed) == null && Number(seed) % 64 != 0) {//找一个没人的星
-                constellationseed = Number(seed)
-                break
-            }
-        }
+        const seed = Math.floor(Math.random() * 128) % 128 //目前只开放128个星域
         putData(c.USER_KEY + username, {
             userinfo: { email: email, password: Md5.hashStr(password) },
-            gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, constellations: [constellationseed] }
+            gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, ship: { object: c.SHIP_ZERO, x: Math.random() * 5120, y: Math.random() * 5120, constellation: seed } }
         })//占用用户名
         putData(c.EMAIL_KEY + email, { username: username, password: Md5.hashStr(password) })//占用邮箱
-        putData(c.CONSTELLATION_KEY + constellationseed.toString(), { owner: username, builds: {} })//占用星域种子
         return c.OK
     }
     catch (e) {
@@ -79,6 +70,7 @@ async function Register(email: string, username: string, password: string) {
  * @returns 用户账户信息|用户游戏信息
  */
 async function ReadData(username: string) {
+    //const info = await 
     const info = await getData(c.USER_KEY + username)
     return info
 }
@@ -104,10 +96,19 @@ async function UpdateData(username: string, data: any) {
     }
 }
 
+async function clearStorage(username: string) {
+    const data = await getData(c.USER_KEY + username)
+    data.gameinfo.storage.energy = 0
+    data.gameinfo.storage.mineral = 0
+    data.gameinfo.storage.metal = 0
+    await updateData(c.USER_KEY + username, data);
+}
+
 export {
     CheckLogin,
     CheckRegister,
     Register,
     ReadData,
-    UpdateData
+    UpdateData,
+    clearStorage
 }

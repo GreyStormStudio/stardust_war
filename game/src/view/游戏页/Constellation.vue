@@ -34,7 +34,7 @@ body {
 .map {
     flex: 0 0 auto;
     height: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2 / 1;
     background-color: lightblue;
     overflow: hidden;
 }

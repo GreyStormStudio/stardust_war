@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { updataResource } from './core';
+import { updataResource, Engine, engine } from './core';
 import * as fn from './functions'
 class SocketEventsHandler {
     private io: Server
@@ -8,13 +8,16 @@ class SocketEventsHandler {
     }
 
     initializeEvents() {
-        const detaltime = 1 * 1000
         setInterval(() => {
             updataResource()
-        }, detaltime)
+        }, 1000)//每秒加一次资源
+        Engine.update(engine)//每帧更新一次物理引擎
+
         this.io.on('connection', (socket) => {
             //console.log('a user connected');
-            
+            socket.on('clearStorage', (username) => {
+                fn.clearStorage(username)
+            })
             // 监听登录事件
             socket.on('Login', (username, password) => {
                 fn.CheckLogin(username, password).then(result => {
