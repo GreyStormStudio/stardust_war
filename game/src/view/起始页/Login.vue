@@ -33,6 +33,7 @@ export default {
     },
     methods: {
         login() {
+            //this.$socket.emit('deldb')
             this.$socket.emit('Login', this.username, this.password)
             this.$socket.once('LoginResult', (result) => {
                 switch (result.rep) {
@@ -49,8 +50,9 @@ export default {
                         });
                         useGameInfoStore().setGameInfo({
                             storage:result.val.storage,
-                            constellations:result.val.constellations
+                            ship:result.val.ship
                         })
+                        console.log(result.val.ship)
                         this.$router.push('/constellation')
                         break;
                     default:

@@ -1,5 +1,6 @@
 import { createPinia, defineStore } from "pinia"
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { SHIP_ZERO } from "../../../share/CONSTANT"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -12,41 +13,39 @@ const useGameInfoStore = defineStore('gameInfo', {
                 mineral: 0,
                 metal: 0,
             },
-            constellations: [-1],
+            ship: {
+                object: SHIP_ZERO,
+                pos: {
+                    x: 0,
+                    y: 0,
+                    constellation: -1
+                },
+                sinfo: {
+                    power: 0,
+                    hits: 0,
+                    mass: 0,
+                    thrust: 0,
+                    speed_hyper: 0,
+                    id: 0
+                }
+            }
+
         }
     },
     actions: {
         setGameInfo(gameinfo: any) {
             this.storage = gameinfo.storage
-            this.constellations = gameinfo.constellations
+            this.ship = gameinfo.ship
         },
-        setStorage(type: "energy" | "mineral" | "metal", data: number) {
-            if (type == "energy") {
-                this.storage.energy = data
-            }
-            if (type == "mineral") {
-                this.storage.mineral = data
-            }
-            if (type == "metal") {
-                this.storage.metal = data
-            }
-        },
-        editConstellation(type: "add" | "remove", data: number) {
-            if (type == "add") {
-                this.constellations.push(data)
-            }
-            if (type == "remove") {
-                this.constellations = this.constellations.filter(number => number != data)
-            }
-        }
     },
     getters: {
         getStorage(state) {
             return state.storage
         },
-        getConstellations(state) {
-            return state.constellations
+        getShipid(state) {
+            return state.ship.sinfo.id
         }
+
     },
     persist: true//持久化储存
 })

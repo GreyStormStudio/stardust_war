@@ -1,9 +1,9 @@
-import { getData, putData, updateData } from '../db/db'
+import db, { getData, putData, updateData } from '../db/db'
 import { Md5 } from 'ts-md5'
 import { addShip } from './core'
 import * as c from '../../../share/CONSTANT'
 
-//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},ship:{Ship结构,Ship位置:{x,y,constellation},Ship生命值}}}
+//User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},ship:{Ship结构,Ship位置:{x,y,constellation},sinfo}}}
 //Email:{username:string,password:string}
 
 /**
@@ -55,13 +55,13 @@ async function Register(email: string, username: string, password: string) {
         const sinfo = addShip(c.SHIP_ZERO, x, y)
         putData(c.USER_KEY + username, {
             userinfo: { email: email, password: Md5.hashStr(password) },
-            gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, ship: { object: c.SHIP_ZERO, x, y, constellation: seed, sinfo: sinfo } }
+            gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, ship: { object: c.SHIP_ZERO, pos: { x, y, constellation: seed }, sinfo: sinfo } }
         })//占用用户名
         putData(c.EMAIL_KEY + email, { username: username, password: Md5.hashStr(password) })//占用邮箱
         return c.OK
     }
     catch (e) {
-        console.log('ERROR! Writing Data Error!')
+        console.log(e, 'ERROR! Writing Data Error!')
         return c.ERROR_UNDEFINED
     }
 }
@@ -107,11 +107,16 @@ async function clearStorage(username: string) {
     await updateData(c.USER_KEY + username, data);
 }
 
+async function deldb() {
+    await db.clear()
+}
+
 export {
     CheckLogin,
     CheckRegister,
     Register,
     ReadData,
     UpdateData,
-    clearStorage
+    clearStorage,
+    deldb
 }

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { updataResource, Engine, engine } from './core';
+import { updataResource, Engine, engine, Matter } from './core';
 import * as fn from './functions'
 class SocketEventsHandler {
     private io: Server
@@ -13,10 +13,25 @@ class SocketEventsHandler {
         }, 1000)//每秒加一次资源
         Engine.update(engine)//每帧更新一次物理引擎
 
+
         this.io.on('connection', (socket) => {
+            /*socket.on('GetShipInfo', (id) => {
+                const object = Matter.Composite.get(engine.world, id, 'body')
+                if(object){
+                    console.log(object)
+                    console.log("___________________________________________")
+                }
+                else{
+                    console.log('null')
+                }
+            })*/
             //console.log('a user connected');
             socket.on('clearStorage', (username) => {
                 fn.clearStorage(username)
+            })
+            socket.on('deldb',()=>{
+                fn.deldb()
+                console.log('数据库已清除')
             })
             // 监听登录事件
             socket.on('Login', (username, password) => {

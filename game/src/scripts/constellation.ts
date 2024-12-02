@@ -29,6 +29,10 @@ function fetchData(socket: any, store: any) {
         store.value.mineral = result.gameinfo.storage.mineral;
         store.value.metal = result.gameinfo.storage.metal;
     });
+    /*socket.emit('GetShipInfo', 11)
+    socket.once('GetShipInfoResult', (result: any) => {
+        console.log(result)
+    })*/
 }
 
 export default defineComponent({
@@ -42,7 +46,7 @@ export default defineComponent({
                 if (store.value.energy > 5000) {//测试,资源太多直接归零
                     socket.emit('clearStorage', useUserInfoStore().getUsername)
                 }
-            });
+            },1000/6);
             await initApp()
         });
         onBeforeUnmount(() => {
