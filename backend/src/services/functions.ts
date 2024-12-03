@@ -20,6 +20,7 @@ async function CheckLogin(username: string, password: string) {
     if (info.userinfo.password != Md5.hashStr(password)) {//密码错误
         return { rep: c.PASSWORD_INCORRECT, val: null }
     }
+    addShip(info.gameinfo.ship.object, info.gameinfo.ship.pos.x, info.gameinfo.ship.pos.y, username)
     return { rep: c.OK, val: info.gameinfo }
 }
 
@@ -52,7 +53,7 @@ async function Register(email: string, username: string, password: string) {
     try {
         const seed = Math.floor(Math.random() * 128) % 128 //目前只开放128个星域
         const { x, y } = { x: Math.random() * 5000 + 60, y: Math.random() * 5000 + 60 }
-        const sinfo = addShip(c.SHIP_ZERO, x, y)
+        const sinfo = addShip(c.SHIP_ZERO, x, y, username)
         putData(c.USER_KEY + username, {
             userinfo: { email: email, password: Md5.hashStr(password) },
             gameinfo: { storage: { energy: 1000, mineral: 500, metal: 0 }, ship: { object: c.SHIP_ZERO, pos: { x, y, constellation: seed }, sinfo: sinfo } }

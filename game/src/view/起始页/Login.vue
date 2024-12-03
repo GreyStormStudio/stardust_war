@@ -22,10 +22,16 @@
     </div>
 </template>
 <script>
-import { useUserInfoStore,useGameInfoStore } from '../../store';
+import { useUserInfoStore, useGameInfoStore } from '../../store';
 import * as c from '../../../../share/CONSTANT'
 export default {
     data() {
+        if ('gpu' in navigator) {
+            console.log(navigator.gpu)
+        }
+        else{
+            console.log('No!')
+        }
         return {
             username: '',
             password: ''
@@ -49,10 +55,9 @@ export default {
                             username: this.username
                         });
                         useGameInfoStore().setGameInfo({
-                            storage:result.val.storage,
-                            ship:result.val.ship
+                            storage: result.val.storage,
+                            ship: result.val.ship
                         })
-                        console.log(result.val.ship)
                         this.$router.push('/constellation')
                         break;
                     default:
@@ -73,7 +78,8 @@ body,
 html {
     margin: 0;
     height: 100%;
-    font-family: 'Arial', sans-serif; /* 设置默认字体 */
+    font-family: 'Arial', sans-serif;
+    /* 设置默认字体 */
 }
 
 .background {
@@ -127,13 +133,17 @@ h3 {
 }
 
 .btn {
-    padding: 12px; /* 调整内边距 */
+    padding: 12px;
+    /* 调整内边距 */
     border: none;
-    background-color: #5cb85c; /* 调整按钮颜色 */
+    background-color: #5cb85c;
+    /* 调整按钮颜色 */
     color: white;
-    border-radius: 4px; /* 圆角边框 */
+    border-radius: 4px;
+    /* 圆角边框 */
     cursor: pointer;
-    font-size: 1em; /* 调整字体大小 */
+    font-size: 1em;
+    /* 调整字体大小 */
 }
 
 .login-btn,
@@ -142,7 +152,8 @@ h3 {
     margin: 0 20px;
 }
 
-.enter-game,.forget{
+.enter-game,
+.forget {
     display: block;
     margin-top: 10px;
     color: #888;

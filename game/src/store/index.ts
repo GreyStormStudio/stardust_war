@@ -25,8 +25,7 @@ const useGameInfoStore = defineStore('gameInfo', {
                     hits: 0,
                     mass: 0,
                     thrust: 0,
-                    speed_hyper: 0,
-                    id: 0
+                    speed_hyper: 0
                 }
             }
 
@@ -42,8 +41,8 @@ const useGameInfoStore = defineStore('gameInfo', {
         getStorage(state) {
             return state.storage
         },
-        getShipid(state) {
-            return state.ship.sinfo.id
+        getShipInfo(state){
+            return state.ship.sinfo
         }
 
     },

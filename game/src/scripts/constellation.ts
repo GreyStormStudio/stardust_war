@@ -21,7 +21,7 @@ function useSocket() {
 }
 
 // 获取资源
-function fetchData(socket: any, store: any) {
+function fetchData(socket: any, store: any, info: any) {
     const username = useUserInfoStore().getUsername;
     socket.emit('ReadData', username, true);
     socket.once('ReadDataResult', (result: any) => {
@@ -29,6 +29,11 @@ function fetchData(socket: any, store: any) {
         store.value.mineral = result.gameinfo.storage.mineral;
         store.value.metal = result.gameinfo.storage.metal;
     });
+    socket.once('ShipInfo', (username: string, sinfo: any) => {
+        info.p = sinfo.position
+        info.v = sinfo.velocity
+        info.a = sinfo.acceleration
+    })
     /*socket.emit('GetShipInfo', 11)
     socket.once('GetShipInfoResult', (result: any) => {
         console.log(result)
@@ -38,15 +43,16 @@ function fetchData(socket: any, store: any) {
 export default defineComponent({
     setup() {
         const store = ref(useGameInfoStore().getStorage);
+        const info = { p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 } }
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
             intervalId.value = setInterval(() => {
-                fetchData(socket, store), 1000 / 60;
+                fetchData(socket, store, info);
                 if (store.value.energy > 5000) {//测试,资源太多直接归零
                     socket.emit('clearStorage', useUserInfoStore().getUsername)
                 }
-            },1000/6);
+            }, 1000 / 60);
             await initApp()
         });
         onBeforeUnmount(() => {
@@ -56,6 +62,7 @@ export default defineComponent({
         });
         return {
             store,
+            info
         }
     }
 
