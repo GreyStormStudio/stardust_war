@@ -100,6 +100,26 @@ async function UpdateData(username: string, data: any) {
     }
 }
 
+async function RequestData(username: string, key: string) {
+    try {
+        const Data = await getData(c.USER_KEY + username);
+        switch (key) {
+            case 'storage':
+                return Data.gameinfo.storage
+            case 'shipinfo':
+                return Data.gameinfo.ship.sinfo
+            default:
+                return Data.gameinfo
+        }
+    }
+    catch(e){
+        console.log(e,'Error!')
+        return c.ERROR_UNDEFINED
+    }
+    
+    
+}
+
 async function clearStorage(username: string) {
     const data = await getData(c.USER_KEY + username)
     data.gameinfo.storage.energy = 0
@@ -116,7 +136,7 @@ export {
     CheckLogin,
     CheckRegister,
     Register,
-    ReadData,
+    RequestData,
     UpdateData,
     clearStorage,
     deldb
