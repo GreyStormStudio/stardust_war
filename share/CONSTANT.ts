@@ -95,17 +95,17 @@ export const BLOCKS = {
             1: {
                 cost: { energy: 1500, mineral: 500 },
                 baseAttribute: { power: -100, hits: 100, mass: 500 },
-                specialAttributes: { thrust: 1000, }
+                specialAttributes: { thrust: 40000, }
             },
             2: {
                 cost: { energy: 3000, mineral: 1000 },
                 baseAttribute: { power: -500, hits: 200, mass: 1000 },
-                specialAttributes: { thrust: 4000, }
+                specialAttributes: { thrust: 160000, }
             },
             3: {
                 cost: { energy: 6000, mineral: 2000 },
                 baseAttribute: { power: -2500, hits: 400, mass: 2000 },
-                specialAttributes: { thrust: 16000, }
+                specialAttributes: { thrust: 640000, }
             }
         },
         HYPERSPACE: {

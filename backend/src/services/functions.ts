@@ -20,7 +20,7 @@ async function CheckLogin(username: string, password: string) {
     if (info.userinfo.password != Md5.hashStr(password)) {//密码错误
         return { rep: c.PASSWORD_INCORRECT, val: null }
     }
-    addShip(info.gameinfo.ship.object, info.gameinfo.ship.pos.x, info.gameinfo.ship.pos.y, username)
+    //addShip(info.gameinfo.ship.object, info.gameinfo.ship.pos.x, info.gameinfo.ship.pos.y, username)
     return { rep: c.OK, val: info.gameinfo }
 }
 

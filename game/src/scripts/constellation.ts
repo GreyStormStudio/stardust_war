@@ -23,36 +23,40 @@ function useSocket() {
 // 获取资源
 function fetchData(socket: any, store: any, info: any) {
     const username = useUserInfoStore().getUsername;
-    socket.emit('ReadData', username, true);
-    socket.once('ReadDataResult', (result: any) => {
-        store.value.energy = result.gameinfo.storage.energy;
-        store.value.mineral = result.gameinfo.storage.mineral;
-        store.value.metal = result.gameinfo.storage.metal;
-    });
-    socket.once('ShipInfo', (username: string, sinfo: any) => {
-        info.p = sinfo.position
-        info.v = sinfo.velocity
-        info.a = sinfo.acceleration
-    })
-    /*socket.emit('GetShipInfo', 11)
-    socket.once('GetShipInfoResult', (result: any) => {
-        console.log(result)
-    })*/
+    socket.emit('RequestData', username, 'storage');
+
+    function handleRequestDataResult(result: any) {
+        store.value.energy = result.energy;
+        store.value.mineral = result.mineral;
+        store.value.metal = result.metal;
+    }
+
+    function handleShipInfo(sinfo: any) {
+        info.p = sinfo.position;
+        info.v = sinfo.velocity;
+        info.a = sinfo.acceleration;
+        info.an.v = sinfo.angularVelcity;
+        info.an.a = sinfo.angularAcceleraion;
+    }
+
+    socket.once('RequestDataResult', handleRequestDataResult);
+    socket.once('ShipInfo', handleShipInfo);
 }
 
 export default defineComponent({
     setup() {
         const store = ref(useGameInfoStore().getStorage);
-        const info = { p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 } }
+        const info = { p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 }, an: { v: 0, a: 0 } }
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
+            //socket.emit('clearStorage', useUserInfoStore().getUsername)//开始先清除资源
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
-                if (store.value.energy > 5000) {//测试,资源太多直接归零
-                    socket.emit('clearStorage', useUserInfoStore().getUsername)
+                if (store.value.energy > 5000) {//测试,资源太多直接归零  
+                    socket.emit('clearStorage', useUserInfoStore().getUsername)//开始先清除资源
                 }
-            }, 1000 / 60);
+            }, 16.667);
             await initApp()
         });
         onBeforeUnmount(() => {

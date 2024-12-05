@@ -1,6 +1,23 @@
 import { SHIP } from '../../../share/CONSTANT';
 import { RigidBody, Engine, Vector2 } from '../scripts/PhysicsEngine';
-import { getKey, updateData, getData } from '../db/db'
+import { getKey, updateData, getData, putData } from '../db/db'
+/**
+ * init()从db中读取数据到内存中
+ * saveAlldata()将数据全部存到db中
+ * 1.更新资源
+ * 2.更新物理状态
+ * 3.
+ */
+export async function init() {
+    const data = await getData('Engine')
+    console.log('load:\n',data)
+    Engine.importBodies(data)
+}
+export function saveAlldata() {
+    const data = Engine.exportAllBodies()
+    console.log('save:\n',data)
+    putData('Engine', data)
+}
 
 
 export function addShip(ship: SHIP, px: number, py: number, username: string) {
@@ -22,8 +39,8 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
     return sinfo;
 }
 export function updataEngine() {
-    if (Engine.rigidBodies.get('User002')) {
-        Engine.rigidBodies.get('User002')?.applyforce(new Vector2(1000, 0))
+    if(Engine.getRigidBodyByLabel('User001')){
+        Engine.getRigidBodyByLabel('User001')?.applyforce(40000)
     }
     //每帧更新一次物理引擎
     Engine.update(1 / 60)
