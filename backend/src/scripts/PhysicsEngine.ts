@@ -116,11 +116,11 @@ class RigidBody {
             angle: this.angle,
             angularVelcity: this.angularVelcity,
             angularAcceleraion: this.angularAcceleraion,
-            forces: this.forces.slice(), // 复制数组
-            torque: this.torque
+            forces: [],
+            torque: 0
         };
     }
-    
+
     // 使用可序列化的对象来创建 RigidBody 实例
     static fromSerializable(data: any) {
         const body = new RigidBody(data.mass, data.airFriction, data.label);
@@ -131,8 +131,8 @@ class RigidBody {
         body.angle = data.angle;
         body.angularVelcity = data.angularVelcity;
         body.angularAcceleraion = data.angularAcceleraion;
-        body.forces = data.forces.slice(); // 复制数组
-        body.torque = data.torque;
+        body.forces = [];
+        body.torque = 0;
         return body;
     }
 }
