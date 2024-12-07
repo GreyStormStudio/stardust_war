@@ -5,7 +5,7 @@ class Vector2 {
         this.x = x;
         this.y = y;
     }
-
+    //#region 标准方法
     add(v: Vector2): Vector2 {
         return new Vector2(this.x + v.x, this.y + v.y)
     }
@@ -29,7 +29,7 @@ class Vector2 {
         }
         return new Vector2(this.x / len, this.y / len)
     }
-
+    //#endregion
     // 将 Vector2 实例转换为可序列化的对象
     toSerializable() {
         return { x: this.x, y: this.y };
@@ -38,12 +38,12 @@ class Vector2 {
     static fromSerializable(data: { x: number, y: number }) {
         return new Vector2(data.x, data.y);
     }
-
 }
 
 class RigidBody {
     mass: number;
     airFriction: number;
+    thrust: number;
     label: string;
 
     position: Vector2;
@@ -59,6 +59,7 @@ class RigidBody {
     constructor(position: Vector2, mass: number, label: string) {
         this.mass = mass;
         this.airFriction = 0;
+        this.thrust = 40000;
         this.label = label;
         this.position = position;
         this.velocity = new Vector2(0, 0);
@@ -69,7 +70,7 @@ class RigidBody {
         this.forces = [];
         this.torque = 0;
     }
-
+    //#region 标准方法
     applyforce(magnitude: number): void {
         // 计算推力方向
         const forceDirection = new Vector2(Math.cos(this.angle), Math.sin(this.angle)).normalize();
@@ -103,12 +104,13 @@ class RigidBody {
         }//限制角度
         this.torque = 0;
     }
-
+    //#endregion
     // 将 RigidBody 实例转换为可序列化的对象
     toSerializable() {
         return {
             mass: this.mass,
             airFriction: this.airFriction,
+            thrust: this.thrust,
             label: this.label,
             position: this.position.toSerializable(),
             velocity: this.velocity.toSerializable(),
@@ -123,8 +125,9 @@ class RigidBody {
 
     // 使用可序列化的对象来创建 RigidBody 实例
     static fromSerializable(data: any) {
-        const body = new RigidBody(data.mass, data.airFriction, data.label);
-        body.label = data.label;
+        const body = new RigidBody(new Vector2(0, 0), data.mass, data.label);
+        body.airFriction = 1;
+        body.thrust = data.thrust;
         body.position = Vector2.fromSerializable(data.position);
         body.velocity = Vector2.fromSerializable(data.velocity);
         body.acceleration = Vector2.fromSerializable(data.acceleration);
@@ -145,12 +148,6 @@ class PhysicsEngine {
         this.airFriction = airFriction;
     }
 
-    addrigidbody(rigidbody: RigidBody) {
-        rigidbody.airFriction = this.airFriction
-        this.rigidBodies.set(rigidbody.label, rigidbody);
-        console.log(this.rigidBodies)
-    }
-
     update(deltaTime: number) {
         for (const body of this.rigidBodies.values()) {
             body.update(deltaTime)
@@ -159,6 +156,11 @@ class PhysicsEngine {
 
     getRigidBodyByLabel(label: string): RigidBody | null {
         return this.rigidBodies.get(label) || null;
+    }
+
+    addrigidbody(rigidbody: RigidBody) {
+        rigidbody.airFriction = this.airFriction
+        this.rigidBodies.set(rigidbody.label, rigidbody);
     }
 
     exportAllBodies(): Record<string, any> {

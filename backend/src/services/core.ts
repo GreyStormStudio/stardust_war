@@ -1,4 +1,4 @@
-import { SHIP } from '../../../share/CONSTANT';
+import { SHIP,CAPACITY } from '../../../share/CONSTANT';
 import { RigidBody, Engine, Vector2 } from '../scripts/PhysicsEngine';
 import { getKey, updateData, getData, putData } from '../db/db'
 /**
@@ -10,12 +10,12 @@ import { getKey, updateData, getData, putData } from '../db/db'
  */
 export async function init() {
     const data = await getData('Engine')
-    console.log('load:\n',data)
+    console.log('load:\n', data, "\n_____")
     Engine.importBodies(data)
 }
 export function saveAlldata() {
     const data = Engine.exportAllBodies()
-    console.log('save:\n',data)
+    console.log('save:\n', data, "\n_____")
     putData('Engine', data)
 }
 
@@ -33,14 +33,14 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
         sinfo.speed_hyper += specialAttributes.speed_hyper || 0;
     })
     const Ship = new RigidBody(new Vector2(px, py), sinfo.mass, username)
+    Ship.thrust = sinfo.thrust
     Engine.addrigidbody(Ship)
-    Engine.exportAllBodies()
     // 返回Ship信息
     return sinfo;
 }
 export function updataEngine() {
-    if(Engine.getRigidBodyByLabel('User001')){
-        Engine.getRigidBodyByLabel('User001')?.applyforce(40000)
+    if (Engine.getRigidBodyByLabel('User001')) {
+        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust)
     }
     //每帧更新一次物理引擎
     Engine.update(1 / 60)
@@ -54,9 +54,9 @@ export async function updataResource() {
             let userData = await getData(key);
             if (userData && userData.gameinfo && userData.gameinfo.storage) {
                 const storage = userData.gameinfo.storage;
-                storage.energy += resIncrease.energy;
-                storage.mineral += resIncrease.mineral;
-                storage.metal += resIncrease.metal;
+                storage.energy += resIncrease.energy; if (storage.energy > CAPACITY) { storage.energy = CAPACITY; }
+                storage.mineral += resIncrease.mineral; if (storage.mineral > CAPACITY) { storage.mineral = CAPACITY; }
+                storage.metal += resIncrease.metal; if (storage.metal > CAPACITY) { storage.metal = CAPACITY; }
                 userData.gameinfo.storage = storage;
                 await updateData(key, userData);
             }

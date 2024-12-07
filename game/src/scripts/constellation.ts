@@ -1,6 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 import { useGameInfoStore, useUserInfoStore } from "../store";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
+import { CAPACITY } from "../../../share/CONSTANT";
 let app: Application | null
 async function initApp() {
     if (!app) {//没有Application就实例化一个
@@ -24,6 +25,7 @@ function useSocket() {
 function fetchData(socket: any, store: any, info: any) {
     const username = useUserInfoStore().getUsername;
     socket.emit('RequestData', username, 'storage');
+    socket.emit('RequestShipData', username);
 
     function handleRequestDataResult(result: any) {
         store.value.energy = result.energy;
@@ -32,30 +34,25 @@ function fetchData(socket: any, store: any, info: any) {
     }
 
     function handleShipInfo(sinfo: any) {
-        info.p = sinfo.position;
-        info.v = sinfo.velocity;
-        info.a = sinfo.acceleration;
-        info.an.v = sinfo.angularVelcity;
-        info.an.a = sinfo.angularAcceleraion;
+
+        info.value = { ...sinfo };
     }
 
     socket.once('RequestDataResult', handleRequestDataResult);
-    socket.once('ShipInfo', handleShipInfo);
+    socket.once('RequestShipDataResult', handleShipInfo);
 }
 
 export default defineComponent({
     setup() {
+        const capacity = CAPACITY;
         const store = ref(useGameInfoStore().getStorage);
-        const info = { p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 }, an: { v: 0, a: 0 } }
+        const info = ref({ mass: 0, label: '', position: { x: 0, y: 0 }, velocity: { x: 0, y: 0 }, acceleration: { x: 0, y: 0 }, thrust: 40000 });
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
             //socket.emit('clearStorage', useUserInfoStore().getUsername)//开始先清除资源
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
-                if (store.value.energy > 5000) {//测试,资源太多直接归零  
-                    socket.emit('clearStorage', useUserInfoStore().getUsername)//开始先清除资源
-                }
             }, 16.667);
             await initApp()
         });
@@ -66,7 +63,8 @@ export default defineComponent({
         });
         return {
             store,
-            info
+            info,
+            capacity
         }
     }
 

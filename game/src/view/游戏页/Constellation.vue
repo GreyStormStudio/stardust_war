@@ -1,26 +1,29 @@
 <template>
     <div class="left">
-        <!-- 建筑数量和建造 -->
-        <div class="building-controls">
-
-        </div>
+        <!-- 资源统计 -->
+        <p>能量:<span class="number" style="width: 100px;">{{ store.energy.toFixed(2) }}</span>
+            <span class="number" style="width: 50px;">+{{ 100 }}</span>
+            <span class="number" style="width: 70px;">{{ (store.energy / capacity * 100).toFixed(2) }}%</span>
+        </p>
+        <p>矿物:<span class="number" style="width: 100px;">{{ store.mineral.toFixed(2) }}</span>
+            <span class="number" style="width: 50px;">+{{ 50 }}</span>
+            <span class="number" style="width: 70px;">{{ (store.mineral / capacity * 100).toFixed(2) }}%</span>
+        </p>
+        <p>金属:<span class="number" style="width: 100px;">{{ store.metal.toFixed(2) }}</span>
+            <span class="number" style="width: 50px;">+{{ 1 }}</span>
+            <span class="number" style="width: 70px;">{{ (store.metal / capacity * 100).toFixed(2) }}%</span>
+        </p>
     </div>
     <div class="map"></div>
     <div class="right">
-        <!-- 建筑产出 -->
-        <div class="building-output">
-            <p>能量:{{ store.energy.toFixed(2) }} +{{ 100 }}</p>
-            <p>矿物:{{ store.mineral.toFixed(2) }} +{{ 50 }}</p>
-            <p>金属:{{ store.metal.toFixed(2) }} +{{ 1 }}</p>
-            <p>坐标: x:{{ info.p.x.toFixed(1) }} y:{{ info.p.y.toFixed(1) }}</p>
-            <p>角速度:{{ info.an.v.toFixed(2) }}</p>
-            <p>角加速度:{{ info.an.a }}</p>
-            <p>速度:{{ ((info.v.x ** 2 + info.v.y ** 2) ** 0.5).toFixed(2) }} 加速度:{{
-                ((info.a.x ** 2 + info.a.y ** 2) ** 0.5).toFixed(2) }}</p>
-            <p>速度:{{ ((info.v.x ** 2 + info.v.y ** 2) ** 0.5 / 2).toFixed(2) }}% 加速度:{{
-                ((info.a.x ** 2 + info.a.y ** 2) ** 0.5 / (40000 / 7750) * 100).toFixed(2) }}%</p>
-            <p>极限速度: 200 </p>
-        </div>
+        <p>飞船信息</p>
+        <!-- 飞船信息 -->
+        <p>坐标:({{ info.position.x.toFixed(2) }},{{ info.position.y.toFixed(2) }})</p>
+        <p>速度:{{ ((info.velocity.x ** 2 + info.velocity.y ** 2) ** 0.5).toFixed(3) }}/{{ ((info.velocity.x ** 2 + info.velocity.y ** 2) ** 0.5 / (info.thrust ** 0.5) * 100).toFixed(2) }}%</p>
+        <p>加速度:{{ ((info.acceleration.x ** 2 + info.acceleration.y ** 2) ** 0.5).toFixed(3) }}/{{ ((info.acceleration.x ** 2 + info.acceleration.y ** 2) ** 0.5 / (info.thrust / info.mass)* 100).toFixed(2) }}%</p>
+        <p>质量:{{ info.mass.toFixed(0) }}</p>
+        <p>最大航速:{{ info.thrust ** 0.5 }}</p>
+        <p>所有者:{{ info.label }}</p>
     </div>
 </template>
 <script src="../../scripts/constellation.ts"></script>
@@ -29,9 +32,11 @@ body {
     user-select: none;
 }
 
-/*.content {
-    display: flex;
-}*/
+.number {
+    text-align: right;
+    display: inline-block;
+}
+
 .left,
 .right {
     height: 100%;

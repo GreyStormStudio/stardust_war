@@ -24,9 +24,6 @@ class SocketEventsHandler {
         this.io.on('connection', (socket) => {
 
             //#region 测试用代码
-            setInterval(() => {
-                socket.emit('ShipInfo', Engine.getRigidBodyByLabel('User001'))
-            }, 16.667)
             socket.on('clearStorage', (username) => {
                 fn.clearStorage(username)
             })
@@ -62,9 +59,8 @@ class SocketEventsHandler {
                 })
             })
             //监听船
-
             socket.on('RequestShipData', (username) => {
-                socket.emit('ShipInfo', Engine.rigidBodies.get(username))
+                socket.emit('RequestShipDataResult', Engine.getRigidBodyByLabel(username))
             })
 
             // 监听用户断开连接事件

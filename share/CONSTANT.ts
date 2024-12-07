@@ -12,6 +12,7 @@ export const CONSTELLATION_KEY = 'Constellation:'
 
 export const MapEdge = 512;
 export const SpriteEdge = 64;
+export const CAPACITY = 1E7;
 
 export const BLOCK_RES_PATH = '/src/public/BLOCK/'
 //舰船方块定义包含:{花费},{能量产出,生命值,质量,},{护盾值,伤害,射程,推力,超空间航速}
