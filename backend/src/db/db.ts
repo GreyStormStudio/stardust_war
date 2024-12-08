@@ -34,6 +34,15 @@ async function getData(key: string): Promise<any> {
         return null;
     }
 }
+async function delData(key: string) {
+    try {
+        await db.del(key);
+        return true;
+    } catch (err) {
+        //console.error("Error deleting data:", err);
+        return false;
+    }
+}
 
 //更新数据
 async function updateData(key: string, partialData: any, mergeFunction?: (oldData: any, newData: any) => any): Promise<any> {
@@ -74,4 +83,4 @@ async function getKey(perfix: string) {
 }
 
 export default db;
-export { putData, getData, updateData, getKey };
+export { putData, getData, updateData, getKey, delData };
