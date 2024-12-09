@@ -108,16 +108,18 @@ async function RequestData(username: string, key: string) {
                 return Data.gameinfo.storage
             case 'shipinfo':
                 return Data.gameinfo.ship.sinfo
+            case 'shipblocks':
+                return Data.gameinfo.ship.object.Ship_Blocks.blocks
             default:
                 return Data.gameinfo
         }
     }
-    catch(e){
-        console.log(e,'Error!')
+    catch (e) {
+        console.log(e, 'Error!')
         return c.ERROR_UNDEFINED
     }
-    
-    
+
+
 }
 
 async function clearStorage(username: string) {
