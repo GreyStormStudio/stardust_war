@@ -14,7 +14,7 @@ export const MapEdge = 512;
 export const SpriteEdge = 64;
 export const CAPACITY = 1E7;
 
-export const BLOCK_RES_PATH = '/src/public/BLOCK/'
+export const BLOCK_RES_PATH = '/src/public/BLOCKS/'
 //舰船方块定义包含:{花费},{能量产出,生命值,质量,},{护盾值,伤害,射程,推力,超空间航速}
 
 export const BLOCKS = {
@@ -153,8 +153,6 @@ interface block {
     type: blocktype,
     block: any,
     level: number,
-    x: number,
-    y: number
 }
 export interface SHIP {
     Ship_Blocks: {
@@ -165,15 +163,15 @@ export interface SHIP {
 export const SHIP_ZERO: SHIP = {
     Ship_Blocks: {
         blocks: [
-            { type: 'CORE', level: 1, block: BLOCKS.CORE, x: 0, y: 0 },//核心限制一个,位置(0,0),其他方块记录相对于核心的位置左上--,右下++
-            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR, x: -1, y: -1 },
-            { type: 'SHIELD', level: 1, block: BLOCKS.SHIELD, x: 0, y: -1 },
-            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR, x: 1, y: -1 },
-            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON, x: -1, y: 0 },
-            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON, x: 1, y: 0 },
-            { type: 'BODY', level: 1, block: BLOCKS.BODY, x: -1, y: 1 },
-            { type: 'ENGINE_SUBSPACE', level: 1, block: BLOCKS.ENGINE.SUBSPACE, x: 0, y: 1 },
-            { type: 'BODY', level: 1, block: BLOCKS.BODY, x: 1, y: 1 }
+            { type: 'CORE', level: 1, block: BLOCKS.CORE},//核心限制一个
+            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR},
+            { type: 'SHIELD', level: 1, block: BLOCKS.SHIELD},
+            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR},
+            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON},
+            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON},
+            { type: 'BODY', level: 1, block: BLOCKS.BODY},
+            { type: 'ENGINE_SUBSPACE', level: 1, block: BLOCKS.ENGINE.SUBSPACE},
+            { type: 'BODY', level: 1, block: BLOCKS.BODY}
         ]
     }
 }

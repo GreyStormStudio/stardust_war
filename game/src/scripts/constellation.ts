@@ -1,6 +1,7 @@
-import { Application, Graphics } from "pixi.js";
+import { Application, Graphics, Container, Sprite, Assets } from "pixi.js";
 import { useGameInfoStore, useUserInfoStore } from "../store";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
+import { BLOCK_RES_PATH, SpriteEdge } from "../../../share/CONSTANT";
 import { CAPACITY } from "../../../share/CONSTANT";
 let app: Application | null
 async function initApp() {
@@ -11,8 +12,26 @@ async function initApp() {
     await app.init({
         width: mapContainer.clientWidth,
         height: mapContainer.clientHeight,
+        backgroundColor: "909090"
     });
     mapContainer.appendChild(app.canvas);
+    const bottomContainer = new Container();
+    bottomContainer.position.set(0, app.canvas.height - 64); // 设置容器位置在canvas底部
+    app.stage.addChild(bottomContainer);
+    const containerWidth = app.canvas.width;
+    const imageUrls = ['BLOCK_CORE1.png', 'BLOCK_ARMOR1.png', 'BLOCK_SHIELD1.png', 'BLOCK_ARMOR1.png', 'BLOCK_WEAPON1.png', 'BLOCK_WEAPON1.png', 'BLOCK_BODY1.png', 'BLOCK_ENGINE_SUBSPACE1.png', 'BLOCK_BODY1.png']; // URLs
+    
+    let spacing = 0
+    if (containerWidth < imageUrls.length * SpriteEdge) {
+        spacing = (containerWidth - (SpriteEdge * imageUrls.length)) / (imageUrls.length + 1);
+    }
+    for (let i = imageUrls.length-1; i >= 0; i--) {
+        const texture = await Assets.load(BLOCK_RES_PATH + imageUrls[i])
+        const sprite = new Sprite(texture);
+        sprite.width = sprite.height = 64;
+        sprite.position.set(spacing + (i * (SpriteEdge + spacing)), 0); // 设置精灵位置
+        bottomContainer.addChild(sprite);
+    }
     return
 }
 

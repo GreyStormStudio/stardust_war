@@ -24,7 +24,6 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
     const sinfo = { power: 0, hits: 0, mass: 0, thrust: 0, speed_hyper: 0, id: 0 };
     ship.Ship_Blocks.blocks.forEach(block => {//获取整船的宏观信息
         const { power, hits, mass } = block.block[block.level].baseAttribute;
-        const { x, y } = block.block
         sinfo.power += power;
         sinfo.hits += hits;
         sinfo.mass += mass;
