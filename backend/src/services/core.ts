@@ -1,4 +1,4 @@
-import { SHIP,CAPACITY } from '../../../share/CONSTANT';
+import { SHIP, CAPACITY } from '../../../share/CONSTANT';
 import { RigidBody, Engine, Vector2 } from '../scripts/PhysicsEngine';
 import { getKey, updateData, getData, putData } from '../db/db'
 /**
@@ -40,7 +40,7 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
 }
 export function updataEngine() {
     if (Engine.getRigidBodyByLabel('User001')) {
-        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust)
+        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust*0, 0)
     }
     //每帧更新一次物理引擎
     Engine.update(1 / 60)

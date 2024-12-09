@@ -22,6 +22,10 @@ class Vector2 {
         return Math.sqrt(this.x * this.x + this.y * this.y)
     }
 
+    radian(): number {
+        return Math.atan2(this.y, this.x)
+    }
+
     normalize(): Vector2 {
         const len = this.length()
         if (len < 1e-7) {
@@ -71,9 +75,17 @@ class RigidBody {
         this.torque = 0;
     }
     //#region 标准方法
-    applyforce(magnitude: number): void {
+    /*applyforce(magnitude: number): void {
         // 计算推力方向
         const forceDirection = new Vector2(Math.cos(this.angle), Math.sin(this.angle)).normalize();
+        // 创建推力向量
+        const force = forceDirection.multiply(magnitude);
+        // 应用推力
+        this.forces.push(force);
+    }*/
+    applyforce(magnitude: number, angle: number): void {
+        // 计算推力方向
+        const forceDirection = new Vector2(Math.cos(angle), Math.sin(angle)).normalize();
         // 创建推力向量
         const force = forceDirection.multiply(magnitude);
         // 应用推力
@@ -88,7 +100,7 @@ class RigidBody {
     update(deltaTime: number): void {
         this.acceleration = new Vector2(0, 0)
         const dragForce = -this.airFriction * this.velocity.length() * this.velocity.length()
-        this.applyforce(dragForce);//应用空气阻力
+        this.applyforce(dragForce, this.velocity.radian());//应用空气阻力,方向为当前速度方向+π
         for (const force of this.forces) {
             this.acceleration = this.acceleration.add(force.multiply(1 / this.mass))
         }
