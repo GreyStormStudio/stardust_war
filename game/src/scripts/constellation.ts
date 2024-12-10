@@ -6,27 +6,29 @@ import { CAPACITY } from "../../../share/CONSTANT";
 
 let app: Application | null
 interface ExtendedSprite extends Sprite {
+    originalX?: number;
     originalY?: number;
 }
 
 function onSpriteHover(sprite: ExtendedSprite) {
-    let timeoutId: number | undefined;
+    let clone: Sprite | null = null;
     const handleMouseEnter = () => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = window.setTimeout(() => {
-            sprite.y = sprite.originalY! - sprite.height / 3; // 向上移动半个sprite的距离
-        }, 10);
+        clone = new Sprite(sprite.texture);
+        clone.anchor.set(sprite.anchor.x, sprite.anchor.y);
+        clone.scale.set(sprite.scale.x, sprite.scale.y);
+        clone.y = app!.canvas.height - clone.height * 2;
+        sprite.y = sprite.originalY! - sprite.height / 7
+        app!.stage.addChild(clone);
     };
 
     const handleMouseLeave = () => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
+        if (clone && clone.parent) {
+            // 移除副本
+            clone.parent.removeChild(clone);
+            clone.destroy(); // 销毁副本以释放资源
+            clone = null;
         }
-        timeoutId = window.setTimeout(() => {
-            sprite.y = sprite.originalY!; // 恢复原始位置
-        }, 75);
+        sprite.y = sprite.originalY!
     };
 
     sprite.on('mouseenter', handleMouseEnter);
@@ -41,6 +43,7 @@ async function createSpriteFromTexture(texture: Texture, positionX: number, cont
     const sprite: ExtendedSprite = new Sprite(texture);
     sprite.width = sprite.height = 64;
     sprite.position.set(positionX, 0);
+    sprite.originalX = sprite.x;
     sprite.originalY = sprite.y;
     onSpriteHover(sprite);
     container.addChild(sprite);
@@ -51,10 +54,14 @@ function loadSprites(socket: any, container: Container) {
     socket.emit('RequestData', username, 'shipblocks');
     socket.once('RequestDataResult', async (result: any[]) => {
         let imageUrls: string[] = [];
-        result.forEach((block: any) => {
+        for (let i = 0; i < 9; i++) {
+            result.forEach((block: any) => {
+                imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
+            });
+        }
+        /*result.forEach((block: any) => {
             imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
-            imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
-        });
+        });*/
         let spacing = 0;
         const containerWidth = app!.canvas.width;
         if (containerWidth < imageUrls.length * SpriteEdge) {
