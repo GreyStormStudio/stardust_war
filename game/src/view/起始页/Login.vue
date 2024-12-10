@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-import { useUserInfoStore, useGameInfoStore } from '../../store';
+import { useUserInfoStore } from '../../store';
 import * as c from '../../../../share/CONSTANT'
 export default {
     data() {
@@ -54,10 +54,6 @@ export default {
                         useUserInfoStore().setUserInfo({
                             username: this.username
                         });
-                        useGameInfoStore().setGameInfo({
-                            storage: result.val.storage,
-                            ship: result.val.ship
-                        })
                         this.$router.push('/constellation')
                         break;
                     default:

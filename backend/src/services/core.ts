@@ -10,13 +10,15 @@ import { getKey, updateData, getData, putData } from '../db/db'
  */
 export async function init() {
     const data = await getData('Engine')
-    console.log('load:\n', data, "\n_____")
+    console.log('read data...')
     Engine.importBodies(data)
+    console.log('done...')
 }
 export function saveAlldata() {
     const data = Engine.exportAllBodies()
-    console.log('save:\n', data, "\n_____")
+    console.log('save data...')
     putData('Engine', data)
+    console.log('done...')
 }
 
 
@@ -39,7 +41,7 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
 }
 export function updataEngine() {
     if (Engine.getRigidBodyByLabel('User001')) {
-        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust*0, 0)
+        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust * 0, 0)
     }
     //每帧更新一次物理引擎
     Engine.update(1 / 60)

@@ -22,7 +22,7 @@ class SocketEventsHandler {
         }, 16.667);
 
         this.io.on('connection', (socket) => {
-
+            console.log('connect')
             //#region 测试用代码
             socket.on('clearStorage', (username) => {
                 fn.clearStorage(username)
@@ -66,7 +66,7 @@ class SocketEventsHandler {
             // 监听用户断开连接事件
             socket.on('disconnect', () => {
                 saveAlldata()
-                console.log('user disconnected');
+                console.log('disconnected');
             });
         });
     }

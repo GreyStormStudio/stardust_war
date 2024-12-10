@@ -1,12 +1,76 @@
-import { Application, Graphics, Container, Sprite, Assets } from "pixi.js";
+import { Application, Texture, Container, Sprite, Assets } from "pixi.js";
 import { useUserInfoStore } from "../store";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
 import { BLOCK_RES_PATH, SpriteEdge } from "../../../share/CONSTANT";
 import { CAPACITY } from "../../../share/CONSTANT";
+
 let app: Application | null
+interface ExtendedSprite extends Sprite {
+    originalY?: number;
+}
+
+function onSpriteHover(sprite: ExtendedSprite) {
+    let timeoutId: number | undefined;
+    const handleMouseEnter = () => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = window.setTimeout(() => {
+            sprite.y = sprite.originalY! - sprite.height / 3; // 向上移动半个sprite的距离
+        }, 10);
+    };
+
+    const handleMouseLeave = () => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = window.setTimeout(() => {
+            sprite.y = sprite.originalY!; // 恢复原始位置
+        }, 75);
+    };
+
+    sprite.on('mouseenter', handleMouseEnter);
+    sprite.on('mouseleave', handleMouseLeave);
+    sprite.on('click', () => {
+        alert('你点你马呢');
+    });
+    sprite.eventMode = 'static';
+}
+
+async function createSpriteFromTexture(texture: Texture, positionX: number, container: Container) {
+    const sprite: ExtendedSprite = new Sprite(texture);
+    sprite.width = sprite.height = 64;
+    sprite.position.set(positionX, 0);
+    sprite.originalY = sprite.y;
+    onSpriteHover(sprite);
+    container.addChild(sprite);
+}
+
+function loadSprites(socket: any, container: Container) {
+    const username = useUserInfoStore().getUsername;
+    socket.emit('RequestData', username, 'shipblocks');
+    socket.once('RequestDataResult', async (result: any[]) => {
+        let imageUrls: string[] = [];
+        result.forEach((block: any) => {
+            imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
+            imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
+        });
+        let spacing = 0;
+        const containerWidth = app!.canvas.width;
+        if (containerWidth < imageUrls.length * SpriteEdge) {
+            spacing = (containerWidth - (SpriteEdge * imageUrls.length)) / (imageUrls.length - 1);
+        }
+        for (let i = imageUrls.length - 1; i >= 0; i--) {
+            const texture = await Assets.load(BLOCK_RES_PATH + imageUrls[i]);
+            const positionX = i * (SpriteEdge + spacing);
+            await createSpriteFromTexture(texture, positionX, container);
+        }
+    });
+}
+
 async function initApp(socket: any) {
-    if (!app) {//没有Application就实例化一个
-        app = new Application()
+    if (!app) {
+        app = new Application();
     }
     const mapContainer = document.querySelector('.map') as HTMLElement;
     await app.init({
@@ -14,31 +78,15 @@ async function initApp(socket: any) {
         height: mapContainer.clientHeight,
         backgroundColor: "909090"
     });
+    document.addEventListener('contextmenu', (event) => {
+        // 阻止默认的右键菜单
+        event.preventDefault();
+    });
     mapContainer.appendChild(app.canvas);
     const bottomContainer = new Container();
     bottomContainer.position.set(0, app.canvas.height - 64); // 设置容器位置在canvas底部
     app.stage.addChild(bottomContainer);
-    const containerWidth = app.canvas.width;
-    const username = useUserInfoStore().getUsername;
-    socket.emit('RequestData', username, 'shipblocks');
-    let imageUrls: string[] = []
-    socket.once('RequestDataResult', async (result: any) => {
-        result.forEach((block: any) => {
-            imageUrls.push(`BLOCK_${block.type}${block.level}.png`)
-        })
-        let spacing = 0
-        if (containerWidth < imageUrls.length * SpriteEdge) {
-            spacing = (containerWidth - (SpriteEdge * imageUrls.length)) / (imageUrls.length - 1);
-        }
-        for (let i = imageUrls.length - 1; i >= 0; i--) {
-            const texture = await Assets.load(BLOCK_RES_PATH + imageUrls[i])
-            const sprite = new Sprite(texture);
-            sprite.width = sprite.height = 64;
-            sprite.position.set((i * (SpriteEdge + spacing)), 0); // 设置精灵位置
-            bottomContainer.addChild(sprite);
-        }
-    })
-    return
+    await loadSprites(socket, bottomContainer);
 }
 
 function useSocket() {
@@ -75,11 +123,10 @@ export default defineComponent({
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
-            //socket.emit('clearStorage', useUserInfoStore().getUsername)//开始先清除资源
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
             }, 16.667);
-            await initApp(socket)
+            initApp(socket)
         });
         onBeforeUnmount(() => {
             if (intervalId.value) {
