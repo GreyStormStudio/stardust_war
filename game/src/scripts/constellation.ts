@@ -1,6 +1,6 @@
 import { Application, Texture, Container, Sprite, Assets } from "pixi.js";
 import { useUserInfoStore } from "../store";
-import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
+import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent, watch } from 'vue';
 import { BLOCK_RES_PATH, SpriteEdge } from "../../../share/CONSTANT";
 import { CAPACITY } from "../../../share/CONSTANT";
 
@@ -39,6 +39,21 @@ function onSpriteHover(sprite: ExtendedSprite) {
     sprite.eventMode = 'static';
 }
 
+async function createShipSprite(texture: Texture, app: Application) {
+    const shipSprite = new Sprite(texture);
+    shipSprite.anchor.set(0.5);
+    shipSprite.width = shipSprite.height = 16;
+    app.stage.addChild(shipSprite);
+    return shipSprite;
+}
+
+function updateShipPosition(shipSprite: Sprite, positionX: number, positionY: number) {
+    shipSprite.x = app!.canvas.width / 2;
+    shipSprite.y = app!.canvas.height / 2;
+    //app!.stage.x = -positionX * (app!.canvas.width / 2);
+    //app!.stage.y = -positionY * (app!.canvas.height / 2);
+}
+
 async function createSpriteFromTexture(texture: Texture, positionX: number, container: Container) {
     const sprite: ExtendedSprite = new Sprite(texture);
     sprite.width = sprite.height = 64;
@@ -54,14 +69,14 @@ function loadSprites(socket: any, container: Container) {
     socket.emit('RequestData', username, 'shipblocks');
     socket.once('RequestDataResult', async (result: any[]) => {
         let imageUrls: string[] = [];
-        for (let i = 0; i < 9; i++) {
+        /*for (let i = 0; i < 9; i++) {
             result.forEach((block: any) => {
                 imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
             });
-        }
-        /*result.forEach((block: any) => {
+        }*/
+        result.forEach((block: any) => {
             imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
-        });*/
+        });
         let spacing = 0;
         const containerWidth = app!.canvas.width;
         if (containerWidth < imageUrls.length * SpriteEdge) {
@@ -75,25 +90,23 @@ function loadSprites(socket: any, container: Container) {
     });
 }
 
-async function initApp(socket: any) {
+async function initApp(socket: any, UIContainer: Container) {
     if (!app) {
         app = new Application();
     }
-    const mapContainer = document.querySelector('.map') as HTMLElement;
+    const base = document.querySelector('.map') as HTMLElement;
     await app.init({
-        width: mapContainer.clientWidth,
-        height: mapContainer.clientHeight,
+        width: base.clientWidth,
+        height: base.clientHeight,
         backgroundColor: "909090"
     });
     document.addEventListener('contextmenu', (event) => {
-        // 阻止默认的右键菜单
         event.preventDefault();
     });
-    mapContainer.appendChild(app.canvas);
-    const bottomContainer = new Container();
-    bottomContainer.position.set(0, app.canvas.height - 64); // 设置容器位置在canvas底部
-    app.stage.addChild(bottomContainer);
-    await loadSprites(socket, bottomContainer);
+    base.appendChild(app.canvas);
+    UIContainer.position.set(0, app.canvas.height - 64); // 设置容器位置在canvas底部
+    loadSprites(socket, UIContainer);
+    app.stage.addChild(UIContainer)//将UI画布添加到stage中
 }
 
 function useSocket() {
@@ -124,16 +137,22 @@ function fetchData(socket: any, store: any, info: any) {
 
 export default defineComponent({
     setup() {
+        const UIContainer = new Container();//用于存放UI的容器,不随stage变化而变化
+        const shipSprite = ref<Sprite | null>(null);
         const capacity = CAPACITY;
         const store = ref({ energy: 0, mineral: 0, metal: 0 });
         const info = ref({ mass: 0, label: '', position: { x: 0, y: 0 }, velocity: { x: 0, y: 0 }, acceleration: { x: 0, y: 0 }, thrust: 40000 });
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
+            initApp(socket, UIContainer)//初始化UI画布
+            const shipTexture = await Assets.load(BLOCK_RES_PATH + 'BLOCK_CORE1.png');
+            shipSprite.value = await createShipSprite(shipTexture, app!);
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
+                updateShipPosition((shipSprite.value as Sprite), info.value.position.x, info.value.position.y)
             }, 16.667);
-            initApp(socket)
+
         });
         onBeforeUnmount(() => {
             if (intervalId.value) {

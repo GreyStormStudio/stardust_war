@@ -1,3 +1,6 @@
-import { Application,Graphics,Text,Texture } from "pixi.js";
-import { createApp } from "vue";
+import { Application, Text, Texture } from "pixi.js";
+import { defineComponent, ref } from "vue";
 
+export default defineComponent({
+
+})
