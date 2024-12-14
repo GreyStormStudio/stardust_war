@@ -5,14 +5,14 @@ import { useUserInfoStore } from "../store";
 import { MyContainer } from "./ContainerControl";
 
 let app: Application
-const socket = useSocket();
+const UIContainer = new MyContainer()
 
 interface ExtendedSprite extends Sprite {
     originalX?: number;
     originalY?: number;
 }
 
-async function initApp(socket: any, UIContainer: MyContainer, GameContainer: MyContainer) {
+async function initApp() {
     app = new Application();
     const base = document.querySelector('.map') as HTMLElement;
     await app.init({
@@ -24,6 +24,7 @@ async function initApp(socket: any, UIContainer: MyContainer, GameContainer: MyC
         event.preventDefault();
     });
     base.appendChild(app.canvas);
+    UIContainer.set(0, 0, base.clientWidth, 64)
     app.stage.addChild(UIContainer)//将UI画布添加到stage中
 }
 
@@ -59,7 +60,7 @@ export default defineComponent({
         const store = ref({ energy: 0, mineral: 0, metal: 0 });
         const info = ref({ mass: 0, label: '', position: { x: 0, y: 0 }, velocity: { x: 0, y: 0 }, acceleration: { x: 0, y: 0 }, thrust: 40000 });
         const intervalId = ref();
-
+        const socket = useSocket();
         onMounted(async () => {
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
@@ -67,7 +68,7 @@ export default defineComponent({
 
         });
         onBeforeUnmount(() => {
-            app.destroy()
+            //app.destroy()
             if (intervalId.value) {
                 clearInterval(intervalId.value);
             }
