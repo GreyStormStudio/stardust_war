@@ -1,82 +1,10 @@
-import { Application, Texture, Container, Graphics, Sprite, Assets } from "pixi.js";
+import { Application } from "pixi.js";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent, watch } from 'vue';
-import { BLOCK_RES_PATH, SpriteEdge, CAPACITY } from "../../../share/CONSTANT";
-import { useUserInfoStore } from "../store";
-import { MyContainer } from "./ContainerControl";
+import { CAPACITY } from "../../../../share/CONSTANT";
+import { UIContainer, loadSprites } from "./ui";
+import { useUserInfoStore } from "../../store";
 
 let app: Application
-const UIContainer = new MyContainer()
-const MapContainer = new MyContainer()
-
-interface ExtendedSprite extends Sprite {
-    originalX?: number;
-    originalY?: number;
-}
-
-function onSpriteHover(sprite: ExtendedSprite) {
-    let clone: Sprite | null = null;
-    const handleMouseEnter = () => {
-        clone = new Sprite(sprite.texture);
-        clone.anchor.set(sprite.anchor.x, sprite.anchor.y);
-        clone.scale.set(sprite.scale.x, sprite.scale.y);
-        clone.y = -sprite.height
-        sprite.y = sprite.originalY! - sprite.height / 7
-        UIContainer.addChild(clone);
-    };
-
-    const handleMouseLeave = () => {
-        if (clone && clone.parent) {
-            // 移除副本
-            clone.parent.removeChild(clone);
-            clone.destroy(); // 销毁副本以释放资源
-            clone = null;
-        }
-        sprite.y = sprite.originalY!
-    };
-
-    sprite.on('mouseenter', handleMouseEnter);
-    sprite.on('mouseleave', handleMouseLeave);
-    sprite.on('click', () => {
-        alert('你点你马呢');
-    });
-    sprite.eventMode = 'static';
-}
-
-async function createSpriteFromTexture(texture: Texture, positionX: number) {
-    const sprite: ExtendedSprite = new Sprite(texture);
-    sprite.width = sprite.height = 64;
-    sprite.position.set(positionX, 0);
-    sprite.originalX = sprite.x;
-    sprite.originalY = sprite.y;
-    onSpriteHover(sprite);
-    UIContainer.addChild(sprite);
-}
-
-function loadSprites(socket: any) {
-    const username = useUserInfoStore().getUsername;
-    socket.emit('RequestData', username, 'shipblocks');
-    socket.once('RequestDataResult', async (result: any[]) => {
-        let imageUrls: string[] = [];
-        for (let i = 0; i < 9; i++) {
-            result.forEach((block: any) => {
-                imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
-            });
-        }
-        /*result.forEach((block: any) => {
-            imageUrls.push(`BLOCK_${block.type}${block.level}.png`);
-        });*/
-        let spacing = 0;
-        const containerWidth = app!.canvas.width;
-        if (containerWidth < imageUrls.length * SpriteEdge) {
-            spacing = (containerWidth - (SpriteEdge * imageUrls.length)) / (imageUrls.length - 1);
-        }
-        for (let i = imageUrls.length - 1; i >= 0; i--) {
-            const texture = await Assets.load(BLOCK_RES_PATH + imageUrls[i]);
-            const positionX = i * (SpriteEdge + spacing);
-            await createSpriteFromTexture(texture, positionX);
-        }
-    });
-}
 
 async function initApp(socket: any) {
     app = new Application();
@@ -91,7 +19,7 @@ async function initApp(socket: any) {
     });
     base.appendChild(app.canvas);
 
-    loadSprites(socket)
+    loadSprites(socket, useUserInfoStore().getUsername, app)
 
     /*const graphics2 = new Graphics();
     graphics2.rect(0, 0, base.clientWidth, base.clientHeight - 64); // 绘制矩形
@@ -99,7 +27,7 @@ async function initApp(socket: any) {
     MapContainer.addChild(graphics2);*/
 
     UIContainer.set(0, base.clientHeight - 64, base.clientWidth, 64)
-    MapContainer.set(0, 0, base.clientWidth, base.clientHeight - 64)
+    //MapContainer.set(0, 0, base.clientWidth, base.clientHeight - 64)
 
     /*const texture = await Assets.load('/src/public/背景/bg5.jpg');
     const bg = new Sprite(texture)
@@ -122,7 +50,7 @@ async function initApp(socket: any) {
 
     MapContainer.addChild(bg)*/
 
-    app.stage.addChild(MapContainer)
+    //app.stage.addChild(MapContainer)
     app.stage.addChild(UIContainer)
 }
 

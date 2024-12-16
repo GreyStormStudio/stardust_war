@@ -26,7 +26,7 @@
         <p>所有者:{{ info.label }}</p>
     </div> -->
 </template>
-<script src="../../scripts/constellation.ts"></script>
+<script src="../../scripts/constellation/index.ts"></script>
 <style>
 body {
     user-select: none;
