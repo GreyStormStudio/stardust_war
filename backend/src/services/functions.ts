@@ -68,7 +68,7 @@ async function Register(email: string, username: string, password: string) {
 }
 
 /**
- * 
+ * 弃用的方法
  * @param username 用户名
  * @param isgameInfo (默认false)是否读取游戏数据
  * @returns 用户账户信息|用户游戏信息

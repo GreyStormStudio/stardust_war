@@ -20,12 +20,6 @@ async function initApp(socket: any) {
     base.appendChild(app.canvas);
 
     loadSprites(socket, useUserInfoStore().getUsername, app)
-
-    /*const graphics2 = new Graphics();
-    graphics2.rect(0, 0, base.clientWidth, base.clientHeight - 64); // 绘制矩形
-    graphics2.fill({ color: 0x1f2f3f });
-    MapContainer.addChild(graphics2);*/
-
     UIContainer.set(0, base.clientHeight - 64, base.clientWidth, 64)
     //MapContainer.set(0, 0, base.clientWidth, base.clientHeight - 64)
 
