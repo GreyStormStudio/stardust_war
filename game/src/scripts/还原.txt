@@ -1,8 +1,9 @@
+/*
 import { Application } from "pixi.js";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
 import { CAPACITY, SpriteEdge } from "../../../../share/CONSTANT";
 import { loadSprites } from "./ui";
-import { createShipSprite, rotation } from "./map";
+import { MapContainer } from "./map";
 import { useUserInfoStore } from "../../store";
 import { MyContainer } from "../ContainerControl";
 
@@ -19,22 +20,14 @@ async function initApp(socket: any) {
         event.preventDefault();
     });
     base.appendChild(app.canvas);
-
     const UIContainer = new MyContainer()
     const BodyContainer = new MyContainer()
-    const MapContainer = new MyContainer()
-
     UIContainer.set(0, 0, base.clientWidth, base.clientHeight)
     BodyContainer.set(0, UIContainer.con_height - SpriteEdge, UIContainer.con_width, SpriteEdge)
-    MapContainer.set(0, 0, base.clientWidth, base.clientHeight)
-
-    const ship = await createShipSprite(MapContainer)
     loadSprites(socket, useUserInfoStore().getUsername, UIContainer, BodyContainer)
     if (!app.stage.children.includes(MapContainer)) {
-        //app.stage.addChild(MapContainer, UIContainer)
-        app.stage.addChild(UIContainer, MapContainer)
+        app.stage.addChild(MapContainer, UIContainer)
     }
-    return ship
 
 }
 
@@ -72,12 +65,10 @@ export default defineComponent({
         const intervalId = ref();
         const socket = useSocket();
         onMounted(async () => {
-            const ship = await initApp(socket)
             intervalId.value = setInterval(() => {
                 fetchData(socket, store, info);
-                rotation(ship)
             }, 16.667);
-
+            initApp(socket)
         });
         onBeforeUnmount(() => {
             if (intervalId.value) {
@@ -92,3 +83,4 @@ export default defineComponent({
     }
 
 })
+*/
