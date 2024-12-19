@@ -43,7 +43,6 @@ class Vector2 {
         return new Vector2(data.x, data.y);
     }
 }
-
 class RigidBody {
     mass: number;
     airFriction: number;
@@ -75,14 +74,6 @@ class RigidBody {
         this.torque = 0;
     }
     //#region 标准方法
-    /*applyforce(magnitude: number): void {
-        // 计算推力方向
-        const forceDirection = new Vector2(Math.cos(this.angle), Math.sin(this.angle)).normalize();
-        // 创建推力向量
-        const force = forceDirection.multiply(magnitude);
-        // 应用推力
-        this.forces.push(force);
-    }*/
     applyforce(magnitude: number, angle: number): void {
         // 计算推力方向
         const forceDirection = new Vector2(Math.cos(angle), Math.sin(angle)).normalize();
@@ -168,6 +159,16 @@ class PhysicsEngine {
 
     getRigidBodyByLabel(label: string): RigidBody | null {
         return this.rigidBodies.get(label) || null;
+    }
+
+    getRigidBodyInArea(pos1: Vector2, pos2: Vector2) {
+        const result: RigidBody[] = [];
+        for (const body of this.rigidBodies.values()) {
+            if (body.position.x > pos1.x && body.position.x < pos2.x && body.position.y > pos1.y && body.position.y < pos2.y) {
+                result.push(body);
+            }
+        }
+        return result;
     }
 
     addrigidbody(rigidbody: RigidBody) {
