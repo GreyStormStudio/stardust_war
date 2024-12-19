@@ -2,7 +2,7 @@ import { Application } from "pixi.js";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
 import { CAPACITY, SpriteEdge } from "../../../../share/CONSTANT";
 import { loadSprites, loadResUI } from "./ui";
-import { createShipSprite, rotation, initbackground } from "./map";
+import { create, initbackground, rotation } from "./map";
 import { useUserInfoStore } from "../../store";
 import { MyContainer } from "../ContainerControl";
 
@@ -13,31 +13,31 @@ async function initApp(socket: any) {
     await app.init({
         width: base.clientWidth,
         height: base.clientHeight,
-        backgroundColor: "000000"
+        backgroundAlpha: 0
     });
     document.addEventListener('contextmenu', (event) => {
         event.preventDefault();
     });
     base.appendChild(app.canvas);
 
+    const MapContainer = new MyContainer()
     const UIContainer = new MyContainer()
     const BodyContainer = new MyContainer()
     const ResContainer = new MyContainer()
-    const MapContainer = new MyContainer()
 
+    MapContainer.set(0, 0, base.clientWidth, base.clientHeight)
     UIContainer.set(0, 0, base.clientWidth, base.clientHeight)
     BodyContainer.set(0, UIContainer.con_height - SpriteEdge, UIContainer.con_width, SpriteEdge)
     ResContainer.set(0, 0, SpriteEdge / 2, SpriteEdge / 2 * 3)
-    MapContainer.set(0, 0, base.clientWidth, base.clientHeight)
+
 
     initbackground(MapContainer)
-    const ship = await createShipSprite(MapContainer)
+    const { viewport, shipSprite } = await create(app.renderer, MapContainer)
+
     loadSprites(socket, useUserInfoStore().getUsername, UIContainer, BodyContainer)
     const text = await loadResUI(UIContainer, ResContainer)
-    if (!app.stage.children.includes(MapContainer)) {
-        app.stage.addChild(MapContainer, UIContainer)
-    }
-    return { ship, text }
+    app.stage.addChild(MapContainer, UIContainer)
+    return { viewport, text, shipSprite }
 
 }
 
@@ -79,15 +79,21 @@ export default defineComponent({
         const socket = useSocket();
         onMounted(async () => {
             const infoa = await initApp(socket)
+            function update() {
+                infoa.viewport.update(16.667);
+                requestAnimationFrame(update);
+            }
+            update()
             intervalId.value = setInterval(() => {
                 fetchData(socket, infoa.text, info);
-                rotation(infoa.ship)
+                rotation(infoa.shipSprite)
             }, 16.667);
 
         });
         onBeforeUnmount(() => {
             if (intervalId.value) {
                 clearInterval(intervalId.value);
+
             }
         });
     }
