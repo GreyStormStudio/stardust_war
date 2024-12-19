@@ -171,7 +171,7 @@ export const SHIP_ZERO: SHIP = {
             { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON},
             { type: 'BODY', level: 1, block: BLOCKS.BODY},
             { type: 'ENGINE_SUBSPACE', level: 1, block: BLOCKS.ENGINE.SUBSPACE},
-            { type: 'BODY', level: 1, block: BLOCKS.BODY}
+            { type: 'BODY', level: 1, block: BLOCKS.BODY},
         ]
     }
 }
