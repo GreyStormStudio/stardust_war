@@ -37,17 +37,10 @@ body {
     display: inline-block;
 }
 
-/*.left,
-.right {
-    height: 100%;
-    flex: 1;
-    background-color: lightgray;
-}*/
-
 .map {
     flex: 1;
     height: 100%;
-    background-color: lightblue;
+    background-color: 0xffffff;
     overflow: hidden;
 }
 </style>

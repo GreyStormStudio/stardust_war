@@ -76,25 +76,21 @@ async function loadSprites(socket: any, username: string, uicontainer: MyContain
     });
 }
 
-function createResTable(texture: Texture, container: Texture, positionY: number, rescontainer: MyContainer) {
+function createResTable(texture: Texture, positionY: number, rescontainer: MyContainer) {
     const sprite: Sprite = new Sprite(texture);
-    const containerSprite: Sprite = new Sprite(container)
     sprite.scale.set(0.5)
-    containerSprite.scale.set(0.5)
     sprite.position.set(0, positionY);
-    containerSprite.position.set(sprite.width, positionY)
-    const resourceText = new Text({ text: '', style: { fontSize: 20, fill: 'black' } });
-    resourceText.position.set(sprite.width + 20, positionY + 3);
-    rescontainer.addChild(sprite, containerSprite, resourceText);
+    const resourceText = new Text({ text: '', style: { fontSize: 20, fill: '00FF00' } });
+    resourceText.position.set(sprite.height + 20, positionY + 3);
+    rescontainer.addChild(sprite, resourceText);
     return resourceText
 }
 async function loadResUI(uicontainer: MyContainer, rescontainer: MyContainer) {
     uicontainer.addChild(rescontainer)
     const textures = await Promise.all(Array.from({ length: 3 }, (_, i) => `RES_${i + 1}.png`).map(url => Assets.load(BLOCK_RES_PATH + url)));
-    const container = await Assets.load(BLOCK_RES_PATH + 'CONTAINER.png')
     const text: Text[] = []
     textures.forEach((textures, i) => {
-        text.push(createResTable(textures, container, i * SpriteEdge / 2, rescontainer))
+        text.push(createResTable(textures, i * SpriteEdge / 2, rescontainer))
     })
     return text
 }
