@@ -11,6 +11,7 @@ export const EMAIL_KEY = 'Email:';
 export const CONSTELLATION_KEY = 'Constellation:'
 
 export const MapEdge = 512;
+export const BlockEdge = 512;
 export const SpriteEdge = 64;
 export const CAPACITY = 1E7;
 
@@ -163,15 +164,15 @@ export interface SHIP {
 export const SHIP_ZERO: SHIP = {
     Ship_Blocks: {
         blocks: [
-            { type: 'CORE', level: 1, block: BLOCKS.CORE},//核心限制一个
-            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR},
-            { type: 'SHIELD', level: 1, block: BLOCKS.SHIELD},
-            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR},
-            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON},
-            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON},
-            { type: 'BODY', level: 1, block: BLOCKS.BODY},
-            { type: 'ENGINE_SUBSPACE', level: 1, block: BLOCKS.ENGINE.SUBSPACE},
-            { type: 'BODY', level: 1, block: BLOCKS.BODY},
+            { type: 'CORE', level: 1, block: BLOCKS.CORE },//核心限制一个
+            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR },
+            { type: 'SHIELD', level: 1, block: BLOCKS.SHIELD },
+            { type: 'ARMOR', level: 1, block: BLOCKS.ARMOR },
+            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON },
+            { type: 'WEAPON', level: 1, block: BLOCKS.WEAPON },
+            { type: 'BODY', level: 1, block: BLOCKS.BODY },
+            { type: 'ENGINE_SUBSPACE', level: 1, block: BLOCKS.ENGINE.SUBSPACE },
+            { type: 'BODY', level: 1, block: BLOCKS.BODY },
         ]
     }
 }

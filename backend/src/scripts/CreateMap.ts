@@ -3,27 +3,31 @@ import alea from 'alea'
 import { MapEdge } from "../../../share/CONSTANT";
 
 const Edge = MapEdge
-export class Noise{
-    noise=createNoise2D(alea(this.seed))
-    map=new Float32Array(Edge*Edge)
+export class Noise {
+    noise = createNoise2D(alea(this.seed))
+    map = new Float32Array(Edge * Edge)
     constructor(
-        public seed:number,
-        public rate:number  
-    ){}
+        public seed: number,
+        public rate: number
+    ) { }
 
-    generateNoise(){
+    getNoise(x: number, y: number) {
+        return Math.floor((this.noise(x / this.rate, y / this.rate) + 1) / 2 * 255)
+    }
+
+    generateNoise() {
         for (let x = 0; x < Edge; x++) {
             for (let y = 0; y < Edge; y++) {
-                this.map[x+y*Edge] = Math.floor((this.noise(x/this.rate,y/this.rate)+1)/2*255)//映射到0-255上
+                this.map[x + y * Edge] = this.getNoise(x, y)
             }
         }
     }
 
     generateDensityMap() {
         this.generateNoise()
-        const densitymap = new Float32Array(Edge*Edge)
+        const densitymap = new Float32Array(Edge * Edge)
         const color = { low: 64, mid: 128, high: 192 };
-        for (let n = 0; n < Edge*Edge; n++) {
+        for (let n = 0; n < Edge * Edge; n++) {
             let value = this.map[n];
             let r = 0, g = 0, b = 0;
 
@@ -48,7 +52,7 @@ export class Noise{
                 g = Math.floor(255 * ratio);
                 b = 0;
             }
-            densitymap[n] = 0x000001*r+0x000100*g+0x010000*b
+            densitymap[n] = 0x000001 * r + 0x000100 * g + 0x010000 * b
         }
         return densitymap
     }

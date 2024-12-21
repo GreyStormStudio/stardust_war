@@ -1,6 +1,7 @@
 import db, { getData, putData, updateData } from '../db/db'
 import { Md5 } from 'ts-md5'
 import { addShip } from './core'
+import { Noise } from '../scripts/CreateMap'
 import * as c from '../../../share/CONSTANT'
 
 //User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},ship:{Ship结构,Ship位置:{x,y,constellation},sinfo}}}
@@ -130,6 +131,11 @@ async function clearStorage(username: string) {
     await updateData(c.USER_KEY + username, data);
 }
 
+async function getMap(x: number, y: number) {
+    const noise = new Noise(114514, 0.1)
+    return noise.getNoise(x, y)
+}
+
 async function deldb() {
     await db.clear()
 }
@@ -141,5 +147,6 @@ export {
     RequestData,
     UpdateData,
     clearStorage,
+    getMap,
     deldb
 }

@@ -63,6 +63,11 @@ class SocketEventsHandler {
                 socket.emit('RequestShipDataResult', Engine.getRigidBodyByLabel(username))
             })
 
+            //请求地图
+            socket.on('RequireMap', (x, y) => {
+                socket.emit('RequireMapResult', fn.getMap(x, y))
+            })
+
             // 监听用户断开连接事件
             socket.on('disconnect', () => {
                 saveAlldata()
