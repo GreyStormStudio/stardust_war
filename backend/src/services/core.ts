@@ -41,7 +41,7 @@ export function addShip(ship: SHIP, px: number, py: number, username: string) {
 }
 export function updataEngine() {
     if (Engine.getRigidBodyByLabel('User001')) {
-        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust * 0, 0)
+        Engine.getRigidBodyByLabel('User001')!.applyforce(Engine.getRigidBodyByLabel('User001')!.thrust * 1, Math.PI * 1)
     }
     //每帧更新一次物理引擎
     Engine.update(1 / 60)

@@ -1,13 +1,13 @@
 import { Application } from "pixi.js";
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance, defineComponent } from 'vue';
 import { CAPACITY, SpriteEdge } from "../../../../share/CONSTANT";
-import { loadSprites, loadResUI } from "./ui";
+import { loadSprites, loadUI, updateProgressBar } from "./ui";
 //import { create, initbackground, rotation } from "./map";
-import { createViewport, testAction } from "./map";
+import { createViewport } from "./map";
 import { useUserInfoStore } from "../../store";
 import { MyContainer } from "../ContainerControl";
 
-export async function initApp(socket: any) {
+export async function initApp(socket: any, start: { x: number, y: number, angle: number }) {
     const app = new Application();
     const base = document.querySelector('.map') as HTMLElement;
     await app.init({
@@ -23,19 +23,20 @@ export async function initApp(socket: any) {
     const UIContainer = new MyContainer();
     const BodyContainer = new MyContainer();
     const ResContainer = new MyContainer();
+    const PosContainer = new MyContainer();
 
     MapContainer.set(0, 0, base.clientWidth, base.clientHeight);
     UIContainer.set(0, 0, base.clientWidth, base.clientHeight);
     BodyContainer.set(0, UIContainer.con_height - SpriteEdge, UIContainer.con_width, SpriteEdge);
     ResContainer.set(0, 0, SpriteEdge / 2, SpriteEdge / 2 * 3);
+    PosContainer.set(0, 0, SpriteEdge / 2, SpriteEdge / 2)
 
-    const { viewport, shipSprites } = await createViewport(app.renderer, MapContainer);
+    const { viewport, shipSprite } = await createViewport(app.renderer, MapContainer, start);
     await loadSprites(socket, useUserInfoStore().getUsername, UIContainer, BodyContainer);
-    const text = await loadResUI(UIContainer, ResContainer);
+    const { text, fillbar } = await loadUI(UIContainer, ResContainer, PosContainer);
 
-    app.stage.addChild(viewport, UIContainer);
-
-    return { viewport, text, shipSprites };
+    app.stage.addChild(viewport, UIContainer, PosContainer);
+    return { text, fillbar, shipSprite };
 }
 
 function useSocket() {
@@ -43,7 +44,7 @@ function useSocket() {
     return instance?.appContext.config.globalProperties.$socket;
 }
 
-function fetchData(socket: any, text: any, info: any) {
+function fetchData(socket: any, text: any, fillbar: any, info: any) {
     const username = useUserInfoStore().getUsername;
     socket.emit('RequestData', username, 'storage');
     socket.emit('RequestShipData', username);
@@ -59,7 +60,13 @@ function fetchData(socket: any, text: any, info: any) {
     };
 
     const handleShipInfo = (sinfo: any) => {
-        info.value = { ...sinfo };
+        text[3].text = sinfo.position.x.toFixed(3)
+        text[4].text = sinfo.position.y.toFixed(3)
+        text[5].text = ((sinfo.velocity.x ** 2 + sinfo.velocity.y ** 2) ** 0.5).toFixed(3)
+        text[6].text = ((sinfo.acceleration.x ** 2 + sinfo.acceleration.y ** 2) ** 0.5).toFixed(3)
+        updateProgressBar(fillbar[0], Number(((sinfo.velocity.x ** 2 + sinfo.velocity.y ** 2) ** 0.5 / sinfo.thrust ** 0.5).toFixed(3)))
+        updateProgressBar(fillbar[1], Number(((sinfo.acceleration.x ** 2 + sinfo.acceleration.y ** 2) ** 0.5 / (sinfo.thrust / sinfo.mass) / 2).toFixed(3)))
+        info.value = { ...sinfo }
     };
 
     socket.once('RequestDataResult', handleRequestDataResult);
@@ -80,16 +87,16 @@ export default defineComponent({
         const socket = useSocket();
 
         onMounted(async () => {
-            const { text, shipSprites } = await initApp(socket);
-
+            const { text, shipSprite, fillbar } = await initApp(socket, { x: info.value.position.x, y: info.value.position.y, angle: Math.atan2(info.value.velocity.y, info.value.velocity.x) });
             const update = () => {
                 requestAnimationFrame(update);
             };
             update();
 
             intervalId.value = setInterval(() => {
-                fetchData(socket, text, info);
-                testAction(shipSprites[0]);
+                fetchData(socket, text, fillbar, info);
+                shipSprite.position.set(info.value.position.x, info.value.position.y)
+                shipSprite.rotation = Math.atan2(info.value.velocity.y, info.value.velocity.x)
             }, 16.667);
         });
 

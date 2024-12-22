@@ -1,4 +1,4 @@
-import { Texture, Sprite, Assets, Text } from "pixi.js";
+import { Texture, Sprite, Assets, Text, Graphics } from "pixi.js";
 import { BLOCK_RES_PATH, SpriteEdge } from "../../../../share/CONSTANT";
 import { MyContainer } from "../ContainerControl";
 
@@ -76,27 +76,93 @@ async function loadSprites(socket: any, username: string, uicontainer: MyContain
     });
 }
 
-function createResTable(texture: Texture, positionY: number, rescontainer: MyContainer) {
-    const sprite: Sprite = new Sprite(texture);
-    sprite.scale.set(0.5)
-    sprite.position.set(0, positionY);
+function createResTable(restable: Sprite, positionY: number, rescontainer: MyContainer) {
     const resourceText = new Text({ text: '', style: { fontSize: 20, fill: '00FF00' } });
-    resourceText.position.set(sprite.height + 20, positionY + 3);
-    rescontainer.addChild(sprite, resourceText);
+    resourceText.position.set(restable.height / 3 + 20, positionY + 3);
+    rescontainer.addChild(resourceText);
     return resourceText
 }
-async function loadResUI(uicontainer: MyContainer, rescontainer: MyContainer) {
+function createPosTable(positionY: number, poscontainer: MyContainer, i: number) {
+    let text = ""
+    switch (i) {
+        case 0:
+            text = "x"
+            break
+        case 1:
+            text = "y"
+            break
+        case 2:
+            text = "v"
+            break
+        case 3:
+            text = "a"
+            break
+    }
+    const titletext = new Text({ text: text, style: { fontSize: 20, fill: '000000' } });
+    titletext.position.set(10, positionY)
+    const posText = new Text({ text: '-1', style: { fontSize: 20, fill: 'ffff00' } });
+
+    if (i > 1) {
+        posText.position.set(SpriteEdge / 4, 3);
+        const progressBarContainer = new MyContainer();
+        progressBarContainer.position.set(SpriteEdge / 2 + 2, positionY);
+        const progressBarBackground = new Graphics();
+        progressBarBackground.rect(0, 0, 247 / 2, 56 / 2);
+        progressBarBackground.fill({ alpha: 0, color: 0x000000 });
+        const progressBarFill = new Graphics();
+        progressBarFill.rect(0, 0, 0, 30);
+        progressBarFill.fill({ color: 0x00f0f0 });
+
+        progressBarContainer.addChild(progressBarBackground);
+        progressBarContainer.addChild(progressBarFill, posText);
+        poscontainer.addChild(titletext, progressBarContainer);
+        return { posText, progressBarFill }
+    }
+    else {
+        posText.position.set(SpriteEdge * 0.75, positionY + 3);
+        poscontainer.addChild(titletext, posText);
+        return { posText }
+    }
+
+
+
+}
+
+function updateProgressBar(progressBarFill: Graphics, progress: number) {
+    progressBarFill.clear();
+    const fillWidth = progress * 124;
+    progressBarFill.rect(0, 2, fillWidth, 28);
+    progressBarFill.fill({ color: 0x00f0f0 });
+}
+
+async function loadUI(uicontainer: MyContainer, rescontainer: MyContainer, poscontainer: MyContainer) {
     uicontainer.addChild(rescontainer)
-    const textures = await Promise.all(Array.from({ length: 3 }, (_, i) => `RES_${i + 1}.png`).map(url => Assets.load(BLOCK_RES_PATH + url)));
-    const text: Text[] = []
-    textures.forEach((textures, i) => {
-        text.push(createResTable(textures, i * SpriteEdge / 2, rescontainer))
-    })
-    return text
+    const img1 = await Assets.load(BLOCK_RES_PATH + 'UI_RESOURCES.png')
+    const img2 = await Assets.load(BLOCK_RES_PATH + 'UI_POSITION.png')
+    const restable: Sprite = new Sprite(img1);
+    const postable: Sprite = new Sprite(img2);
+    restable.scale.set(0.5)
+    postable.scale.set(0.5)
+    restable.position.set(0, 0);
+    postable.position.set(0, restable.height)
+    rescontainer.addChild(restable)
+    poscontainer.addChild(postable)
+    const text = []
+    const fillbar = []
+    for (let i = 0; i < 3; i++) {
+        text.push(createResTable(restable, i * SpriteEdge / 2, rescontainer))
+    }
+    for (let i = 0; i < 4; i++) {
+        const { posText, progressBarFill } = createPosTable(i * SpriteEdge / 2 + restable.height, poscontainer, i)
+        text.push(posText)
+        if (progressBarFill) fillbar.push(progressBarFill)
+    }
+    return { text, fillbar }
 }
 
 
 export {
     loadSprites,
-    loadResUI
+    updateProgressBar,
+    loadUI
 }
