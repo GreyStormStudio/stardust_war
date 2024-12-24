@@ -7,6 +7,16 @@ function useSocket() {
     return instance?.appContext.config.globalProperties.$socket;
 }
 
+function fetchData(socket: any, x: number, y: number) {
+    const username = useUserInfoStore().getUsername;
+    socket.emit("RequireMap", x, y);
+    socket.once("RequireMapResult",)
+
+    const generateMap = (result: any) => {
+        
+    }
+}
+
 export default defineComponent({
 
 })

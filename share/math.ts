@@ -45,3 +45,15 @@ export function randomlist(seed: number, count: number, isdegree = false) {
 export function distance(pos1: { x: number, y: number }, pos2: { x: number, y: number }) {
     return (pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2
 }
+
+//根据x,y生成哈希值作为每个x,y区块的唯一种子
+export function hashCoordinates(x: number, y: number): number {
+    // 使用字符串拼接和内置的Math.imul来创建一个基于x和y的哈希值
+    let hash = 0;
+    const stringifiedCoordinates = `${x},${y}`;
+    for (let i = 0; i < stringifiedCoordinates.length; i++) {
+        const char = stringifiedCoordinates.charCodeAt(i);
+        hash = Math.imul(31, hash) + char | 0; // 使用31作为乘数，| 0是为了将结果转换为32位整数
+    }
+    return hash;
+}

@@ -1,7 +1,8 @@
 import db, { getData, putData, updateData } from '../db/db'
 import { Md5 } from 'ts-md5'
 import { addShip } from './core'
-import { Noise } from '../scripts/CreateMap'
+import { Noise } from '../../../share/Noise'
+import { hashCoordinates } from '../../../share/math'
 import * as c from '../../../share/CONSTANT'
 
 //User:{userinfo:{email:string,password:hex(经过md5加密)},gameinfo:{storage:{energy:number,mineral:number,metal:number},ship:{Ship结构,Ship位置:{x,y,constellation},sinfo}}}
@@ -132,8 +133,9 @@ async function clearStorage(username: string) {
 }
 
 async function getMap(x: number, y: number) {
-    const noise = new Noise(114514, 0.1)
-    return noise.getNoise(x, y)
+    const hash = hashCoordinates(x, y);
+    const noise = new Noise(hash, 1 / 256)
+    return noise.generateNoise()
 }
 
 async function deldb() {

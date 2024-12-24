@@ -1,15 +1,22 @@
 import { createNoise2D } from "simplex-noise";
 import alea from 'alea'
-import { MapEdge } from "../../../share/CONSTANT";
+import { MapEdge } from "./CONSTANT";
 
 const Edge = MapEdge
 export class Noise {
-    noise = createNoise2D(alea(this.seed))
-    map = new Float32Array(Edge * Edge)
+    noise: ReturnType<typeof createNoise2D>;
+    map: Float32Array;
+    seed: number;
+    rate: number;
+
     constructor(
-        public seed: number,
-        public rate: number
-    ) { }
+        seed: number, rate: number
+    ) {
+        this.seed = seed;
+        this.rate = rate;
+        this.noise = createNoise2D(alea(this.seed))
+        this.map = new Float32Array(Edge * Edge)
+    }
 
     getNoise(x: number, y: number) {
         return Math.floor((this.noise(x / this.rate, y / this.rate) + 1) / 2 * 255)
@@ -21,9 +28,10 @@ export class Noise {
                 this.map[x + y * Edge] = this.getNoise(x, y)
             }
         }
+        return this.map
     }
 
-    generateDensityMap() {
+    /*generateDensityMap() {
         this.generateNoise()
         const densitymap = new Float32Array(Edge * Edge)
         const color = { low: 64, mid: 128, high: 192 };
@@ -55,5 +63,5 @@ export class Noise {
             densitymap[n] = 0x000001 * r + 0x000100 * g + 0x010000 * b
         }
         return densitymap
-    }
+    }*/
 }
